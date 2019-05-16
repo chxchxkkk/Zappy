@@ -1,0 +1,13 @@
+.vscode/
+.idea/
+
+*.o
+*.d
+*.a
+*.so
+*fdp*
+*bite*
+*~*
+\#*\#
+cmake*
+Cmake*
