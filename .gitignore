@@ -13,3 +13,5 @@ cmake*
 Cmake*
 zappy_ai
 zappy_server
+__pycache__/
+reference_server

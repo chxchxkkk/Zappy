@@ -11,8 +11,11 @@ SRV_OBJ	=	${SRV_SRC:.c=.o}
 CFLAGS	=	-Wall -Wextra
 
 zappy_ai:
-	echo -ne "#!/bin/bash\npython3 ${AI_DIR}/main.py" > ${AI_NAME}
+	echo -ne "#!/bin/bash\nexport PYTHONPATH=\$$PYTHONPATH:\$$PWD/ai_src\npython3.6 ${AI_DIR}/main.py \$$@" > ${AI_NAME}
 	chmod +x ${AI_NAME}
+
+run_ai: zappy_ai
+	./zappy_ai a b c
 
 zappy_server: ${SRV_OBJ}
 	gcc -o ${SRV_NAME} ${SRV_OBJ}
