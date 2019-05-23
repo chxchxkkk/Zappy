@@ -4,11 +4,17 @@ AI_DIR	=	ai_src
 
 SRV_NAME	=	zappy_server
 
-SRV_SRC	=	$(wildcard server_src/*.c)
+SRV_DIR	=	server_src
+
+SRV_SRC	=	$(wildcard $(SRV_DIR)/*.c) $(wildcard $(SRV_DIR)/**/*.c)
 
 SRV_OBJ	=	${SRV_SRC:.c=.o}
 
-CFLAGS	=	-Wall -Wextra
+CFLAGS	=	-W -Wall -Wextra -fms-extensions -I ${SRV_DIR}/include
+
+LDFLAGS	=	-L ${SRV_DIR}/lib/list -l list
+
+all: zappy_server zappy_ai
 
 zappy_ai:
 	echo -ne "#!/bin/bash\nexport PYTHONPATH=\$$PYTHONPATH:\$$PWD/ai_src\npython3.6 ${AI_DIR}/main.py \$$@" > ${AI_NAME}
@@ -18,14 +24,15 @@ run_ai: zappy_ai
 	./zappy_ai a b c
 
 zappy_server: ${SRV_OBJ}
-	gcc -o ${SRV_NAME} ${SRV_OBJ}
-
-all: zappy_server zappy_ai
+	make -C $(SRV_DIR)/lib/list
+	gcc -o ${SRV_NAME} ${SRV_OBJ} $(CFLAGS) $(LDFLAGS)
 
 clean:
+	make clean -C $(SRV_DIR)/lib/list
 	rm -rf ${SRV_OBJ}
 
 fclean: clean
+	make fclean -C $(SRV_DIR)/lib/list
 	rm -rf ${SRV_NAME}
 	rm -rf ${AI_NAME}
 

@@ -1,6 +1,5 @@
 .vscode/
 .idea/
-
 *.o
 *.d
 *.a
@@ -9,8 +8,9 @@
 *bite*
 *~*
 \#*\#
+vgcore.*
 cmake*
-Cmake*
+CMakeLists.txt
 zappy_ai
 zappy_server
 __pycache__/
