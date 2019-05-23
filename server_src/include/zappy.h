@@ -21,4 +21,3 @@ typedef struct zappy_settings {
 } zappy_settings_t;
 
 bool parse_settings(zappy_settings_t *settings, int ac, char *const *av);
-

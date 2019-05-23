@@ -19,7 +19,8 @@ static bool parse_args(zappy_settings_t *settings, char *const args[])
         return (false);
     errno = 0;
     settings->port = htons((in_port_t)strtoul(args['p'], NULL, 10));
-    settings->freq = (unsigned int)strtoul(args['f'], NULL, 10);
+    if (args['f'] != NULL)
+        settings->freq = (unsigned int)strtoul(args['f'], NULL, 10);
     settings->nb_clients = strtoul(args['c'], NULL, 10);
     settings->width = strtoul(args['x'], NULL, 10);
     settings->height = strtoul(args['y'], NULL, 10);
