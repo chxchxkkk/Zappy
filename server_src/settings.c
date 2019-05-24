@@ -12,6 +12,15 @@
 #include <stdio.h>
 #include "zappy.h"
 
+static bool is_unique(char *const *array)
+{
+    for (size_t i = 0 ; array[i] != NULL ; ++i)
+        for (size_t j = 0 ; array[j] != NULL ; ++j)
+            if (i != j && strcmp(array[i], array[j]) == 0)
+                return (false);
+    return (true);
+}
+
 static bool parse_args(zappy_settings_t *settings, char *const args[])
 {
     if (args['p'] == NULL || args['x'] == NULL || args['y'] == NULL ||
@@ -26,7 +35,7 @@ static bool parse_args(zappy_settings_t *settings, char *const args[])
     settings->height = strtoul(args['y'], NULL, 10);
     if (errno != 0 || settings->port == 0 || settings->freq == 0 ||
         settings->height == 0 || settings->width == 0 ||
-        settings->nb_clients == 0)
+        settings->nb_clients == 0 || !is_unique(settings->team_names))
         return (false);
     return (true);
 }

@@ -28,3 +28,8 @@ void clean_ptr(void *ptr)
     free(*(void **)ptr);
     *(void **)ptr = NULL;
 }
+
+float randf(void)
+{
+    return (float)((double)rand() / (double)RAND_MAX);
+}

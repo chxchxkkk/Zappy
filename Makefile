@@ -10,6 +10,8 @@ SRV_SRC	=	$(wildcard $(SRV_DIR)/*.c) $(wildcard $(SRV_DIR)/**/*.c)
 
 SRV_OBJ	=	${SRV_SRC:.c=.o}
 
+CC	=	gcc
+
 CFLAGS	=	-W -Wall -Wextra -fms-extensions -I ${SRV_DIR}/include
 
 LDFLAGS	=	-L ${SRV_DIR}/lib/list -l list

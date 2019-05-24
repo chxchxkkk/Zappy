@@ -13,6 +13,9 @@
 #define CLEAN(f) __attribute__((cleanup(f)))
 #define UNUSED __attribute__((unused))
 
+#define ARRAY_LEN(x) ((sizeof(x)/sizeof(*x)) /    \
+    ((size_t)(!(sizeof(x) % sizeof(*x)))))
+
 /**
 * @brief Copies n bytes from src in a new allocated buffer
 * @param src: non-NULL buffer
@@ -30,3 +33,8 @@ void print_mac(const struct ether_addr *addr);
 */
 void clean_ptr(void *ptr);
 void clean_close(const int *fd_ptr);
+
+/**
+* @return a random number between 0.0 and 1.0
+*/
+float randf(void);
