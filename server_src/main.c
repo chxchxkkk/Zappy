@@ -9,6 +9,7 @@
 #include <string.h>
 #include <malloc.h>
 #include <unistd.h>
+#include <time.h>
 #include "utils.h"
 #include "zappy.h"
 
@@ -42,9 +43,10 @@ int main(int ac, char *const *av)
 {
     CLEAN(clean_server) zappy_server_t server = {
         .settings = {0, .freq = 100},
-        .maxfd = 0, .fdset = {0}, .sock = 0, .player_list = NULL
+        .maxfd = 0, .fdset = {}, .sock = 0, .player_list = NULL, .map = NULL
     };
 
+    srand((unsigned int)time(NULL));
     if (!parse_settings(&server.settings, ac, av)) {
         usage();
         return (84);

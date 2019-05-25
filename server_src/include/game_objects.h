@@ -34,3 +34,4 @@ struct resource_rarity {
 };
 
 extern const struct resource_rarity RARITIES[NB_GAME_OBJECTS];
+extern const char *OBJ_NAMES[NB_GAME_OBJECTS];

@@ -14,7 +14,7 @@ CC	=	gcc
 
 CFLAGS	=	-W -Wall -Wextra -fms-extensions -I ${SRV_DIR}/include
 
-LDFLAGS	=	-L ${SRV_DIR}/lib/list -l list
+LDFLAGS	=	-L ${SRV_DIR}/lib/list -llist -lm
 
 all: zappy_server zappy_ai
 
