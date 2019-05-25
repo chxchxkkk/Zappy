@@ -45,5 +45,6 @@ typedef struct player {
 } player_t;
 
 void free_player(player_t *player);
+player_t *create_player(int fd, const struct sockaddr_in *sa);
 
-extern const int ELEVATION_CHART[MAX_LEVEL][NB_GAME_OBJECTS];
+extern const unsigned int ELEVATION_CHART[MAX_LEVEL][NB_GAME_OBJECTS];

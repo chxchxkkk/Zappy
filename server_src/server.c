@@ -11,6 +11,27 @@
 #include "zappy.h"
 #include "tcp_socket.h"
 
+static void accept_client(zappy_server_t *server)
+{
+    struct sockaddr_in addr = {0};
+    int fd = accept(server->sock, (struct sockaddr *)&addr,
+        &(socklen_t){sizeof(addr)});
+    player_t *player;
+
+    if (fd == -1) {
+        perror("accept:");
+        return;
+    }
+    if (fd >= FD_SETSIZE || (player = LIST_PUSH(&server->player_list,
+        create_player(fd, &addr))) == NULL) {
+        close(fd);
+        fprintf(stderr, "error when accepting client.\n");
+        return;
+    }
+    server->maxfd = fd > server->maxfd ? fd : server->maxfd;
+    dispatch_event(server, EVT_CONNECT, player);
+}
+
 bool server_init(zappy_server_t *server)
 {
     printf("Port: %d\n", ntohs(server->settings.port));
@@ -23,31 +44,18 @@ bool server_init(zappy_server_t *server)
     return (true);
 }
 
-void accept_client(zappy_server_t *server)
+void update_server(zappy_server_t *server)
 {
-    struct sockaddr_in addr = {0};
-    socklen_t len = sizeof(addr);
-    int fd = accept(server->socket->fd, (struct sockaddr *)&addr, &len);
-    client_t *client = NULL;
-
-    if (fd == -1) {
-        perror("accept:");
-        return;
+    for (player_t *player = server->player_list ; player != NULL ;) {
+        if (FD_ISSET(player->client.fd, &server->fdset) &&
+            !process_player_input(server, player)) {
+            player_t *next = LIST_NEXT(player);
+            dispatch_event(server, EVT_DISCONNECT, player);
+            LIST_DELETE(&server->player_list, player, free_player);
+            player = next;
+        } else
+            player = LIST_NEXT(player);
     }
-    if (fd >= FD_SETSIZE || (client = LIST_PUSH(&server->clients,
-        create_client(fd, &addr))) == NULL) {
-        close(fd);
-        fprintf(stderr, "error when accepting client." CRLF);
-        return;
-    }
-    reply_client(client, FTP_CONNECTION, "Connected.");
-    server->maxfd = fd > server->maxfd ? fd : server->maxfd;
-
-}
-
-void update_game(zappy_server_t *server)
-{
-
 }
 
 int server_run(zappy_server_t *server)
@@ -67,7 +75,7 @@ int server_run(zappy_server_t *server)
        if (FD_ISSET(server->sock, &server->fdset))
            accept_client(server);
        else
-           update_game(server);
+           update_server(server);
     }
     return (0);
 }

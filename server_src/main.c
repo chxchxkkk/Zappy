@@ -10,6 +10,7 @@
 #include <malloc.h>
 #include <unistd.h>
 #include <time.h>
+#include <arpa/inet.h>
 #include "utils.h"
 #include "zappy.h"
 
@@ -34,19 +35,39 @@ static void clean_server(zappy_server_t *server)
     }
     for (size_t i = 0 ; i < server->settings.nb_teams ; ++i)
         free(server->settings.team_names[i]);
+    for (size_t i = 0 ; i < EVT_SIZE ; ++i)
+        clear_listeners(&server->manager, i);
     if (server->map != NULL)
         free_map(server->map);
     free(server->settings.team_names);
 }
 
+void connect_listener(UNUSED zappy_server_t *server, va_list *ap)
+{
+    player_t *player = va_arg(*ap, player_t *);
+
+    printf("connected: %s:%d\n", inet_ntoa(player->client.sa.sin_addr),
+        ntohs(player->client.sa.sin_port));
+}
+
+void disconnect_listener(UNUSED zappy_server_t *server, va_list *ap)
+{
+    player_t *player = va_arg(*ap, player_t *);
+
+    printf("disconnected: %s:%d\n", inet_ntoa(player->client.sa.sin_addr),
+        ntohs(player->client.sa.sin_port));
+}
+
 int main(int ac, char *const *av)
 {
     CLEAN(clean_server) zappy_server_t server = {
-        .settings = {0, .freq = 100},
+        .settings = {0, .freq = 100}, .dt = 0.0f, .manager = {{NULL}, {0}},
         .maxfd = 0, .fdset = {}, .sock = 0, .player_list = NULL, .map = NULL
     };
 
     srand((unsigned int)time(NULL));
+    add_listener(&server.manager, EVT_CONNECT, connect_listener);
+    add_listener(&server.manager, EVT_DISCONNECT, disconnect_listener);
     if (!parse_settings(&server.settings, ac, av)) {
         usage();
         return (84);

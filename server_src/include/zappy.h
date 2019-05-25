@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include "player.h"
 #include "map.h"
+#include "event.h"
 
 typedef struct zappy_settings {
     char **team_names;
@@ -26,13 +27,17 @@ bool parse_settings(zappy_settings_t *settings, int ac, char *const *av);
 
 typedef struct zappy_server {
     zappy_settings_t settings;
+    event_manager_t manager;
     fd_set fdset;
     player_t *player_list;
     map_t *map;
     int sock;
     int maxfd;
+    float dt;
     bool running;
 } zappy_server_t;
 
 bool server_init(zappy_server_t *server);
 int server_run(zappy_server_t *server);
+
+bool process_player_input(zappy_server_t *server, player_t *player);
