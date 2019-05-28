@@ -17,6 +17,8 @@ enum zappy_event {
     EVT_FORK,
     EVT_ELEVATION,
     EVT_BROADCAST,
+    EVT_FOOD_DECAY,
+    EVT_GRAPHIC_CONNECT,
     /* always last */
     EVT_SIZE,
 };

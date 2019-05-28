@@ -9,6 +9,8 @@
 
 #include <stdlib.h>
 #include <netinet/ether.h>
+#include <stdarg.h>
+#include <stdbool.h>
 
 #define CLEAN(f) __attribute__((cleanup(f)))
 #define UNUSED __attribute__((unused))
@@ -24,15 +26,23 @@
 */
 void *memdup(const void *src, size_t n);
 
-void print_hex(const void *data, size_t n);
+size_t strarr_len(char *const *array);
 
-void print_mac(const struct ether_addr *addr);
+/*
+* string utils
+*/
+char *str_rstrip(char *str, const char *to_strip);
+char *str_lstrip(char *str, const char *to_strip);
+char *str_strip(char *str, const char *to_strip);
+char *va_strcat(bool _free, size_t n, ...);
+char **str_split(char const *str, char *delim);
 
 /*
 * Cleanup functions
 */
 void clean_ptr(void *ptr);
 void clean_close(const int *fd_ptr);
+void clean_strarr(char ***arrayp);
 
 /**
 * @return a random number between 0.0 and 1.0

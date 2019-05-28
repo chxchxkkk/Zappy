@@ -42,20 +42,8 @@ static void clean_server(zappy_server_t *server)
     free(server->settings.team_names);
 }
 
-void connect_listener(UNUSED zappy_server_t *server, va_list *ap)
+void setup_listeners(UNUSED event_manager_t *manager)
 {
-    player_t *player = va_arg(*ap, player_t *);
-
-    printf("connected: %s:%d\n", inet_ntoa(player->client.sa.sin_addr),
-        ntohs(player->client.sa.sin_port));
-}
-
-void disconnect_listener(UNUSED zappy_server_t *server, va_list *ap)
-{
-    player_t *player = va_arg(*ap, player_t *);
-
-    printf("disconnected: %s:%d\n", inet_ntoa(player->client.sa.sin_addr),
-        ntohs(player->client.sa.sin_port));
 }
 
 int main(int ac, char *const *av)
@@ -66,8 +54,7 @@ int main(int ac, char *const *av)
     };
 
     srand((unsigned int)time(NULL));
-    add_listener(&server.manager, EVT_CONNECT, connect_listener);
-    add_listener(&server.manager, EVT_DISCONNECT, disconnect_listener);
+    setup_listeners(&server.manager);
     if (!parse_settings(&server.settings, ac, av)) {
         usage();
         return (84);

@@ -13,6 +13,8 @@
 #include "map.h"
 #include "event.h"
 
+#define SERVER_TICKRATE 120
+
 typedef struct zappy_settings {
     char **team_names;
     size_t nb_teams;
@@ -34,10 +36,14 @@ typedef struct zappy_server {
     int sock;
     int maxfd;
     float dt;
-    bool running;
 } zappy_server_t;
 
 bool server_init(zappy_server_t *server);
 int server_run(zappy_server_t *server);
+bool is_server_running(const bool *set);
 
 bool process_player_input(zappy_server_t *server, player_t *player);
+
+void update_game(zappy_server_t *server);
+
+void catch_sigint(int sig);

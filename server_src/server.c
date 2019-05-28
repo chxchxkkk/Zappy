@@ -7,6 +7,8 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <time.h>
+#include <signal.h>
 #include "utils.h"
 #include "zappy.h"
 #include "tcp_socket.h"
@@ -19,7 +21,7 @@ static void accept_client(zappy_server_t *server)
     player_t *player;
 
     if (fd == -1) {
-        perror("accept:");
+        perror("accept");
         return;
     }
     if (fd >= FD_SETSIZE || (player = LIST_PUSH(&server->player_list,
@@ -58,24 +60,43 @@ void update_server(zappy_server_t *server)
     }
 }
 
+void server_tick(zappy_server_t *server)
+{
+    struct timeval timeout = {
+        .tv_sec = 0,
+        .tv_usec = (__suseconds_t)(1.0 / SERVER_TICKRATE * 1000000),
+    };
+
+    FD_ZERO(&server->fdset);
+    FD_SET(server->sock, &server->fdset);
+    LIST_FOREACH(player, server->player_list, {
+        FD_SET(player->client.fd, &server->fdset);
+    });
+    if (select(server->maxfd + 1, &server->fdset, NULL, NULL, &timeout) == -1) {
+        perror("select");
+        return;
+    }
+    if (FD_ISSET(server->sock, &server->fdset))
+        accept_client(server);
+    else
+        update_server(server);
+    usleep((__useconds_t)timeout.tv_usec);
+}
+
 int server_run(zappy_server_t *server)
 {
-    server->running = true;
-    map_info(server->map);
-    while (server->running) {
-       FD_ZERO(&server->fdset);
-       FD_SET(server->sock, &server->fdset);
-       LIST_FOREACH(player, server->player_list, {
-            FD_SET(player->client.fd, &server->fdset);
-       });
-       if (select(server->maxfd + 1, &server->fdset, NULL, NULL, NULL) == -1) {
-           perror("select");
-           return (84);
-       }
-       if (FD_ISSET(server->sock, &server->fdset))
-           accept_client(server);
-       else
-           update_server(server);
+    struct timespec ts = {0};
+    float last_frame = 0.0f;
+    float current_time;
+
+    signal(SIGINT, catch_sigint);
+    while (is_server_running(NULL)) {
+        server_tick(server);
+        update_game(server);
+        clock_gettime(CLOCK_MONOTONIC, &ts);
+        current_time = ((float)ts.tv_sec + (float)ts.tv_nsec / 1000000000.0f);
+        server->dt = current_time - last_frame;
+        last_frame = current_time;
     }
     return (0);
 }
