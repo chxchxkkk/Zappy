@@ -24,6 +24,13 @@ void PlayerManager::ppo(const std::vector<std::string> &input)
     player.setOrientation(static_cast<Orientation>(std::stoi(input[3])));
 }
 
+void PlayerManager::plv(const std::vector<std::string> &input)
+{
+    auto player = getPlayerById(parseId(input[0]));
+
+    player.setLevel(std::stoi(input[1]));
+}
+
 Player &PlayerManager::getPlayerById(int id)
 {
     return *std::find_if(players.begin(), players.end(), [id](const Player &player) {

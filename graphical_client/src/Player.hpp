@@ -20,6 +20,7 @@ public:
     int getId() const;
     void setPosition(const Position &newPos);
     void setOrientation(Orientation orientation);
+    void setLevel(int newLevel);
 private:
     int id;
     Position pos;

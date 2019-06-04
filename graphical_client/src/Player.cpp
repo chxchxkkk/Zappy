@@ -31,3 +31,8 @@ void Player::setOrientation(Orientation newOrientation)
 {
     orientation = newOrientation;
 }
+
+void Player::setLevel(int newLevel)
+{
+    level = newLevel;
+}
