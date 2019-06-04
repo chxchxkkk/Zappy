@@ -15,7 +15,7 @@
 
 class Player {
 public:
-    explicit Player(int id);
+    Player(int id, const Position &pos, Orientation orientation, int level, std::string teamName);
 
     int getId() const;
     void setPosition(const Position &newPos);
@@ -24,6 +24,8 @@ private:
     int id;
     Position pos;
     Orientation orientation;
+    int level;
+    std::string teamName;
 };
 
 #endif

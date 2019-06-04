@@ -5,13 +5,15 @@
 ** Player.cpp
 */
 
-#include <sstream>
+#include <utility>
 #include "Player.hpp"
 
-Player::Player(int id) :
+Player::Player(int id, const Position &pos, Orientation orientation, int level, std::string teamName) :
     id(id),
-    pos(0, 0),
-    orientation(NORTH)
+    pos(pos),
+    orientation(orientation),
+    level(level),
+    teamName(std::move(teamName))
 {
 }
 
