@@ -8,7 +8,9 @@
 #ifndef LIBLIST_LIST_H
 #define LIBLIST_LIST_H
 
+#include <stdbool.h>
 #include <stdlib.h>
+#include <stdarg.h>
 
 typedef struct list {
     struct list *next;
@@ -21,6 +23,8 @@ typedef struct list {
 typedef void (*list_del_t)(void *);
 
 typedef int (*list_cmp_t)(const void *, const void *);
+
+typedef bool (*list_match_t)(const void *, va_list *);
 
 typedef int (*list_apply_t)(void *);
 
@@ -38,8 +42,8 @@ list_t *list_find_node(list_t *list, const list_t *node, list_cmp_t cmp);
 list_t *list_add_sorted(list_t **begin, list_t *node, list_cmp_t cmp);
 void list_merge(list_t **begin1, list_t *begin2, list_cmp_t cmp);
 size_t list_size(const list_t *begin);
-int list_delete_matching_nodes(list_t **begin, const list_t *node,
-    list_cmp_t cmp, list_del_t del);
+int list_delete_matching_nodes(list_t **begin, list_match_t cmp,
+    list_del_t del, ...);
 int list_apply_on_matching_nodes(list_t *list, list_apply_t func,
     const list_t *node, list_cmp_t cmp);
 void list_reverse(list_t **begin);
@@ -48,8 +52,10 @@ list_t *list_at(list_t *begin, size_t index);
 
 #define LIST_FOREACH(item, list, lambda)                                    \
 ({                                                                          \
-    for (typeof(list) item = list ; item != NULL ; item = LIST_NEXT(item))  \
-        lambda                                                              \
+    for (list_t *_i = (list_t *)list ; _i != NULL ; _i = LIST_NEXT(_i)) {   \
+        typeof(list) item = (typeof(list))_i;                               \
+        lambda;                                                             \
+    }                                                                       \
 })
 
 #define LIST_FIND(list, predicate)  \
@@ -71,5 +77,8 @@ list_t *list_at(list_t *begin, size_t index);
     (list_t *)node))
 #define LIST_FREE(begin, del)   (list_free((list_t **)begin, (list_del_t)del))
 #define LIST_AT(begin, idx)     ((typeof(list))list_at((list_t *)begin, idx))
+#define LIST_DELETE_MATCHING(begin, match, del, ...)                    \
+    (list_delete_matching_nodes((list_t **)begin, (list_match_t)match,  \
+    (list_del_t)del), ##__VA_ARGS__)
 
 #endif //LIBLIST_LIST_H

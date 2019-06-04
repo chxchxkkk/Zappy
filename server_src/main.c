@@ -10,7 +10,7 @@
 #include <malloc.h>
 #include <unistd.h>
 #include <time.h>
-#include <arpa/inet.h>
+#include "listeners.h"
 #include "utils.h"
 #include "zappy.h"
 
@@ -42,8 +42,9 @@ static void clean_server(zappy_server_t *server)
     free(server->settings.team_names);
 }
 
-void setup_listeners(UNUSED event_manager_t *manager)
+void setup_listeners(event_manager_t *manager)
 {
+    add_listener(manager, EVT_FOOD_DECAY, on_food_decay);
 }
 
 int main(int ac, char *const *av)
@@ -53,7 +54,7 @@ int main(int ac, char *const *av)
         .maxfd = 0, .fdset = {}, .sock = 0, .player_list = NULL, .map = NULL
     };
 
-    srand((unsigned int)time(NULL));
+    srand((unsigned int)(time(NULL) ^ (unsigned long)&server));
     setup_listeners(&server.manager);
     if (!parse_settings(&server.settings, ac, av)) {
         usage();

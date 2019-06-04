@@ -63,8 +63,8 @@ void update_player_default(zappy_server_t *server, player_t *player)
         dispatch_event(server, EVT_FOOD_DECAY, player);
         player->food_cooldown = (float)FOOD_DECAY / server->settings.freq;
     }
-    if (player->inventory[FOOD] <= 0) {
-        dispatch_event(server, EVT_DEAD, player);
+    if (player->inventory[FOOD] < 0) {
+        kill_player(server, player);
         return;
     }
     if (player->action.cooldown <= 0.0f && player->action.fptr != NULL) {

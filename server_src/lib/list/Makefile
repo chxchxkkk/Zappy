@@ -15,6 +15,8 @@ OBJ		=	$(SRC:.c=.o)
 
 NAME		=	liblist.a
 
+CC		=	gcc
+
 CFLAGS		=	-Wall -Wextra -I $(INCLUDE)
 
 all:		$(NAME)

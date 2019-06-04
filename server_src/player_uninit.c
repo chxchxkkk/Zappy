@@ -9,7 +9,6 @@
 #include <string.h>
 #include "zappy.h"
 
-/* TODO attribute player ID */
 static void init_player(zappy_server_t *server, player_t *player, int team_id)
 {
     player->state = PLAYER_DEFAULT;
@@ -19,7 +18,7 @@ static void init_player(zappy_server_t *server, player_t *player, int team_id)
     player->position.y = (int)(rand() % server->map->height);
     player->direction = rand() % 4 + 1;
     player->team_id = team_id;
-    player->id = 0;
+    player->id = player->client.fd;
     get_cell(server->map, player->position.x,
         player->position.y)->objects[PLAYER] += 1;
     dispatch_event(server, EVT_SPAWN, player);
