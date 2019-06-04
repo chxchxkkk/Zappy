@@ -24,6 +24,10 @@ void free_map(map_t *map);
 map_t *generate_map(size_t width, size_t height, float ratio);
 void map_info(const map_t *map);
 
-cell_t *get_cell(const map_t *map, size_t x, size_t y);
+cell_t *get_cell(const map_t *map, int x, int y);
 void print_cell(const cell_t *cell);
 void generate_cell(cell_t *cell, float ratio);
+
+typedef struct player player_t;
+
+cell_t **get_vision_cells(const map_t *server, const player_t *player);

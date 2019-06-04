@@ -18,7 +18,7 @@ void generate_cell(cell_t *cell, float ratio)
                 cell->objects[RARITIES[i].resource]++;
 }
 
-cell_t *get_cell(const map_t *map, size_t x, size_t y)
+cell_t *get_cell(const map_t *map, int x, int y)
 {
     return &map->cells[x % map->width][y % map->height];
 }

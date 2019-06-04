@@ -13,6 +13,10 @@
 
 const struct cmd_entry PLAYER_CMDS[] = {
     {"Forward", 0, 7, cmd_forward},
+    {"Right", 0, 7, cmd_right},
+    {"Left", 0, 7, cmd_left},
+    {"Inventory", 0, 1, cmd_inventory},
+    {"Look", 0, 7, cmd_look},
     {NULL, 0, 0, NULL},
 };
 
@@ -46,7 +50,7 @@ static bool parse_command(zappy_server_t *server, player_t *player)
     return (status);
 }
 
-static void bad_command(player_t *player)
+static void bad_command(const player_t *player)
 {
     dprintf(player->client.fd, "ko\n");
 }

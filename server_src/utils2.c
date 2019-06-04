@@ -68,12 +68,14 @@ char *va_strcat(bool _free, size_t n, ...)
     va_start(ap, n);
     for (size_t i = 0 ; i < n ; ++i) {
         arr[i] = va_arg(ap, char *);
-        len += strlen(arr[i]);
+        len += arr[i] ? strlen(arr[i]) : 0;
     }
     va_end(ap);
     if ((str = calloc(len + 1, sizeof(char))) == NULL)
         return (NULL);
     for (size_t i = 0 ; i < n ; ++i) {
+        if (arr[i] == NULL)
+            continue;
         strcat(str, arr[i]);
         if (_free)
             free(arr[i]);
