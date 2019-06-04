@@ -17,6 +17,8 @@ public:
     Player &getPlayerById(int id);
 
     void ppo(const std::vector<std::string> &input);
+
+    int parseId(const std::string &s) const;
 private:
     std::vector<Player> players;
 };
