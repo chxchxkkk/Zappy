@@ -10,6 +10,7 @@
 World::World()
 {
     actions = {
-        {"ppo", [this](const std::vector<std::string> &input) { playerManager.ppo(input); }}
+        {"pnw", [this](const std::vector<std::string> &input) { playerManager.pnw(input); }},
+        {"ppo", [this](const std::vector<std::string> &input) { playerManager.ppo(input); }},
     };
 }
