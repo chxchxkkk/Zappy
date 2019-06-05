@@ -15,3 +15,4 @@ zappy_ai
 zappy_server
 __pycache__/
 reference_server
+graphical_client/graphical_client
