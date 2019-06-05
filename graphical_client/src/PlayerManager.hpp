@@ -20,6 +20,7 @@ public:
     void ppo(const std::vector<std::string> &input);
     void pnw(const std::vector<std::string> &input);
     void plv(const std::vector<std::string> &input);
+    void pin(const std::vector<std::string> &input);
 
     int parseId(const std::string &s) const;
 private:

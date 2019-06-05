@@ -31,6 +31,10 @@ void PlayerManager::plv(const std::vector<std::string> &input)
     player.setLevel(std::stoi(input[1]));
 }
 
+void PlayerManager::pin(const std::vector<std::string> &input)
+{
+}
+
 Player &PlayerManager::getPlayerById(int id)
 {
     return *std::find_if(players.begin(), players.end(), [id](const Player &player) {

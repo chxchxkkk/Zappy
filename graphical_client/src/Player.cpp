@@ -15,6 +15,13 @@ Player::Player(int id, const Position &pos, Orientation orientation, int level, 
     level(level),
     teamName(std::move(teamName))
 {
+    inventory[FOOD] = 0;
+    inventory[LINEMATE] = 0;
+    inventory[DERAUMERE] = 0;
+    inventory[SIBUR] = 0;
+    inventory[MENDIANE] = 0;
+    inventory[PHIRAS] = 0;
+    inventory[THYSTAME] = 0;
 }
 
 int Player::getId() const
