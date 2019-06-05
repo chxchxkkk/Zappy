@@ -8,10 +8,13 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <thread>
+#include "communicator.hpp"
+#include "Map.hpp"
 
 class Game {
     public:
-        Game();
+        Game(int argc, char *argv[]);
         ~Game() = default;
         void run();
         void processEvents();
@@ -20,4 +23,7 @@ class Game {
         unsigned int width = 1920;
         unsigned int height = 1080;
         sf::RenderWindow window;
+        Communicator communicator;
+        std::thread receiver;
+        Map map;
 };

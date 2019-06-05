@@ -8,7 +8,7 @@ CXX  =   g++
 
 CXXFLAGS    =   -Wall -Wextra
 
-LDFLAGS =   -lsfml-graphics -lsfml-system -lsfml-window
+LDFLAGS =   -lsfml-graphics -lsfml-system -lsfml-window -lpthread
 
 all:    $(NAME)
 

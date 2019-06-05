@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <cstring>
 #include <netdb.h>
+#include <iostream>
 #include "communicator.hpp"
 
 /**
@@ -34,7 +35,7 @@ Communicator::Communicator(uint16_t port, char *hostname) : port(port), hostname
     if (connect(this->sockFd, reinterpret_cast<const struct sockaddr *>(&addr), len) == -1) {
         std::perror("connect");
         std::exit(84);
-    };
+    }
 }
 
 /**
@@ -53,12 +54,31 @@ void Communicator::sendData(std::string data)
 
 void Communicator::receiveData()
 {
-    ssize_t byteNumber;
-    char buffer[DATA_SIZE];
+    while (this->running) {
+        ssize_t byteNumber;
+        char buffer[DATA_SIZE];
 
-    if ((byteNumber = recv(this->sockFd, buffer, DATA_SIZE, 0)) == -1) {
-        std::perror("recv");
-        std::exit(84);
+        std::cout << "In thread" << std::endl;
+        if ((byteNumber = recv(this->sockFd, buffer, DATA_SIZE, 0)) == -1) {
+            std::perror("recv");
+            std::exit(84);
+        }
+        buffer[byteNumber] = '\0';
+        std::cout << "received : " << std::string(buffer) << std::endl;
+        this->dataQueueMutex.lock();
+        this->dataQueue.push(std::string(buffer));
+        this->dataQueueMutex.unlock();
     }
-    buffer[byteNumber] = '\0';
+}
+
+std::string Communicator::popData()
+{
+    if (!this->dataQueueMutex.try_lock())
+        return "";
+    if (this->dataQueue.empty())
+        return "";
+    std::string tmp = this->dataQueue.front();
+    this->dataQueue.pop();
+    this->dataQueueMutex.unlock();
+    return tmp;
 }
