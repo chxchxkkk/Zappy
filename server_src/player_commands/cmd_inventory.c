@@ -6,7 +6,7 @@
 */
 
 #include <stdio.h>
-#include <zappy.h>
+#include "zappy.h"
 #include "utils.h"
 #include "commands.h"
 

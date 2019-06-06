@@ -63,6 +63,7 @@ typedef struct player {
 
 void free_player(player_t *player);
 player_t *create_player(int fd, const struct sockaddr_in *sa);
+void kill_player(zappy_server_t *server, player_t *player);
 void update_player(zappy_server_t *server, player_t *player);
 void update_player_default(zappy_server_t *server, player_t *player);
 void update_player_graphic(zappy_server_t *server, player_t *player);

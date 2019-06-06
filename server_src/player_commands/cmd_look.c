@@ -17,7 +17,7 @@ char *get_cell_content(const cell_t *cell)
     char buff[BUFSIZ] = "";
 
     for (size_t i = 0 ; i < NB_GAME_OBJECTS ; ++i)
-        if (cell->objects[i] > 0)
+        for (size_t j = 0 ; j < cell->objects[i] ; ++j)
             idx += snprintf(&buff[idx], (size_t)(BUFSIZ - idx), " %s",
                 OBJ_NAMES[i]);
     return strdup(buff);

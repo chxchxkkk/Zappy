@@ -18,7 +18,7 @@
 typedef struct zappy_settings {
     char **team_names;
     size_t nb_teams;
-    size_t nb_clients;
+    size_t clients_limit;
     size_t width;
     size_t height;
     unsigned int freq;
@@ -33,6 +33,7 @@ typedef struct zappy_server {
     fd_set fdset;
     player_t *player_list;
     map_t *map;
+    size_t *clients_limits;
     int sock;
     int maxfd;
     float dt;

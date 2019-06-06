@@ -7,19 +7,25 @@
 
 #include "list.h"
 
-int list_delete_matching_nodes(list_t **begin, const list_t *node,
-    list_cmp_t cmp, list_del_t del)
+int list_delete_matching_nodes(list_t **begin, list_match_t match,
+    list_del_t del, ...)
 {
+    va_list ap;
+    va_list cpy;
     list_t *tmp = *begin;
     int num = 0;
 
+    va_start(ap, del);
     while (tmp != NULL) {
-        if (cmp(node, tmp) == 0) {
+        va_copy(cpy, ap);
+        if (match(tmp, &cpy)) {
             list_delete_node(begin, tmp, del);
             tmp = *begin;
             num++;
         } else
             tmp = tmp->next;
+        va_end(cpy);
     }
+    va_end(ap);
     return (num);
 }

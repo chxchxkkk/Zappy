@@ -33,7 +33,6 @@ cell_t **get_vision_cells(const map_t *map, const player_t *player)
                 cells[i++] = get_cell(map,
                     player->position.x + DIRECTIONS[player->direction].x * x,
                     player->position.y + DIRECTIONS[player->direction].y * y);
-    assert(i == size);
     cells[size] = NULL;
     return (memdup(cells, sizeof(cells)));
 }

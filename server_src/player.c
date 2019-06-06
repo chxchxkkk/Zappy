@@ -61,3 +61,10 @@ void update_player(zappy_server_t *server, player_t *player)
     if (UPDATE_CMDS[player->state] != NULL)
         UPDATE_CMDS[player->state](server, player);
 }
+
+void kill_player(zappy_server_t *server, player_t *player)
+{
+    dprintf(player->client.fd, "dead\n");
+    player->state = PLAYER_DEAD;
+    dispatch_event(server, EVT_DEAD, player);
+}

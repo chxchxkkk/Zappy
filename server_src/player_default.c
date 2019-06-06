@@ -17,6 +17,9 @@ const struct cmd_entry PLAYER_CMDS[] = {
     {"Left", 0, 7, cmd_left},
     {"Inventory", 0, 1, cmd_inventory},
     {"Look", 0, 7, cmd_look},
+    {"Take", 1, 7, cmd_take},
+    {"Set", 1, 7, cmd_set},
+    {"Connect_nbr", 0, 0, cmd_connect_nbr},
     {NULL, 0, 0, NULL},
 };
 
@@ -39,7 +42,8 @@ static bool parse_command(zappy_server_t *server, player_t *player)
     if (args != NULL && args[0] != NULL)
         for (size_t i = 0 ; !status && PLAYER_CMDS[i].name != NULL ; ++i)
             if (strcmp(PLAYER_CMDS[i].name, args[0]) == 0 &&
-                strarr_len(args) == PLAYER_CMDS[i].args + 1)
+                (PLAYER_CMDS[i].args == -1 ||
+                    (int)strarr_len(args) == PLAYER_CMDS[i].args + 1))
                 status = register_command(server, player, i, args);
     free(player->commands[0]);
     memmove(player->commands, &player->commands[1],
@@ -63,8 +67,8 @@ void update_player_default(zappy_server_t *server, player_t *player)
         dispatch_event(server, EVT_FOOD_DECAY, player);
         player->food_cooldown = (float)FOOD_DECAY / server->settings.freq;
     }
-    if (player->inventory[FOOD] <= 0) {
-        dispatch_event(server, EVT_DEAD, player);
+    if (player->inventory[FOOD] < 0) {
+        kill_player(server, player);
         return;
     }
     if (player->action.cooldown <= 0.0f && player->action.fptr != NULL) {

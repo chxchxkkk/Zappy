@@ -40,6 +40,11 @@ bool server_init(zappy_server_t *server)
     server->sock = create_server_tcp_socket(server->settings.port);
     server->map = generate_map(server->settings.width, server->settings.height,
         1.0f);
+    server->clients_limits = calloc(server->settings.nb_teams, sizeof(size_t));
+    if (server->clients_limits == NULL)
+        return (false);
+    for (size_t i = 0 ; i < server->settings.nb_teams ; ++i)
+        server->clients_limits[i] = server->settings.clients_limit;
     if (server->sock == -1 || server->map == NULL)
         return (false);
     server->maxfd = server->sock;
