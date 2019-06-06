@@ -40,7 +40,7 @@ static bool parse_command(zappy_server_t *server, player_t *player)
         for (size_t i = 0 ; !status && PLAYER_CMDS[i].name != NULL ; ++i)
             if (strcmp(PLAYER_CMDS[i].name, args[0]) == 0 &&
                 (PLAYER_CMDS[i].args == -1 ||
-                    strarr_len(args) == PLAYER_CMDS[i].args + 1))
+                    (int)strarr_len(args) == PLAYER_CMDS[i].args + 1))
                 status = register_command(server, player, i, args);
     free(player->commands[0]);
     memmove(player->commands, &player->commands[1],

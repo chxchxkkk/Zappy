@@ -18,5 +18,9 @@ void update_game(zappy_server_t *server)
     LIST_FOREACH(player, server->player_list, {
         update_player(server, player);
     });
+    LIST_FOREACH(player, server->player_list, {
+        if (player->state == PLAYER_DEAD)
+            dispatch_event(server, EVT_DISCONNECT, player);
+    });
     LIST_DELETE_MATCHING(&server->player_list, player_is_dead, free_player);
 }

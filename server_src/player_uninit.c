@@ -11,6 +11,10 @@
 
 static void init_player(zappy_server_t *server, player_t *player, int team_id)
 {
+    if (server->clients_limits[team_id] == 0) {
+        dprintf(player->client.fd, "ko\n");
+        return;
+    }
     player->state = PLAYER_DEFAULT;
     player->inventory[FOOD] = 10;
     player->food_cooldown = (float)FOOD_DECAY / server->settings.freq;
@@ -38,8 +42,6 @@ static void register_command(zappy_server_t *server, player_t *player)
         for (size_t i = 0 ; i < server->settings.nb_teams ; ++i)
             if (!strcmp(server->settings.team_names[i], player->commands[0]))
                 init_player(server, player, (int)i);
-    dprintf(player->client.fd,
-        player->state == PLAYER_UNINITIALIZED ? "ko\n" : "ok\n");
     free(player->commands[0]);
     memmove(player->commands, &player->commands[1],
         sizeof(*player->commands) * (COMMANDS_BUF - 1));

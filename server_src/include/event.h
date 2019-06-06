@@ -10,15 +10,15 @@
 #include <stdarg.h>
 
 enum zappy_event {
-    EVT_CONNECT,
-    EVT_DISCONNECT,
-    EVT_SPAWN,
-    EVT_DEAD,
+    EVT_CONNECT,    /* player */
+    EVT_DISCONNECT, /* player */
+    EVT_SPAWN,      /* player */
+    EVT_DEAD,       /* player */
     EVT_FORK,
     EVT_ELEVATION,
     EVT_BROADCAST,
-    EVT_FOOD_DECAY,
-    EVT_GRAPHIC_CONNECT,
+    EVT_FOOD_DECAY,         /* player */
+    EVT_GRAPHIC_CONNECT,    /* player */
     /* always last */
     EVT_SIZE,
 };

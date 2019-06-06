@@ -30,12 +30,12 @@ static bool parse_args(zappy_settings_t *settings, char *const args[])
     settings->port = htons((in_port_t)strtoul(args['p'], NULL, 10));
     if (args['f'] != NULL)
         settings->freq = (unsigned int)strtoul(args['f'], NULL, 10);
-    settings->nb_clients = strtoul(args['c'], NULL, 10);
+    settings->clients_limit = strtoul(args['c'], NULL, 10);
     settings->width = strtoul(args['x'], NULL, 10);
     settings->height = strtoul(args['y'], NULL, 10);
     if (errno != 0 || settings->port == 0 || settings->freq == 0 ||
         settings->height == 0 || settings->width == 0 ||
-        settings->nb_clients == 0 || !is_unique(settings->team_names))
+        settings->clients_limit == 0 || !is_unique(settings->team_names))
         return (false);
     return (true);
 }
