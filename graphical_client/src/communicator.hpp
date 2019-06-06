@@ -12,9 +12,11 @@ class Communicator
 {
     public:
         Communicator(uint16_t port, char *hostname);
+        ~Communicator() = default;
         void sendData(std::string data);
         void receiveData();
         std::string popData();
+        void setRunning(bool);
 
     private:
         uint16_t port;

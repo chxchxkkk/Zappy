@@ -8,8 +8,10 @@ int main(int argc, char *argv[])
     try {
         Game game(argc, argv);
         game.run();
+        std::cout << "run end" << std::endl;
     } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
+        std::cerr << e.what() << "ERROR" << std::endl;
     }
+    std::cout << "leaving" << std::endl;
     return (0);
 }

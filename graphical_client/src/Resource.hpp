@@ -9,13 +9,13 @@
 #define ZAPPY_RESOURCE_HPP
 
 enum Resource {
-    FOOD,
-    LINEMATE,
-    DERAUMERE,
-    SIBUR,
-    MENDIANE,
-    PHIRAS,
-    THYSTAME
+    FOOD = 0,
+    LINEMATE = 1,
+    DERAUMERE = 2,
+    SIBUR = 3,
+    MENDIANE = 4,
+    PHIRAS = 5,
+    THYSTAME = 6
 };
 
 #endif

@@ -11,19 +11,25 @@
 #include <thread>
 #include "communicator.hpp"
 #include "Map.hpp"
+#include "PlayerManager.hpp"
+#include "MapManager.hpp"
+#include "Dispatcher.hpp"
 
 class Game {
     public:
         Game(int argc, char *argv[]);
-        ~Game() = default;
+        ~Game();
         void run();
+        void draw();
         void processEvents();
+        void processCommands();
 
     private:
         unsigned int width = 1920;
         unsigned int height = 1080;
-        sf::RenderWindow window;
         Communicator communicator;
         std::thread receiver;
-        Map map;
+        PlayerManager playerManager;
+        MapManager mapManager;
+        Dispatcher dispatcher;
 };

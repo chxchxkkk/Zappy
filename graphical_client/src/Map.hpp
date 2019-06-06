@@ -13,14 +13,14 @@
 
 class Map {
     public:
-        Map(int width, int height, sf::RenderWindow &window);
+        Map(int width, int height);
         ~Map() = default;
         void draw();
+        std::unique_ptr<Tile> &getTileAtCoord(int x, int y);
 
     private:
         std::vector<std::unique_ptr<Tile>> tiles;
         int width;
         int height;
-        sf::RenderWindow &window;
 };
 

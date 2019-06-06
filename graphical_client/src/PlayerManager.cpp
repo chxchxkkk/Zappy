@@ -6,6 +6,7 @@
 */
 
 #include <algorithm>
+#include <iostream>
 #include "PlayerManager.hpp"
 
 void PlayerManager::pnw(const std::vector<std::string> &input)

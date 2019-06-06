@@ -5,7 +5,9 @@
 #include <cstring>
 #include <netdb.h>
 #include <iostream>
+#include <fcntl.h>
 #include "communicator.hpp"
+#include "String.hpp"
 
 /**
  * @brief Communicator constructor, try to connect to host
@@ -54,20 +56,33 @@ void Communicator::sendData(std::string data)
 
 void Communicator::receiveData()
 {
+    fd_set rfds;
+    struct timeval tv;
+    int retVal;
     while (this->running) {
+        FD_ZERO(&rfds);
+        FD_SET(this->sockFd, &rfds);
+
+        tv.tv_sec = 1;
+        tv.tv_usec = 0;
         ssize_t byteNumber;
         char buffer[DATA_SIZE];
 
-        std::cout << "In thread" << std::endl;
-        if ((byteNumber = recv(this->sockFd, buffer, DATA_SIZE, 0)) == -1) {
-            std::perror("recv");
-            std::exit(84);
-        }
-        buffer[byteNumber] = '\0';
-        std::cout << "received : " << std::string(buffer) << std::endl;
-        this->dataQueueMutex.lock();
-        this->dataQueue.push(std::string(buffer));
-        this->dataQueueMutex.unlock();
+        retVal = select(this->sockFd + 1, &rfds, nullptr, nullptr, &tv);
+        if (retVal && FD_ISSET(this->sockFd, &rfds)) {
+            if ((byteNumber = recv(this->sockFd, buffer, DATA_SIZE, 0)) == -1) {
+                std::perror("recv");
+                std::exit(84);
+            }
+            buffer[byteNumber] = '\0';
+            std::vector<std::string> allCommands = String::split(
+                std::string(buffer), "\n");
+            this->dataQueueMutex.lock();
+            for (const auto &it : allCommands)
+                this->dataQueue.push(it);
+            this->dataQueueMutex.unlock();
+        } else
+            continue;
     }
 }
 
@@ -75,10 +90,17 @@ std::string Communicator::popData()
 {
     if (!this->dataQueueMutex.try_lock())
         return "";
-    if (this->dataQueue.empty())
+    if (this->dataQueue.empty()) {
+        this->dataQueueMutex.unlock();
         return "";
+    }
     std::string tmp = this->dataQueue.front();
     this->dataQueue.pop();
     this->dataQueueMutex.unlock();
     return tmp;
+}
+
+void Communicator::setRunning(bool _running)
+{
+    this->running = _running;
 }
