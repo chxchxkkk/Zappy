@@ -22,6 +22,10 @@ bool cmd_right(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_left(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_inventory(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_look(zappy_server_t *server, player_t *player, char *const *args);
+bool cmd_take(zappy_server_t *server, player_t *player, char *const *args);
+bool cmd_set(zappy_server_t *server, player_t *player, char *const *args);
+bool cmd_connect_nbr(zappy_server_t *server, player_t *player,
+    char *const *args);
 
 extern const struct cmd_entry PLAYER_CMDS[];
 extern const struct cmd_entry GRAPHIC_CMDS[];

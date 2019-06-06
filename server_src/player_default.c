@@ -17,6 +17,9 @@ const struct cmd_entry PLAYER_CMDS[] = {
     {"Left", 0, 7, cmd_left},
     {"Inventory", 0, 1, cmd_inventory},
     {"Look", 0, 7, cmd_look},
+    {"Take", 1, 7, cmd_take},
+    {"Set", 1, 7, cmd_set},
+    {"Connect_nbr", 0, 0, cmd_connect_nbr},
     {NULL, 0, 0, NULL},
 };
 
