@@ -12,7 +12,7 @@
 
 struct cmd_entry {
     const char *name;
-    size_t args;
+    int args;
     unsigned int time;
     action_func_t action;
 };
