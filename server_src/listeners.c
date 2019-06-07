@@ -10,6 +10,7 @@
 #include "player.h"
 #include "event.h"
 #include "utils.h"
+#include "commands.h"
 
 void on_food_decay(UNUSED zappy_server_t *server, va_list *ap)
 {
@@ -45,4 +46,14 @@ void on_disconnect(zappy_server_t *server, va_list *ap)
             player->position.y)->objects[PLAYER]--;
         server->clients_limits[player->team_id]++;
     }
+}
+
+void on_graphic_connect(zappy_server_t *server, va_list *ap)
+{
+    player_t *player = va_arg(*ap, player_t *);
+
+    cmd_msz(server, player, NULL);
+    cmd_sgt(server, player, NULL);
+    cmd_mct(server, player, NULL);
+    cmd_tna(server, player, NULL);
 }

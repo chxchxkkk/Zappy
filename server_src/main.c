@@ -49,6 +49,7 @@ void setup_listeners(event_manager_t *manager)
     add_listener(manager, EVT_DISCONNECT, on_disconnect);
     add_listener(manager, EVT_FOOD_DECAY, on_food_decay);
     add_listener(manager, EVT_SPAWN, on_player_spawn);
+    add_listener(manager, EVT_GRAPHIC_CONNECT, on_graphic_connect);
 }
 
 int main(int ac, char *const *av)

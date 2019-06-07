@@ -22,10 +22,3 @@ cell_t *get_cell(const map_t *map, int x, int y)
 {
     return &map->cells[x % map->width][y % map->height];
 }
-
-void print_cell(const cell_t *cell)
-{
-    for (size_t i = 0 ; i < NB_GAME_OBJECTS ; ++i)
-        for (size_t j = 0 ; j < cell->objects[i] ; ++j)
-            printf(" %s", OBJ_NAMES[i]);
-}
