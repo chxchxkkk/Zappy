@@ -17,6 +17,9 @@ struct cmd_entry {
     action_func_t action;
 };
 
+/*
+* Player commands
+*/
 bool cmd_forward(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_right(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_left(zappy_server_t *server, player_t *player, char *const *args);
@@ -26,6 +29,15 @@ bool cmd_take(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_set(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_connect_nbr(zappy_server_t *server, player_t *player,
     char *const *args);
+
+/*
+* Graphic commands
+*/
+bool cmd_msz(zappy_server_t *server, player_t *player, char *const *args);
+bool cmd_bct(zappy_server_t *server, player_t *player, char *const *args);
+bool cmd_mct(zappy_server_t *server, player_t *player, char *const *args);
+bool cmd_sgt(zappy_server_t *server, player_t *player, char *const *args);
+bool cmd_tna(zappy_server_t *server, player_t *player, char *const *args);
 
 extern const struct cmd_entry PLAYER_CMDS[];
 extern const struct cmd_entry GRAPHIC_CMDS[];

@@ -25,7 +25,7 @@ map_t *generate_map(size_t width, size_t height, float ratio);
 void map_info(const map_t *map);
 
 cell_t *get_cell(const map_t *map, int x, int y);
-void print_cell(const cell_t *cell);
+void print_cell_content(const cell_t *cell, int fd, int x, int y);
 void generate_cell(cell_t *cell, float ratio);
 
 typedef struct player player_t;
