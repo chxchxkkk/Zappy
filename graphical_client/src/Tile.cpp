@@ -74,3 +74,13 @@ void Tile::addResourceSprite(Resource type, int offset)
     sprite.setPosition((x * TILE_SIZE) + 4 + (x_offset * 30), y * TILE_SIZE + 4 + (y_offset * 30));
     this->sprites.push_back(sprite);
 }
+
+void Tile::setResource(Resource type, int quantity)
+{
+    this->content[type] = quantity;
+}
+
+const std::map<Resource, int> &Tile::getContent() const
+{
+    return content;
+}

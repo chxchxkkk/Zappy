@@ -26,17 +26,15 @@ void MapManager::bct(std::vector<std::string> args)
     std::cout << args[2] << std::endl;
     if (args.size() == 9) {
         std::pair<int, int> position = parsePosition(std::vector<std::string>(args.begin(), args.begin() + 2));
-        std::unique_ptr<Tile> &tile = this->map->getTileAtCoord(position.first, position.second);
+        std::shared_ptr<Tile> &tile = this->map->getTileAtCoord(position.first, position.second);
 
         for (int i = 0; i <= 6; ++i) {
-            tile->addResource(static_cast<Resource>(i), std::stoi(args[2 + i]));
+            tile->setResource(static_cast<Resource>(i), std::stoi(args[2 + i]));
         }
     }
 }
 
 std::pair<int, int> MapManager::parsePosition(std::vector<std::string> pos)
 {
-    for (auto &it: pos)
-        std::cout << it << std::endl;
     return {std::stoi(pos[0]), std::stoi(pos[1])};
 }

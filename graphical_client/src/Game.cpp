@@ -43,6 +43,12 @@ void Game::processEvents()
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             window.close();
+        if (event.type == sf::Event::MouseButtonPressed)
+        {
+            if (event.mouseButton.button == sf::Mouse::Left) {
+                this->selectTile(event);
+            }
+        }
     }
 }
 
@@ -64,10 +70,33 @@ void Game::draw()
     if (this->mapManager.getMap() != nullptr) {
         this->mapManager.getMap()->draw();
     }
+    if (this->selectedTile)
+        this->tileInfo->draw();
 }
 
 Game::~Game()
 {
     this->communicator.setRunning(false);
     this->receiver.join();
+}
+
+void Game::selectTile(sf::Event &event)
+{
+    int x = event.mouseButton.x / TILE_SIZE;
+    int y = event.mouseButton.y / TILE_SIZE;
+
+    if (x < 0 || x >= this->mapManager.getMap()->getWidth())
+        return;
+    if (y < 0 || y >= this->mapManager.getMap()->getHeight())
+        return;
+    this->selectedTile = this->mapManager.getMap()->getTileAtCoord(x, y);
+    this->tileInfo = std::make_unique<TileInfo>(*this->selectedTile);
+}
+
+void Game::displayTileInfo()
+{
+    std::pair<int, int> position;
+
+    position = this->selectedTile->getPosition();
+    std::cout << "selected at pos : x " << position.first << " y " << position.second << std::endl;
 }

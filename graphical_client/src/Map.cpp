@@ -26,9 +26,9 @@ void Map::draw()
     }
 }
 
-std::unique_ptr<Tile> &Map::getTileAtCoord(int x, int y)
+std::shared_ptr<Tile> &Map::getTileAtCoord(int x, int y)
 {
-    auto tile = std::find_if(this->tiles.begin(), this->tiles.end(), [x, y](std::unique_ptr<Tile> &tile) {
+    auto tile = std::find_if(this->tiles.begin(), this->tiles.end(), [x, y](std::shared_ptr<Tile> &tile) {
         std::pair<int, int> pos = tile->getPosition();
         return pos.first == x && pos.second == y;
     });
@@ -37,3 +37,31 @@ std::unique_ptr<Tile> &Map::getTileAtCoord(int x, int y)
     }
     return *tile;
 }
+
+int Map::getWidth() const
+{
+    return width;
+}
+
+void Map::setWidth(int width)
+{
+    this->width = width;
+}
+
+int Map::getHeight() const
+{
+    return height;
+}
+
+void Map::setHeight(int height)
+{
+    this->height = height;
+}
+
+/*std::shared_ptr<Tile> Map::getTileAtPosition(int x, int y)
+{
+    int relative_x = x / TILE_SIZE;
+    int relative_y = y / TILE_SIZE;
+
+    return this->getTileAtCoord(relative_x, relative_y);
+}*/

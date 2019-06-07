@@ -16,11 +16,22 @@ class Map {
         Map(int width, int height);
         ~Map() = default;
         void draw();
-        std::unique_ptr<Tile> &getTileAtCoord(int x, int y);
+        std::shared_ptr<Tile> &getTileAtCoord(int x, int y);
+//        std::shared_ptr<Tile> getTileAtPosition(int x, int y);
 
     private:
-        std::vector<std::unique_ptr<Tile>> tiles;
+        std::vector<std::shared_ptr<Tile>> tiles;
         int width;
-        int height;
+    public:
+    int getWidth() const;
+
+    void setWidth(int width);
+
+    int getHeight() const;
+
+    void setHeight(int height);
+
+    private:
+    int height;
 };
 

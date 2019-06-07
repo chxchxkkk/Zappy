@@ -14,6 +14,7 @@
 #include "PlayerManager.hpp"
 #include "MapManager.hpp"
 #include "Dispatcher.hpp"
+#include "TileInfo.hpp"
 
 class Game {
     public:
@@ -23,13 +24,19 @@ class Game {
         void draw();
         void processEvents();
         void processCommands();
+        void selectTile(sf::Event &event);
+        void displayTileInfo();
 
     private:
         unsigned int width = 1920;
         unsigned int height = 1080;
         Communicator communicator;
+        std::shared_ptr<Tile> selectedTile = nullptr;
         std::thread receiver;
         PlayerManager playerManager;
         MapManager mapManager;
         Dispatcher dispatcher;
+        sf::View mapView;
+        sf::View menuView;
+        std::unique_ptr<TileInfo> tileInfo = nullptr;
 };

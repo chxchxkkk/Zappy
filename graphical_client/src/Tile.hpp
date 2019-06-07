@@ -19,6 +19,7 @@ class Tile {
         ~Tile() = default;
         std::vector<sf::Sprite> &getSprites();
         void addResource(Resource type, int quantity);
+        void setResource(Resource type, int quantity);
         void removeResource(Resource type, int quantity);
         const std::pair<int, int> getPosition() const;
 
@@ -40,7 +41,11 @@ class Tile {
             {PHIRAS, 0},
             {THYSTAME, 0},
         };
-        std::map<Resource, std::string> textureMap = {
+    public:
+    const std::map<Resource, int> &getContent() const;
+
+    private:
+    std::map<Resource, std::string> textureMap = {
             {FOOD, "assets/Food.png"},
             {LINEMATE, "assets/Linemate.png"},
             {DERAUMERE, "assets/Deraumere.png"},
