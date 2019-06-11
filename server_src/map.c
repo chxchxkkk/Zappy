@@ -9,6 +9,20 @@
 #include "utils.h"
 #include "map.h"
 #include "game_objects.h"
+#include "zappy.h"
+#include "commands.h"
+
+void refill_food(zappy_server_t *server)
+{
+    for (size_t x = 0 ; x < server->map->width ; ++x)
+        for (size_t y = 0 ; y < server->map->height ; ++y)
+            server->map->cells[x][y].objects[FOOD] += rand() %
+                (server->map->cells[x][y].objects[FOOD] * 2 + 2) == 0 ? 1 : 0;
+    LIST_FOREACH(player, server->player_list, {
+        if (player->state == PLAYER_GRAPHIC)
+            cmd_mct(server, player, NULL);
+    });
+}
 
 map_t *generate_map(size_t width, size_t height, float ratio)
 {

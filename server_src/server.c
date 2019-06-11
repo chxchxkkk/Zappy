@@ -58,7 +58,6 @@ void update_server(zappy_server_t *server)
             !process_player_input(server, player)) {
             player_t *next = LIST_NEXT(player);
             dispatch_event(server, EVT_DISCONNECT, player);
-            LIST_DELETE(&server->player_list, player, free_player);
             player = next;
         } else
             player = LIST_NEXT(player);

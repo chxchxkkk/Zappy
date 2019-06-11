@@ -9,7 +9,7 @@
 
 const struct resource_rarity RARITIES[NB_GAME_OBJECTS] = {
     {PLAYER, 0, 0.0},
-    {FOOD, 4, 0.4},
+    {FOOD, 4, 0.1},
     {LINEMATE, 3, 0.25},
     {DERAUMERE, 3, 0.2},
     {SIBUR, 2, 0.35},
