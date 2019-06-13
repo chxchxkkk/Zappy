@@ -52,25 +52,28 @@ static int get_sound_direction(const map_t *map, const position_t *from,
 {
     position_t actual_to = get_shortest_position(map, from, to);
     double angle = (atan2(actual_to.y - from->y, actual_to.x - from->x) +
-        M_PI_2) * 180.0 / M_PI - (360.0 / 8.0) / 2.0;
+        M_PI_2) * 180.0 / M_PI;
     int final_direction;
 
+    angle -= (360.0 / 8.0) / 2.0;
     if (from->x == to->x && from->y == to->y)
         return (0);
     while (angle < 0.0)
         angle += 360.0;
-    final_direction = (int)round(angle / (360.0 / 8.0));
-    return ((final_direction - (direction - 1) * 2) % 8) + 1;
+    final_direction = (int)ceil(angle / (360.0 / 8.0));
+    return ((final_direction + (direction - 1) * 2) % 8) + 1;
 }
 
 bool cmd_broadcast(zappy_server_t *server, player_t *player, char *const *args)
 {
     CLEAN(clean_ptr) char *msg = str_join(" ", &args[1]);
 
-    if (msg == NULL)
+    if (msg == NULL || strarr_len(args) <= 1) {
+        dprintf(player->client.fd, "ko\n");
         return (false);
+    }
     LIST_FOREACH(p, server->player_list, {
-        if (p->state == PLAYER_DEFAULT)
+        if (p->state == PLAYER_DEFAULT && p->id != player->id)
             dprintf(p->client.fd, "message %d, %s\n",
                 get_sound_direction(server->map, &player->position,
                     &p->position, p->direction), msg);
