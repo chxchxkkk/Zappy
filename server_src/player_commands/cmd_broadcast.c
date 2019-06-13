@@ -79,5 +79,6 @@ bool cmd_broadcast(zappy_server_t *server, player_t *player, char *const *args)
                     &p->position, p->direction), msg);
     });
     dprintf(player->client.fd, "ok\n");
+    notify_graphic(server, "pbc %d %s\n", player->id, msg);
     return (true);
 }
