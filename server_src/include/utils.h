@@ -36,6 +36,7 @@ char *str_lstrip(char *str, const char *to_strip);
 char *str_strip(char *str, const char *to_strip);
 char *va_strcat(bool _free, size_t n, ...);
 char **str_split(char const *str, char *delim);
+char *str_join(const char *delim, char *const *array);
 
 /*
 * Cleanup functions
