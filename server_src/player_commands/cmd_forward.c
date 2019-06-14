@@ -6,9 +6,8 @@
 */
 
 #include <stdio.h>
-#include <zappy.h>
+#include "zappy.h"
 #include "utils.h"
-#include "commands.h"
 
 static const position_t DIRECTIONS[] = {
     [NORTH] = {0, 1},
@@ -29,5 +28,7 @@ bool cmd_forward(zappy_server_t *server, player_t *player,
     get_cell(server->map, player->position.x,
         player->position.y)->objects[PLAYER] += 1;
     dprintf(player->client.fd, "ok\n");
+    notify_graphic(server, "ppo %d %d %d %d\n", player->id, player->position.x,
+        player->position.y, player->direction);
     return (true);
 }

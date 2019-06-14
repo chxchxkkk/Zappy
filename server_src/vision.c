@@ -20,10 +20,10 @@ static const position_t DIRECTIONS[] = {
 cell_t **get_vision_cells(const map_t *map, const player_t *player)
 {
     size_t i = 0;
-    size_t size = (player->level + 2) * (player->level + 2);
+    size_t size = (player->level + 1) * (player->level + 1);
     cell_t *cells[size + 1];
 
-    for (int y = 0 ; y <= (int)player->level + 1 ; ++y)
+    for (int y = 0 ; y <= (int)player->level ; ++y)
         for (int x = -y ; x <= y ; ++x)
             if (player->direction % 2 == 0)
                 cells[i++] = get_cell(map,

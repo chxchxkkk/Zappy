@@ -52,3 +52,5 @@ void catch_sigint(int sig);
 
 void notify_graphic(const zappy_server_t *server, const char *fmt, ...)
     __attribute__((format (printf, 2, 3)));
+void notify_graphic_cmd(zappy_server_t *server, action_func_t cmd,
+    char *const *args);

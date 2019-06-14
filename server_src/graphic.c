@@ -22,3 +22,12 @@ void notify_graphic(const zappy_server_t *server, const char *fmt, ...)
     });
     va_end(ap);
 }
+
+void notify_graphic_cmd(zappy_server_t *server, action_func_t cmd,
+    char *const *args)
+{
+    LIST_FOREACH(player, server->player_list, {
+        if (player->state == PLAYER_GRAPHIC)
+            cmd(server, player, args);
+    });
+}

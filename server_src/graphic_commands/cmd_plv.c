@@ -19,6 +19,6 @@ bool cmd_plv(zappy_server_t *server, player_t *player, char *const *args)
         dprintf(player->client.fd, "sbp\n");
         return (false);
     }
-    dprintf(player->client.fd, "plv %d %d\n", actual->id, actual->level + 1);
+    dprintf(player->client.fd, "plv %d %d\n", actual->id, actual->level);
     return (true);
 }

@@ -37,7 +37,7 @@ void on_player_spawn(zappy_server_t *server, va_list *ap)
         server->map->height);
     notify_graphic(server, "pnw %d %d %d %d %d %s\n", player->id,
         player->position.x, player->position.y, player->direction,
-        player->level + 1, server->settings.team_names[player->team_id]);
+        player->level, server->settings.team_names[player->team_id]);
     refill_food(server);
 }
 

@@ -69,4 +69,7 @@ void update_player_default(zappy_server_t *server, player_t *player);
 void update_player_graphic(zappy_server_t *server, player_t *player);
 void update_player_uninit(zappy_server_t *server, player_t *player);
 
-extern const unsigned int ELEVATION_CHART[MAX_LEVEL][NB_GAME_OBJECTS];
+bool do_incantation(zappy_server_t *server, player_t *player,
+    char *const *args);
+bool wait_incantation(zappy_server_t *server, player_t *player,
+    char *const *args);

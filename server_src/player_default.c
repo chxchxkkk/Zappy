@@ -21,6 +21,7 @@ const struct cmd_entry PLAYER_CMDS[] = {
     {"Set", 1, 7, cmd_set},
     {"Connect_nbr", 0, 0, cmd_connect_nbr},
     {"Broadcast", -1, 7, cmd_broadcast},
+    {"Incantation", 0, 0, cmd_incantation},
     {NULL, 0, 0, NULL},
 };
 
@@ -74,7 +75,9 @@ void update_player_default(zappy_server_t *server, player_t *player)
     }
     if (player->action.cooldown <= 0.0f && player->action.fptr != NULL) {
         player->action.fptr(server, player, player->action.args);
-        player->action.fptr = NULL;
+        if (player->action.fptr != do_incantation &&
+            player->action.fptr != wait_incantation)
+            player->action.fptr = NULL;
     }
     if (player->action.fptr == NULL && player->commands[0] != NULL &&
         !parse_command(server, player))
