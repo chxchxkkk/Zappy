@@ -9,10 +9,10 @@
 #define ZAPPY_ORIENTATION_HPP
 
 enum Orientation {
-    NORTH = 'N',
-    EST = 'E',
-    SOUTH = 'S',
-    WEST = 'W'
+    NORTH = 1,
+    EST = 2,
+    SOUTH = 3,
+    WEST = 4
 };
 
 #endif

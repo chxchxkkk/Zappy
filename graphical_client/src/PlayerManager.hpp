@@ -21,9 +21,13 @@ public:
     void pnw(const std::vector<std::string> &input);
     void plv(const std::vector<std::string> &input);
     void pin(const std::vector<std::string> &input);
+    void pic(const std::vector<std::string> &input);
+    void pie(const std::vector<std::string> &input);
 
+    void draw();
     int parseId(const std::string &s) const;
 private:
+    std::vector<std::reference_wrapper<Player>> getPlayersAtPosition(const Position &position);
     std::vector<Player> players;
 };
 

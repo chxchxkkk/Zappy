@@ -19,6 +19,7 @@ Game::Game(int, char *argv[]) :
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
     window.create(sf::VideoMode(1920, 1080), "Zappy Graphique");
     communicator.sendData("GRAPHIC");
+    this->playerManager.pnw({"1", "2", "2", "2", "1", "cacabite"});
 }
 
 void Game::run()
@@ -72,6 +73,7 @@ void Game::draw()
     }
     if (this->selectedTile)
         this->tileInfo->draw();
+    this->playerManager.draw();
 }
 
 Game::~Game()

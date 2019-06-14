@@ -11,6 +11,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <SFML/Graphics.hpp>
 #include "Position.hpp"
 #include "Orientation.hpp"
 #include "Resource.hpp"
@@ -23,6 +24,11 @@ public:
     void setPosition(const Position &newPos);
     void setOrientation(Orientation orientation);
     void setLevel(int newLevel);
+    void setResource(Resource type, int quantity);
+    bool isIncanting() const;
+    void setIncanting(bool);
+    const Position &getPosition() const;
+    void draw();
 
 private:
     int id;
@@ -31,6 +37,8 @@ private:
     int level;
     std::string teamName;
     std::map<Resource, int> inventory;
+    bool incanting = false;
+    std::vector<sf::Sprite> sprites;
 };
 
 #endif
