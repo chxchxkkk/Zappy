@@ -25,7 +25,7 @@ bool cmd_take(zappy_server_t *server, player_t *player, char *const *args)
             obj_type = i;
             break;
         }
-    if (obj_type < 0)
+    if (obj_type < 0 || obj_type == PLAYER)
         return (on_error(player));
     objects = &get_cell(server->map, player->position.x,
         player->position.y)->objects[obj_type];
@@ -34,5 +34,6 @@ bool cmd_take(zappy_server_t *server, player_t *player, char *const *args)
     (*objects)--;
     player->inventory[obj_type]++;
     dprintf(player->client.fd, "ok\n");
+    notify_graphic(server, "pgt %d %d\n", player->id, obj_type - 1);
     return (true);
 }

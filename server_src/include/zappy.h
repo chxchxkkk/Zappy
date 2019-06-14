@@ -46,5 +46,9 @@ bool is_server_running(const bool *set);
 bool process_player_input(zappy_server_t *server, player_t *player);
 
 void update_game(zappy_server_t *server);
+void refill_food(zappy_server_t *server);
 
 void catch_sigint(int sig);
+
+void notify_graphic(const zappy_server_t *server, const char *fmt, ...)
+    __attribute__((format (printf, 2, 3)));

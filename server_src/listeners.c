@@ -35,17 +35,20 @@ void on_player_spawn(zappy_server_t *server, va_list *ap)
         server->clients_limits[player->team_id]);
     dprintf(player->client.fd, "%ld %ld\n", server->map->width,
         server->map->height);
+    notify_graphic(server, "pnw %d %d %d %d %d %s\n", player->id,
+        player->position.x, player->position.y, player->direction,
+        player->level + 1, server->settings.team_names[player->team_id]);
+    refill_food(server);
 }
 
 void on_disconnect(zappy_server_t *server, va_list *ap)
 {
     player_t *player = va_arg(*ap, player_t *);
 
-    if (player->state == PLAYER_DEAD || player->state == PLAYER_DEFAULT) {
-        get_cell(server->map, player->position.x,
-            player->position.y)->objects[PLAYER]--;
-        server->clients_limits[player->team_id]++;
-    }
+    if (player->state == PLAYER_DEFAULT)
+        kill_player(server, player);
+    else
+        LIST_DELETE(&server->player_list, player, free_player);
 }
 
 void on_graphic_connect(zappy_server_t *server, va_list *ap)

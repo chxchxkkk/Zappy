@@ -66,5 +66,9 @@ void kill_player(zappy_server_t *server, player_t *player)
 {
     dprintf(player->client.fd, "dead\n");
     player->state = PLAYER_DEAD;
+    get_cell(server->map, player->position.x,
+        player->position.y)->objects[PLAYER]--;
+    server->clients_limits[player->team_id]++;
+    notify_graphic(server, "pdi %d\n", player->id);
     dispatch_event(server, EVT_DEAD, player);
 }
