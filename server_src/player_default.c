@@ -20,6 +20,7 @@ const struct cmd_entry PLAYER_CMDS[] = {
     {"Take", 1, 7, cmd_take},
     {"Set", 1, 7, cmd_set},
     {"Fork", 0, 42, cmd_fork},
+    {"Eject", 0, 7, cmd_eject},
     {"Connect_nbr", 0, 0, cmd_connect_nbr},
     {"Broadcast", -1, 7, cmd_broadcast},
     {"Incantation", 0, 0, cmd_incantation},

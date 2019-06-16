@@ -47,7 +47,7 @@ static position_t get_shortest_position(const map_t *map,
     });
 }
 
-static int get_sound_direction(const map_t *map, const position_t *from,
+int get_sound_direction(const map_t *map, const position_t *from,
     const position_t *to, enum direction direction)
 {
     position_t actual_to = get_shortest_position(map, from, to);

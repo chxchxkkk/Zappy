@@ -49,6 +49,8 @@ bool process_player_input(zappy_server_t *server, player_t *player);
 
 void update_game(zappy_server_t *server);
 void refill_food(zappy_server_t *server);
+int get_sound_direction(const map_t *map, const position_t *from,
+    const position_t *to, enum direction direction);
 
 void catch_sigint(int sig);
 

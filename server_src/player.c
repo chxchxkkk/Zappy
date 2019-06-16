@@ -18,6 +18,13 @@ static void (*const UPDATE_CMDS[])(zappy_server_t *, player_t *) = {
     [PLAYER_DEAD] = NULL,
 };
 
+const position_t DIRECTIONS[] = {
+    [NORTH] = {0, 1},
+    [EAST] = {1, 0},
+    [SOUTH] = {0, -1},
+    [WEST] = {-1, 0},
+};
+
 player_t *create_player(int fd, const struct sockaddr_in *sa)
 {
     player_t player = {
@@ -59,4 +66,18 @@ void kill_player(zappy_server_t *server, player_t *player)
     server->clients_limits[player->team_id]++;
     notify_graphic(server, "pdi %d\n", player->id);
     dispatch_event(server, EVT_DEAD, player);
+}
+
+void player_move(zappy_server_t *server, player_t *player, int x, int y)
+{
+    get_cell(server->map, player->position.x,
+        player->position.y)->objects[PLAYER] -= 1;
+    player->position.x += x;
+    player->position.y += y;
+    player->position.x %= server->map->width;
+    player->position.y %= server->map->height;
+    get_cell(server->map, player->position.x,
+        player->position.y)->objects[PLAYER] += 1;
+    notify_graphic(server, "ppo %d %d %d %d\n", player->id, player->position.x,
+        player->position.y, player->direction);
 }

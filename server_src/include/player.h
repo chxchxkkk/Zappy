@@ -64,6 +64,7 @@ typedef struct player {
 void free_player(player_t *player);
 player_t *create_player(int fd, const struct sockaddr_in *sa);
 void kill_player(zappy_server_t *server, player_t *player);
+void player_move(zappy_server_t *server, player_t *player, int x, int y);
 void update_player(zappy_server_t *server, player_t *player);
 void update_player_default(zappy_server_t *server, player_t *player);
 void update_player_graphic(zappy_server_t *server, player_t *player);
@@ -73,3 +74,5 @@ bool do_incantation(zappy_server_t *server, player_t *player,
     char *const *args);
 bool wait_incantation(zappy_server_t *server, player_t *player,
     char *const *args);
+
+extern const position_t DIRECTIONS[];

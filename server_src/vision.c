@@ -10,7 +10,7 @@
 #include "utils.h"
 #include "zappy.h"
 
-static const position_t DIRECTIONS[] = {
+static const position_t VISION_DIR[] = {
     [NORTH] = {1, 1},
     [EAST] = {1, -1},
     [SOUTH] = {-1, -1},
@@ -27,12 +27,12 @@ cell_t **get_vision_cells(const map_t *map, const player_t *player)
         for (int x = -y ; x <= y ; ++x)
             if (player->direction % 2 == 0)
                 cells[i++] = get_cell(map,
-                    player->position.x + DIRECTIONS[player->direction].x * y,
-                    player->position.y + DIRECTIONS[player->direction].y * x);
+                    player->position.x + VISION_DIR[player->direction].x * y,
+                    player->position.y + VISION_DIR[player->direction].y * x);
             else
                 cells[i++] = get_cell(map,
-                    player->position.x + DIRECTIONS[player->direction].x * x,
-                    player->position.y + DIRECTIONS[player->direction].y * y);
+                    player->position.x + VISION_DIR[player->direction].x * x,
+                    player->position.y + VISION_DIR[player->direction].y * y);
     cells[size] = NULL;
     return (memdup(cells, sizeof(cells)));
 }
