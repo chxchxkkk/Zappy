@@ -29,6 +29,7 @@ static void usage(void)
 static void clean_server(zappy_server_t *server)
 {
     LIST_FREE(&server->player_list, free_player);
+    LIST_FREE(&server->egg_list, free);
     if (server->sock > 0) {
         shutdown(server->sock, SHUT_RDWR);
         close(server->sock);
@@ -56,8 +57,8 @@ int main(int ac, char *const *av)
 {
     CLEAN(clean_server) zappy_server_t server = {
         .settings = {0, .freq = 100}, .dt = 0.0f, .manager = {{NULL}, {0}},
-        .maxfd = 0, .fdset = {}, .sock = 0, .player_list = NULL, .map = NULL,
-        .clients_limits = NULL
+        .maxfd = 0, .fdset = {}, .sock = 0, .player_list = NULL,
+        .egg_list = NULL, .map = NULL, .clients_limits = NULL
     };
 
     srand((unsigned int)(time(NULL) ^ (unsigned long)&server));

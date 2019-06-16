@@ -18,6 +18,6 @@ bool cmd_sst(zappy_server_t *server, player_t *player, char *const *args)
         return (false);
     }
     server->settings.freq = t;
-    dprintf(player->client.fd, "sst %d\n", server->settings.freq);
+    dprintf(player->client.fd, "sgt %d\n", server->settings.freq);
     return (true);
 }

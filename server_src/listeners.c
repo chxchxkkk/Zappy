@@ -29,12 +29,17 @@ void on_connect(UNUSED zappy_server_t *server, va_list *ap)
 void on_player_spawn(zappy_server_t *server, va_list *ap)
 {
     player_t *player = va_arg(*ap, player_t *);
+    egg_t *egg = va_arg(*ap, egg_t *);
 
     server->clients_limits[player->team_id]--;
     dprintf(player->client.fd, "%ld\n",
         server->clients_limits[player->team_id]);
     dprintf(player->client.fd, "%ld %ld\n", server->map->width,
         server->map->height);
+    if (egg != NULL) {
+        notify_graphic(server, "ebo %d\n", egg->id);
+        egg->connected = true;
+    }
     notify_graphic(server, "pnw %d %d %d %d %d %s\n", player->id,
         player->position.x, player->position.y, player->direction,
         player->level, server->settings.team_names[player->team_id]);

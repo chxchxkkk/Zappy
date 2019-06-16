@@ -12,6 +12,7 @@
 #include "player.h"
 #include "map.h"
 #include "event.h"
+#include "egg.h"
 
 #define SERVER_TICKRATE 120
 
@@ -32,6 +33,7 @@ typedef struct zappy_server {
     event_manager_t manager;
     fd_set fdset;
     player_t *player_list;
+    egg_t *egg_list;
     map_t *map;
     size_t *clients_limits;
     int sock;

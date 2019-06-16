@@ -11,6 +11,9 @@
 
 static void init_player(zappy_server_t *server, player_t *player, int team_id)
 {
+    egg_t *egg = LIST_FIND(server->egg_list,
+        it->team_id == team_id && it->hatched);
+
     if (server->clients_limits[team_id] == 0)
         return;
     player->state = PLAYER_DEFAULT;
@@ -18,12 +21,14 @@ static void init_player(zappy_server_t *server, player_t *player, int team_id)
     player->food_cooldown = (float)FOOD_DECAY / server->settings.freq;
     player->position.x = (int)(rand() % server->map->width);
     player->position.y = (int)(rand() % server->map->height);
+    if (egg != NULL)
+        player->position = egg->position;
     player->direction = rand() % 4 + 1;
     player->team_id = team_id;
     player->id = player->client.fd;
     get_cell(server->map, player->position.x,
         player->position.y)->objects[PLAYER] += 1;
-    dispatch_event(server, EVT_SPAWN, player);
+    dispatch_event(server, EVT_SPAWN, player, egg);
 }
 
 static void init_graphic(zappy_server_t *server, player_t *player)

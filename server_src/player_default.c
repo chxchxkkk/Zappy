@@ -19,6 +19,7 @@ const struct cmd_entry PLAYER_CMDS[] = {
     {"Look", 0, 7, cmd_look},
     {"Take", 1, 7, cmd_take},
     {"Set", 1, 7, cmd_set},
+    {"Fork", 0, 42, cmd_fork},
     {"Connect_nbr", 0, 0, cmd_connect_nbr},
     {"Broadcast", -1, 7, cmd_broadcast},
     {"Incantation", 0, 0, cmd_incantation},
@@ -67,7 +68,7 @@ void update_player_default(zappy_server_t *server, player_t *player)
     player->food_cooldown -= server->dt;
     if (player->food_cooldown <= 0.0f) {
         dispatch_event(server, EVT_FOOD_DECAY, player);
-        player->food_cooldown = (float)FOOD_DECAY / server->settings.freq;
+        player->food_cooldown += (float)FOOD_DECAY / server->settings.freq;
     }
     if (player->inventory[FOOD] < 0) {
         kill_player(server, player);

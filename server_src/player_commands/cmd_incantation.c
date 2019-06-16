@@ -50,9 +50,10 @@ bool do_incantation(zappy_server_t *server, player_t *player,
     return (true);
 }
 
-bool wait_incantation(UNUSED zappy_server_t *server, UNUSED player_t *player,
+bool wait_incantation(UNUSED zappy_server_t *server, player_t *player,
     UNUSED char *const *args)
 {
+    player->action.fptr = NULL;
     return (true);
 }
 

@@ -28,6 +28,7 @@ bool cmd_look(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_take(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_set(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_broadcast(zappy_server_t *server, player_t *player, char *const *args);
+bool cmd_fork(zappy_server_t *server, player_t *player, char *const *args);
 bool cmd_incantation(zappy_server_t *server, player_t *player,
     char *const *args);
 bool cmd_connect_nbr(zappy_server_t *server, player_t *player,
