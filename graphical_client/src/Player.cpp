@@ -6,6 +6,7 @@
 */
 
 #include <utility>
+#include <iostream>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Player.hpp"
 #include "Singleton.hpp"
@@ -19,8 +20,6 @@ Player::Player(int id, const Position &pos, Orientation orientation, int level, 
     level(level),
     teamName(std::move(teamName))
 {
-    sf::Sprite characterSprite;
-
     inventory[FOOD] = 0;
     inventory[LINEMATE] = 0;
     inventory[DERAUMERE] = 0;
@@ -31,7 +30,6 @@ Player::Player(int id, const Position &pos, Orientation orientation, int level, 
     characterSprite.setTexture(SingleTon<TextureLoader>::getInstance().getInstance("assets/Character.png"));
     characterSprite.setPosition((TILE_SIZE * pos.x) + 30, (TILE_SIZE * pos.y) + 30);
     characterSprite.setScale(0.5f, 0.5f);
-    this->sprites.push_back(characterSprite);
 }
 
 int Player::getId() const
@@ -41,7 +39,10 @@ int Player::getId() const
 
 void Player::setPosition(const Position &newPos)
 {
-    pos = newPos;
+    std::cout << " " << pos.x << " " << pos.y << std::endl;
+    pos.x = newPos.x;
+    pos.y = newPos.y;
+    std::cout << " " << pos.x << " " << pos.y << std::endl;
 }
 
 void Player::setOrientation(Orientation newOrientation)
@@ -78,7 +79,7 @@ void Player::draw()
 {
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
 
-    for (auto &it : this->sprites) {
-        window.draw(it);
-    }
+    std::cout << "X : " << pos.x << " Y: " << pos.y << std::endl;
+    characterSprite.setPosition((TILE_SIZE * pos.x) + 30, (TILE_SIZE * pos.y) + 30);
+    window.draw(this->characterSprite);
 }

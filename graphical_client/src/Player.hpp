@@ -38,7 +38,8 @@ private:
     std::string teamName;
     std::map<Resource, int> inventory;
     bool incanting = false;
-    std::vector<sf::Sprite> sprites;
+//    std::vector<sf::Sprite> sprites;
+    sf::Sprite characterSprite;
 };
 
 #endif

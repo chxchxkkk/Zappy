@@ -6,7 +6,7 @@ NAME    =   graphical_client
 
 CXX  =   g++
 
-CXXFLAGS    =   -Wall -Wextra --std=c++14
+CXXFLAGS    =   -Wall -Wextra --std=c++14 -g
 
 LDFLAGS =   -lsfml-graphics -lsfml-system -lsfml-window -lpthread
 

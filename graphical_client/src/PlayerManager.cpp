@@ -19,7 +19,7 @@ void PlayerManager::pnw(const std::vector<std::string> &input)
 
 void PlayerManager::ppo(const std::vector<std::string> &input)
 {
-    auto player = getPlayerById(parseId(input[0]));
+    auto &player = getPlayerById(parseId(input[0]));
 
     player.setPosition(Position(std::stoi(input[1]), std::stoi(input[2])));
     player.setOrientation(static_cast<Orientation>(std::stoi(input[3])));
