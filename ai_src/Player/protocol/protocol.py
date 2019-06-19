@@ -54,7 +54,7 @@ def eject(sock: socket.socket):
 
 
 def take_resource(sock: socket.socket, resource: Resource):
-    msg = str.encode("Take " + str(resource) + "\n")
+    msg = str.encode("Take " + resource.value + "\n")
     sock.send(msg)
 
 
@@ -65,4 +65,9 @@ def set_resouce(sock: socket.socket, resource: Resource):
 
 def incantation(sock: socket.socket):
     msg = str.encode("Incantation\n")
+    sock.send(msg)
+
+
+def look(sock: socket.socket):
+    msg = str.encode("Look\n")
     sock.send(msg)
