@@ -11,6 +11,7 @@
 #include <errno.h>
 #include <stdio.h>
 #include "zappy.h"
+#include "utils.h"
 
 static bool is_unique(char *const *array)
 {
@@ -23,19 +24,24 @@ static bool is_unique(char *const *array)
 
 static bool parse_args(zappy_settings_t *settings, char *const args[])
 {
-    if (args['p'] == NULL || args['x'] == NULL || args['y'] == NULL ||
-        args['c'] == NULL || settings->team_names == NULL)
-        return (false);
     errno = 0;
-    settings->port = htons((in_port_t)strtoul(args['p'], NULL, 10));
+    if (args['p'] != NULL)
+        settings->port = htons((in_port_t)strtoul(args['p'], NULL, 10));
     if (args['f'] != NULL)
         settings->freq = (unsigned int)strtoul(args['f'], NULL, 10);
-    settings->clients_limit = strtoul(args['c'], NULL, 10);
-    settings->width = strtoul(args['x'], NULL, 10);
-    settings->height = strtoul(args['y'], NULL, 10);
+    if (args['c'] != NULL)
+        settings->clients_limit = strtoul(args['c'], NULL, 10);
+    if (args['x'] != NULL)
+        settings->width = strtoul(args['x'], NULL, 10);
+    if (args['y'] != NULL)
+        settings->height = strtoul(args['y'], NULL, 10);
+    if (settings->team_names == NULL)
+        settings->nb_teams = strarr_len(
+            settings->team_names = str_split("Team1 Team2 Team3 Team4", " "));
     if (errno != 0 || settings->port == 0 || settings->freq == 0 ||
         settings->height == 0 || settings->width == 0 ||
-        settings->clients_limit == 0 || !is_unique(settings->team_names))
+        settings->team_names == NULL || settings->clients_limit == 0 ||
+        !is_unique(settings->team_names))
         return (false);
     return (true);
 }
@@ -62,14 +68,14 @@ static void get_team_names(zappy_settings_t *settings, int ac, char *const *av,
 
 bool parse_settings(zappy_settings_t *settings, int ac, char *const *av)
 {
-    int old_optind = 0;
+    int old_optind = 1;
     char *args[] = {
         ['p'] = NULL, ['x'] = NULL, ['y'] = NULL, ['c'] = NULL, ['f'] = NULL
     };
 
     for (int opt ; (opt = getopt(ac, av, "p:x:y:n:c:f:")) != -1 ;) {
         if (opt == 'n' && settings->team_names == NULL)
-            get_team_names(settings, ac,av, old_optind + 1);
+            get_team_names(settings, ac, av, old_optind + 1);
         else if (strchr("pxycf", opt) != NULL)
             args[opt] = optarg;
         else

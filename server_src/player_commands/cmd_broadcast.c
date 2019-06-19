@@ -16,6 +16,10 @@ static const position_t MAP_DIRECTIONS[] = {
     {-1, 0},
     {0, 1},
     {0, -1},
+    {1, 1},
+    {-1, 1},
+    {1, -1},
+    {-1, -1},
 };
 
 static int get_distance(const position_t *a, const position_t *b)

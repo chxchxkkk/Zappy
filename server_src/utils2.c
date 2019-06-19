@@ -13,6 +13,8 @@
 
 size_t strarr_len(char *const *array)
 {
+    if (array == NULL)
+        return (0);
     for (size_t i = 0 ;; ++i)
         if (array[i] == NULL)
             return (i);

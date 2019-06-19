@@ -27,7 +27,7 @@ void PlayerManager::ppo(const std::vector<std::string> &input)
 
 void PlayerManager::plv(const std::vector<std::string> &input)
 {
-    auto player = getPlayerById(parseId(input[0]));
+    auto &player = getPlayerById(parseId(input[0]));
 
     player.setLevel(std::stoi(input[1]));
 }
@@ -35,7 +35,7 @@ void PlayerManager::plv(const std::vector<std::string> &input)
 void PlayerManager::pin(const std::vector<std::string> &input)
 {
     if (input.size() == 10) {
-        auto player = this->getPlayerById(parseId(input[0]));
+        auto &player = this->getPlayerById(parseId(input[0]));
 
         player.setPosition(Position(std::stoi(input[1]), std::stoi(input[2])));
         for (int i = 3; i < 10; ++i) {
@@ -62,7 +62,7 @@ void PlayerManager::pic(const std::vector<std::string> &input)
 {
     if (input.size() >= 4) {
         for (int i = 0; i <= input.size() - 4; i++) {
-            auto player = this->getPlayerById(std::stoi(input[i]));
+            auto &player = this->getPlayerById(std::stoi(input[i]));
 
             player.setIncanting(true);
         }
