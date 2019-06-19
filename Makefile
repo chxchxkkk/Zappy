@@ -21,7 +21,7 @@ LDFLAGS	=	-L ${SRV_DIR}/lib/list -llist -lm
 all: zappy_server zappy_ai zappy_graphic
 
 zappy_ai:
-	echo -ne "#!/bin/bash\nexport PYTHONPATH=\$$PYTHONPATH:\$$PWD/ai_src\npython3.6 ${AI_DIR}/main.py \$$@" > ${AI_NAME}
+	echo -ne "#!/bin/bash\nexport PYTHONPATH=\$$PYTHONPATH:\$$PWD/ai_src\npython3 ${AI_DIR}/main.py \$$@" > ${AI_NAME}
 	chmod +x ${AI_NAME}
 
 run_ai: zappy_ai
