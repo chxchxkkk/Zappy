@@ -56,7 +56,10 @@ void setup_listeners(event_manager_t *manager)
 int main(int ac, char *const *av)
 {
     CLEAN(clean_server) zappy_server_t server = {
-        .settings = {0, .freq = 100}, .dt = 0.0f, .manager = {{NULL}, {0}},
+        .settings = {
+            .freq = 100, .clients_limit = 3, .height = 10, .width = 10,
+            .team_names = NULL, .nb_teams = 0, .port = htons(4242)
+        }, .dt = 0.0f, .manager = {{NULL}, {0}},
         .maxfd = 0, .fdset = {}, .sock = 0, .player_list = NULL,
         .egg_list = NULL, .map = NULL, .clients_limits = NULL
     };

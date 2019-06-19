@@ -22,8 +22,14 @@ static const int ELEVATION_CHART[MAX_LEVEL][NB_GAME_OBJECTS] = {
     [7] = {6, -1, 2, 2, 2, 2, 2, 1},
 };
 
-static bool check_requirements(const cell_t *cell, const player_t *player)
+static bool check_requirements(const zappy_server_t *server, const cell_t *cell,
+    const player_t *player)
 {
+    LIST_FOREACH(p, server->player_list, {
+        if (p->state == PLAYER_DEFAULT && p->position.x == player->position.x &&
+            p->position.y == player->position.y && p->level != player->level)
+            return (false);
+    });
     for (size_t i = 0 ; i < ARRAY_LEN(ELEVATION_CHART) ; ++i)
         if (ELEVATION_CHART[player->level][i] >= 0 &&
             (unsigned int)ELEVATION_CHART[player->level][i] != cell->objects[i])
@@ -74,7 +80,7 @@ bool cmd_incantation(zappy_server_t *server, player_t *player,
     char msg[BUFSIZ] = "";
     size_t i = 0;
 
-    if (player->level >= MAX_LEVEL || !check_requirements(
+    if (player->level >= MAX_LEVEL || !check_requirements(server,
         get_cell(server->map, player->position.x, player->position.y), player))
         return (dprintf(player->client.fd, "ko\n"), false);
     LIST_FOREACH(p, server->player_list, {
