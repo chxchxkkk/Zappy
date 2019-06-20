@@ -1,8 +1,4 @@
-import sys
-
-from .Pendings import *
 from .Receiver import Receiver
-from .Resource import Resource
 from .protocol.protocol import *
 from .behaviour.Behaviour import FoodBehaviour
 from .behaviour.Behaviour import LevelUpBehaviour
@@ -45,6 +41,7 @@ class Player:
                           Resource.PHIRAS: 0,
                           Resource.SIBUR: 0,
                           Resource.THYSTAME: 0}
+        self.actionQueue = []
         data = self.receiver.pop()
         while self.is_connected is False:
             if data == "WELCOME":
@@ -94,10 +91,12 @@ class Player:
         if self.tick_count > 126:  # 126 tick -> -1 food
             self.check_inventory()
             if self.inventory[Resource.FOOD] > 15:
-                self.behaviour = LevelUpBehaviour(self)
+                self.behaviour = FoodBehaviour(self)
             elif self.inventory[Resource.FOOD] < 5:
                 self.behaviour = FoodBehaviour(self)
             self.tick_count = 0
+        elif self.actionQueue:
+            self.pending_action = self.actionQueue.pop(0)(self.receiver.sock)
         else:
             self.behaviour.execute_strategy()
 
@@ -123,15 +122,12 @@ class Player:
         for item in items:
             item = item.split(' ')
             self.inventory[Resource(item[0])] = int(item[1])
-        print("parse inventory: ", self.inventory)
 
     def parse_look(self, data):
         data = data.replace('[', '').replace(']', '')
         tiles = data.split(',')
         self.tile_info = []
         i = 0
-        print("parse look:", data)
-        sys.stdout.flush()
         for tile in tiles:
             self.tile_info.append(self.init_tile())
             resources = tile.split(' ')
