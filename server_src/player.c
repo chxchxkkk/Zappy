@@ -74,6 +74,10 @@ void player_move(zappy_server_t *server, player_t *player, int x, int y)
         player->position.y)->objects[PLAYER] -= 1;
     player->position.x += x;
     player->position.y += y;
+    while (player->position.x < 0)
+        player->position.x += server->map->width;
+    while (player->position.y < 0)
+        player->position.y += server->map->height;
     player->position.x %= server->map->width;
     player->position.y %= server->map->height;
     get_cell(server->map, player->position.x,
