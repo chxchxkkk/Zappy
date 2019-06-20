@@ -98,11 +98,13 @@ void Game::draw()
     window.setView(*view);
     if (SingleTon<MapManager>::getInstance().getMap() != nullptr)
         SingleTon<MapManager>::getInstance().getMap()->draw();
+    SingleTon<PlayerManager>::getInstance().draw();
+    window.setView(window.getDefaultView());
     if (selectedTile) {
         tileInfo->draw();
         drawFocus(selectedTile);
     }
-    SingleTon<PlayerManager>::getInstance().draw();
+    window.setView(*view);
 }
 
 void Game::drawFocus(std::shared_ptr<Tile> &tile)
