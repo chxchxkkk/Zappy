@@ -1,8 +1,11 @@
-from .Pendings import Actions
+import sys
+
+from .Pendings import *
 from .Receiver import Receiver
 from .Resource import Resource
 from .protocol.protocol import *
 from .behaviour.Behaviour import FoodBehaviour
+from .behaviour.Behaviour import LevelUpBehaviour
 
 
 class Player:
@@ -13,13 +16,28 @@ class Player:
         self.map_size = None
         self.receiver = receiver
         self.is_running = True
-        self.pending_action = Actions.NONE
+        self.pending_action = Action.NONE
         self.is_connected = False
         self.behaviour = None
         self.tile_info = None
-        self.action_function_map = {Actions.FORWARD: self.forward_action,
-                                    Actions.LOOK: self.parse_look,
-                                    Actions.INVENTORY: self.parse_inventory}
+        self.tick_count = 0
+        self.tick_value = {Action.FORWARD: 7,
+                           Action.RIGHT: 7,
+                           Action.LEFT: 7,
+                           Action.LOOK: 7,
+                           Action.INVENTORY: 1,
+                           Action.BROADCAST: 7,
+                           Action.FORK: 42,
+                           Action.EJECT: 7,
+                           Action.TAKE: 7,
+                           Action.SET: 7,
+                           Action.INCANTATION: 300,
+                           Action.NONE: 0}
+        self.action_function_map = {Action.FORWARD: self.forward_action,
+                                    Action.RIGHT: self.right_action,
+                                    Action.LOOK: self.parse_look,
+                                    Action.INVENTORY: self.parse_inventory,
+                                    Action.TAKE: (lambda _: 0)}
         self.inventory = {Resource.FOOD: 10,
                           Resource.DERAUMERE: 0,
                           Resource.LINEMATE: 0,
@@ -36,69 +54,6 @@ class Player:
             data = self.receiver.pop()
         self.behaviour = FoodBehaviour(self)
 
-    def update(self):
-        should_check_inv = 0
-        while self.is_running:
-            if self.pending_action == Actions.NONE:
-                if should_check_inv == 5:
-                    self.check_inventory()
-                self.behaviour.execute_strategy()
-            data = self.receiver.pop()
-            if data == "dead":
-                print("dead")
-                self.is_running = False
-                return
-            if data != "":
-                # print(data)
-                self.update_player_data(data)
-
-    def wait_for_data(self):
-        data = self.receiver.pop()
-        while data == "":
-            data = self.receiver.pop()
-        return data
-
-    def reset(self):
-        self.pending_action = Actions.NONE
-
-    def update_player_data(self, data):
-        self.action_function_map[self.pending_action](data)
-        if self.pending_action != self.pending_action.NONE:
-            self.reset()
-        # if self.pending_action == Actions.LOOK and data[0] == '[':
-        #     self.parse_look(data)
-        #     self.reset()
-
-    def parse_inventory(self, data):
-        data = data.replace('[ ', '').replace(' ]', '').replace(', ', ',')
-        items = data.split(',')
-        for item in items:
-            item = item.split(' ')
-            self.inventory[Resource(item[0])] = int(item[1])
-
-    def parse_look(self, data):
-        data = data.replace('[', '').replace(']', '')
-        tiles = data.split(',')
-        self.tile_info = []
-        i = 0
-        for tile in tiles:
-            self.tile_info.append(self.init_tile())
-            resources = tile.split(' ')
-            for resource in resources:
-                if resource != "" and resource != "player":
-                    self.tile_info[i][Resource(resource)] += 1
-            i += 1
-
-    @staticmethod
-    def init_tile():
-        return {Resource.FOOD: 0,
-                Resource.DERAUMERE: 0,
-                Resource.LINEMATE: 0,
-                Resource.MENDIANE: 0,
-                Resource.PHIRAS: 0,
-                Resource.SIBUR: 0,
-                Resource.THYSTAME: 0}
-
     def connect_protocol(self):
         print('connected :)')
         send_team_name(self.receiver.sock, self.team_name)
@@ -113,9 +68,85 @@ class Player:
         self.is_connected = True
         return True
 
+    @staticmethod
+    def init_tile():
+        return {Resource.FOOD: 0,
+                Resource.DERAUMERE: 0,
+                Resource.LINEMATE: 0,
+                Resource.MENDIANE: 0,
+                Resource.PHIRAS: 0,
+                Resource.SIBUR: 0,
+                Resource.THYSTAME: 0}
+
+    def update(self):
+        while self.is_running:
+            if self.pending_action == Action.NONE:
+                self.start_action()
+                print("pending action :", self.pending_action)
+            data = self.receiver.pop()
+            if data == "dead":
+                print("dead")
+                self.is_running = False
+            elif data != "":
+                self.update_player_data(data)
+
+    def start_action(self):
+        if self.tick_count > 126:  # 126 tick -> -1 food
+            self.check_inventory()
+            if self.inventory[Resource.FOOD] > 15:
+                self.behaviour = LevelUpBehaviour(self)
+            elif self.inventory[Resource.FOOD] < 5:
+                self.behaviour = FoodBehaviour(self)
+            self.tick_count = 0
+        else:
+            self.behaviour.execute_strategy()
+
+    def wait_for_data(self):
+        data = self.receiver.pop()
+        while data == "":
+            data = self.receiver.pop()
+        return data
+
+    def reset(self):
+        self.pending_action = Action.NONE
+
+    def update_player_data(self, data):
+        # CHECK SI ON T'AS EJECT OU BROADCAST
+        self.action_function_map[self.pending_action](data)
+        if self.pending_action != self.pending_action.NONE:
+            self.tick_count += self.tick_value[self.pending_action]
+            self.reset()
+
+    def parse_inventory(self, data):
+        data = data.replace('[ ', '').replace(' ]', '').replace(', ', ',')
+        items = data.split(',')
+        for item in items:
+            item = item.split(' ')
+            self.inventory[Resource(item[0])] = int(item[1])
+        print("parse inventory: ", self.inventory)
+
+    def parse_look(self, data):
+        data = data.replace('[', '').replace(']', '')
+        tiles = data.split(',')
+        self.tile_info = []
+        i = 0
+        print("parse look:", data)
+        sys.stdout.flush()
+        for tile in tiles:
+            self.tile_info.append(self.init_tile())
+            resources = tile.split(' ')
+            for resource in resources:
+                if resource != "" and resource != "player":
+                    self.tile_info[i][Resource(resource)] += 1
+                    pass
+            i += 1
+
     def forward_action(self, data):
         self.tile_info = None
 
+    def right_action(self, data):
+        pass
+
     def check_inventory(self):
         get_inventory(self.receiver.sock)
-        self.pending_action = Actions.INVENTORY
+        self.pending_action = Action.INVENTORY
