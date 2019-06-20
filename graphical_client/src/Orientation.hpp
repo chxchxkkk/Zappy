@@ -10,7 +10,7 @@
 
 enum Orientation {
     NORTH = 1,
-    EST = 2,
+    EAST = 2,
     SOUTH = 3,
     WEST = 4
 };

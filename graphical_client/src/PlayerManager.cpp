@@ -61,7 +61,7 @@ int PlayerManager::parseId(const std::string &s) const
 void PlayerManager::pic(const std::vector<std::string> &input)
 {
     if (input.size() >= 4) {
-        for (int i = 0; i <= input.size() - 4; i++) {
+        for (size_t i = 0; i <= input.size() - 4; i++) {
             auto &player = this->getPlayerById(std::stoi(input[i]));
 
             player.setIncanting(true);
@@ -75,7 +75,7 @@ std::vector<std::reference_wrapper<Player>> PlayerManager::getPlayersAtPosition(
 
     for (auto &it : this->players) {
         if (it.getPosition().x == position.x && it.getPosition().y == position.y)
-            player.push_back(it);
+            player.emplace_back(it);
     }
     return player;
 }
@@ -95,4 +95,15 @@ void PlayerManager::draw()
 {
     for (auto &it : players)
         it.draw();
+}
+
+void PlayerManager::tna(const std::vector<std::string> &input)
+{
+    if (!input.empty())
+        this->teams.emplace_back(input[0]);
+}
+
+const std::vector<std::string> &PlayerManager::getTeams() const
+{
+    return teams;
 }
