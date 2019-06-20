@@ -11,32 +11,33 @@
 #include "Tile.hpp"
 
 class TileInfo {
-    public:
-        explicit TileInfo(Tile &tile);
-        ~TileInfo() = default;
-        void draw();
+public:
+    explicit TileInfo(Tile &tile);
+    ~TileInfo() = default;
+    void draw();
 
-    private:
-        std::vector<sf::Sprite> sprites;
-        std::vector<sf::Text> textInfo;
-        sf::Font font;
+private:
+    std::vector<sf::Sprite> sprites;
+    std::vector<sf::Text> textInfo;
+    std::vector<sf::Text> textPlayer;
+    sf::Font font;
     std::map<Resource, std::string> textureMap = {
-        {FOOD, "assets/Food.png"},
-        {LINEMATE, "assets/Linemate.png"},
+        {FOOD,      "assets/Food.png"},
+        {LINEMATE,  "assets/Linemate.png"},
         {DERAUMERE, "assets/Deraumere.png"},
-        {SIBUR, "assets/Sibur.png"},
-        {MENDIANE, "assets/Mendiane.png"},
-        {PHIRAS, "assets/Phiras.png"},
-        {THYSTAME, "assets/Thystame.png"},
+        {SIBUR,     "assets/Sibur.png"},
+        {MENDIANE,  "assets/Mendiane.png"},
+        {PHIRAS,    "assets/Phiras.png"},
+        {THYSTAME,  "assets/Thystame.png"},
     };
     std::map<Resource, std::string> nameMap = {
-        {FOOD, "Food"},
-        {LINEMATE, "Linemate"},
+        {FOOD,      "Food"},
+        {LINEMATE,  "Linemate"},
         {DERAUMERE, "Deraumere"},
-        {SIBUR, "Sibur"},
-        {MENDIANE, "Mendiane"},
-        {PHIRAS, "Phiras"},
-        {THYSTAME, "Thystame"},
+        {SIBUR,     "Sibur"},
+        {MENDIANE,  "Mendiane"},
+        {PHIRAS,    "Phiras"},
+        {THYSTAME,  "Thystame"},
     };
-
+    void initPlayerTexts();
 };
