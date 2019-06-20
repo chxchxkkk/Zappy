@@ -17,6 +17,7 @@ TileInfo::TileInfo(Tile &tile)
 
     background.setTexture(SingleTon<TextureLoader>::getInstance().getInstance("assets/menu_ba.jpg"));
     background.setPosition(1040, 0);
+    background.setColor(sf::Color(255, 255, 255, 150));
     this->sprites.push_back(background);
 
     auto inventory = tile.getContent();
