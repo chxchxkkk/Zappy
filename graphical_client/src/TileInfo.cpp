@@ -30,10 +30,10 @@ TileInfo::TileInfo(Tile &tile)
 
         text += " : " + std::to_string(it.second);
         resource.setTexture(SingleTon<TextureLoader>::getInstance().getInstance(this->textureMap[it.first]));
-        resource.setPosition(1070, (i * 70) + 70);
+        resource.setPosition(1070, (i * 40) + 70);
         resource.setScale(0.15f, 0.15f);
         quantity.setString(text);
-        quantity.setPosition(1150, (i * 70) + 70);
+        quantity.setPosition(1150, (i * 40) + 70);
         quantity.setFillColor(sf::Color::Black);
         this->textInfo.push_back(quantity);
         this->sprites.push_back(resource);
@@ -47,7 +47,6 @@ void TileInfo::draw()
 
     for (auto &it : this->sprites)
         window.draw(it);
-    for (auto &it : this->textInfo) {
+    for (auto &it : this->textInfo)
         window.draw(it);
-    }
 }
