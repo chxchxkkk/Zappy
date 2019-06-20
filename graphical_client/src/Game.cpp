@@ -72,9 +72,11 @@ void Game::processEvents()
         }
         if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
-                selectTile(event);
+                selectTile();
             }
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            selectedTile = nullptr;
     }
 }
 
@@ -121,7 +123,7 @@ void Game::drawFocus(std::shared_ptr<Tile> &tile)
     SingleTon<sf::RenderWindow>::getInstance().draw(shape);
 }
 
-void Game::selectTile(sf::Event &event)
+void Game::selectTile()
 {
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
     auto pixelPos = sf::Mouse::getPosition(window);

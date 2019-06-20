@@ -24,7 +24,7 @@ class Game {
         void draw();
         void processEvents();
         void processCommands();
-        void selectTile(sf::Event &event);
+        void selectTile();
         void displayTileInfo();
 
     private:
