@@ -1,5 +1,3 @@
-#include <memory>
-
 /*
 ** EPITECH PROJECT, 2019
 ** OOP_arcade_2018
@@ -7,6 +5,7 @@
 ** Created by abel,
 */
 
+#include <memory>
 #include <iostream>
 #include <thread>
 #include "Game.hpp"
