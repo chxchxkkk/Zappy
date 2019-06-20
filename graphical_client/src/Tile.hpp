@@ -16,7 +16,7 @@
 
 class Tile {
     public:
-        Tile(int x, int y);
+        Tile(int x, int y, sf::Vector2f size);
         ~Tile() = default;
         std::vector<sf::Sprite> &getSprites();
         void addResource(Resource type, int quantity);
@@ -32,6 +32,7 @@ class Tile {
     private:
         int x;
         int y;
+        sf::Vector2f size;
         std::vector<sf::Sprite> sprites;
         std::map<Resource, int> content = {
             {FOOD, 0},

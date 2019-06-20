@@ -7,12 +7,13 @@
 
 #include "Map.hpp"
 #include "Singleton.hpp"
+#include "Responsive.hpp"
 
 Map::Map(int width, int height) : width(width), height(height)
 {
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-            this->tiles.emplace_back(new Tile(j, i));
+            this->tiles.emplace_back(new Tile(j, i, Responsive::calcTileSize(width, height)));
         }
     }
 }
@@ -56,6 +57,11 @@ int Map::getHeight() const
 void Map::setHeight(int height)
 {
     this->height = height;
+}
+
+const std::vector<std::shared_ptr<Tile>> &Map::getTiles() const
+{
+    return tiles;
 }
 
 /*std::shared_ptr<Tile> Map::getTileAtPosition(int x, int y)

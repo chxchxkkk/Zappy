@@ -10,6 +10,7 @@
 #include "Game.hpp"
 #include "String.hpp"
 #include "Singleton.hpp"
+#include "Responsive.hpp"
 
 Game::Game(int, char *argv[]) :
     communicator(std::strtol(argv[1], &argv[1], 10), argv[2]),
@@ -43,8 +44,7 @@ void Game::processEvents()
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             window.close();
-        if (event.type == sf::Event::MouseButtonPressed)
-        {
+        if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 this->selectTile(event);
             }
@@ -83,15 +83,11 @@ Game::~Game()
 
 void Game::selectTile(sf::Event &event)
 {
-    int x = event.mouseButton.x / TILE_SIZE;
-    int y = event.mouseButton.y / TILE_SIZE;
-
-    if (x < 0 || x >= this->mapManager.getMap()->getWidth())
-        return;
-    if (y < 0 || y >= this->mapManager.getMap()->getHeight())
-        return;
-    this->selectedTile = this->mapManager.getMap()->getTileAtCoord(x, y);
-    this->tileInfo = std::make_unique<TileInfo>(*this->selectedTile);
+    for (const auto &tile : mapManager.getMap()->getTiles())
+        if (tile->getSprites()[0].getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+            selectedTile = tile;
+            this->tileInfo = std::make_unique<TileInfo>(*this->selectedTile);
+        }
 }
 
 void Game::displayTileInfo()
