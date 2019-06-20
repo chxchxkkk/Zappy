@@ -73,7 +73,7 @@ void Tile::addResourceSprite(Resource type, int offset)
     sf::Texture &texture = SingleTon<TextureLoader>::getInstance().getInstance(textureMap[type]);
     sprite.setTexture(texture);
     sprite.setScale(size.x / windowSize.x, size.y / windowSize.y * 2);
-    sprite.setPosition((x * size.x / 2) + 4 + (x_offset * 30), y * size.y + 4 + (y_offset * 30));
+    sprite.setPosition((x * size.x / 2) + 4 + (x_offset * 15), y * size.y + 4 + (y_offset * 20));
     this->sprites.push_back(sprite);
 }
 
