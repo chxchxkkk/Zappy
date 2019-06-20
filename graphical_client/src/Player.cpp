@@ -89,7 +89,6 @@ void Player::draw()
     const auto &teams = SingleTon<PlayerManager>::getInstance().getTeams();
     auto teamIndex = std::distance(teams.begin(), std::find(teams.begin(), teams.end(), this->teamName));
 
-    std::cout << this->orientation << std::endl;
     characterSprite.setPosition((TILE_SIZE * pos.x) + 30, (TILE_SIZE * pos.y) + 30);
     characterSprite.setTextureRect(sf::IntRect((this->orientation - 1) * 100, 0, 100, 100));
     characterSprite.setColor(TEAM_COLORS[teamIndex % TEAM_COLORS.size()]);
