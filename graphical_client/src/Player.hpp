@@ -19,7 +19,7 @@
 class Player {
 public:
     Player(int id, const Position &pos, Orientation orientation, int level,
-        const std::string &teamName);
+        std::string teamName);
 
     int getId() const;
     void setPosition(const Position &newPos);
