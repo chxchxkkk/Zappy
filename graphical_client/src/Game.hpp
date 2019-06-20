@@ -24,17 +24,19 @@ class Game {
         void draw();
         void processEvents();
         void processCommands();
-        void selectTile(sf::Event &event);
+        void selectTile();
         void displayTileInfo();
 
     private:
         unsigned int width = 1920;
         unsigned int height = 1080;
         Communicator communicator;
+        std::unique_ptr<sf::View> view;
         std::shared_ptr<Tile> selectedTile = nullptr;
         std::thread receiver;
         Dispatcher dispatcher;
         sf::View mapView;
         sf::View menuView;
         std::unique_ptr<TileInfo> tileInfo = nullptr;
+    void drawFocus(std::shared_ptr<Tile> &tile);
 };

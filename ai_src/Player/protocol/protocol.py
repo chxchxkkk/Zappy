@@ -6,10 +6,7 @@ RECV_SIZE = 4096
 
 def forward(sock: socket.socket):
     msg = str.encode("Forward\n")
-
     sock.send(msg)
-    response = sock.recv(RECV_SIZE).decode()
-    print(response)
 
 
 def get_socket(port: int, host_name: str):
@@ -58,7 +55,7 @@ def take_resource(sock: socket.socket, resource: Resource):
     sock.send(msg)
 
 
-def set_resouce(sock: socket.socket, resource: Resource):
+def set_resource(sock: socket.socket, resource: Resource):
     msg = str.encode("Set " + str(resource) + "\n")
     sock.send(msg)
 

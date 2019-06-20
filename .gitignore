@@ -19,3 +19,4 @@ graphical_client/graphical_client
 CMakeCache.txt
 CMakeFiles/
 zappy
+venv

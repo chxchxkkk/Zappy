@@ -1,5 +1,5 @@
 from .. import Player
-from ..Pendings import Actions
+from ..Pendings import Action
 from ..protocol.protocol import *
 from ..Resource import Resource
 
@@ -9,18 +9,16 @@ class FoodBehaviour:
         self.player = player
 
     def execute_strategy(self):
-        print('bite')
-        print(self.player.tile_info)
         if self.player.tile_info is None:
             look(self.player.receiver.sock)
-            self.player.pending_action = Actions.LOOK
+            self.player.pending_action = Action.LOOK
         elif self.player.tile_info[0][Resource.FOOD] != 0:
             self.player.tile_info[0][Resource.FOOD] -= 1
             take_resource(self.player.receiver.sock, Resource.FOOD)
-            self.player.pending_action = Actions.TAKE
+            self.player.pending_action = Action.TAKE
         else:
             forward(self.player.receiver.sock)
-            self.player.pending_action = Actions.FORWARD
+            self.player.pending_action = Action.FORWARD
 
 
 class LevelUpBehaviour:
@@ -28,5 +26,6 @@ class LevelUpBehaviour:
         self.player = player
         pass
 
-    def execute_stragey(self):
+    def execute_strategy(self):
+        turn_right(self.player.receiver.sock)
         pass
