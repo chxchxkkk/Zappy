@@ -31,6 +31,7 @@ class Player:
                            Action.NONE: 0}
         self.action_function_map = {Action.FORWARD: self.forward_action,
                                     Action.RIGHT: self.right_action,
+                                    Action.LEFT: self.left_action,
                                     Action.LOOK: self.parse_look,
                                     Action.INVENTORY: self.parse_inventory,
                                     Action.TAKE: (lambda _: 0)}
@@ -110,7 +111,7 @@ class Player:
         self.pending_action = Action.NONE
 
     def update_player_data(self, data):
-        # CHECK SI ON T'AS EJECT OU BROADCAST
+        # TODO SI ON T'AS EJECT OU BROADCAST
         self.action_function_map[self.pending_action](data)
         if self.pending_action != self.pending_action.NONE:
             self.tick_count += self.tick_value[self.pending_action]
@@ -140,8 +141,11 @@ class Player:
     def forward_action(self, data):
         self.tile_info = None
 
+    def left_action(self, data):
+        self.tile_info = None
+
     def right_action(self, data):
-        pass
+        self.tile_info = None
 
     def check_inventory(self):
         get_inventory(self.receiver.sock)
