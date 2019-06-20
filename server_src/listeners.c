@@ -64,4 +64,10 @@ void on_graphic_connect(zappy_server_t *server, va_list *ap)
     cmd_sgt(server, player, NULL);
     cmd_mct(server, player, NULL);
     cmd_tna(server, player, NULL);
+    LIST_FOREACH(p, server->player_list, {
+        if (p->state == PLAYER_DEFAULT)
+            dprintf(player->client.fd, "pnw %d %d %d %d %d %s\n", p->id,
+                p->position.x, p->position.y, p->direction,
+                p->level, server->settings.team_names[p->team_id]);
+    });
 }
