@@ -31,6 +31,7 @@ class Game {
         unsigned int width = 1920;
         unsigned int height = 1080;
         Communicator communicator;
+        std::unique_ptr<sf::View> view;
         std::shared_ptr<Tile> selectedTile = nullptr;
         std::thread receiver;
         Dispatcher dispatcher;

@@ -1,3 +1,5 @@
+#include <memory>
+
 /*
 ** EPITECH PROJECT, 2019
 ** OOP_arcade_2018
@@ -20,6 +22,10 @@ Game::Game(int, char *argv[]) :
 {
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
     window.create(sf::VideoMode(1920, 1080), "Zappy Graphic");
+
+    view = std::make_unique<sf::View>(sf::FloatRect(0, 0, 1000, 600));
+    view->reset(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
+    window.setView(*view);
     communicator.sendData("GRAPHIC");
 }
 
@@ -45,10 +51,25 @@ void Game::processEvents()
 {
     sf::Event event{};
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
+    int movePower = 15;
 
     while (window.pollEvent(event)) {
+        if (event.type == sf::Event::MouseWheelScrolled)
+            view->zoom(1 - event.mouseWheelScroll.delta / 10);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+            view->move(-movePower, 0);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            view->move(movePower, 0);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+            view->move(0, -movePower);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+            view->move(0, movePower);
         if (event.type == sf::Event::Closed)
             window.close();
+        if (event.type == sf::Event::Resized) {
+            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+            window.setView(sf::View(visibleArea));
+        }
         if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 selectTile(event);
@@ -72,6 +93,9 @@ void Game::processCommands()
 
 void Game::draw()
 {
+    sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
+
+    window.setView(*view);
     if (SingleTon<MapManager>::getInstance().getMap() != nullptr)
         SingleTon<MapManager>::getInstance().getMap()->draw();
     if (selectedTile) {
@@ -97,8 +121,12 @@ void Game::drawFocus(std::shared_ptr<Tile> &tile)
 
 void Game::selectTile(sf::Event &event)
 {
+    sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
+    auto pixelPos = sf::Mouse::getPosition(window);
+    sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
+
     for (const auto &tile : SingleTon<MapManager>::getInstance().getMap()->getTiles())
-        if (tile->getSprites()[0].getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
+        if (tile->getSprites()[0].getGlobalBounds().contains(worldPos.x, worldPos.y)) {
             selectedTile = tile;
             tileInfo = std::make_unique<TileInfo>(*selectedTile);
         }
