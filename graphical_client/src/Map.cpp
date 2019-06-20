@@ -29,8 +29,8 @@ void Map::draw()
 std::shared_ptr<Tile> &Map::getTileAtCoord(int x, int y)
 {
     auto tile = std::find_if(this->tiles.begin(), this->tiles.end(), [x, y](std::shared_ptr<Tile> &tile) {
-        std::pair<int, int> pos = tile->getPosition();
-        return pos.first == x && pos.second == y;
+        auto pos = tile->getPosition();
+        return pos.x == x && pos.y == y;
     });
     if (tile == this->tiles.end()) {
         throw std::out_of_range("out of bounds");

@@ -9,6 +9,7 @@
 #include "Tile.hpp"
 #include "Singleton.hpp"
 #include "TextureLoader.hpp"
+#include "Position.hpp"
 
 Tile::Tile(int x, int y) : x(x), y(y)
 {
@@ -34,9 +35,9 @@ void Tile::removeResource(Resource type, int quantity)
         this->content[type] = 0;
 }
 
-const std::pair<int, int> Tile::getPosition() const
+Position Tile::getPosition() const
 {
-    return std::pair<int, int>(this->x, this->y);
+    return {x, y};
 }
 
 void Tile::addSprites()

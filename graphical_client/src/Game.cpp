@@ -96,8 +96,7 @@ void Game::selectTile(sf::Event &event)
 
 void Game::displayTileInfo()
 {
-    std::pair<int, int> position;
+    Position position = selectedTile->getPosition();
 
-    position = this->selectedTile->getPosition();
-    std::cout << "selected at pos : x " << position.first << " y " << position.second << std::endl;
+    std::cout << "selected at pos : x " << position.x << " y " << position.y << std::endl;
 }

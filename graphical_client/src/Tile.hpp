@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include <map>
 #include "Resource.hpp"
+#include "Position.hpp"
 
 #define TILE_SIZE 104
 
@@ -21,7 +22,7 @@ class Tile {
         void addResource(Resource type, int quantity);
         void setResource(Resource type, int quantity);
         void removeResource(Resource type, int quantity);
-        const std::pair<int, int> getPosition() const;
+        Position getPosition() const;
 
     private:
         void addSprites();

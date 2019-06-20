@@ -18,7 +18,7 @@ class MapManager {
 
     private:
         std::unique_ptr<Map> map = nullptr;
-        static std::pair<int, int> parsePosition(std::vector<std::string> pos);
+        static Position parsePosition(std::vector<std::string> pos);
 
 };
 
