@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class Actions(Enum):
+class Action(Enum):
     FORWARD = 0
     RIGHT = 1
     LEFT = 2
