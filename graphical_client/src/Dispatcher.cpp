@@ -18,6 +18,7 @@ Dispatcher::Dispatcher(PlayerManager &playerManager, MapManager &mapManager) :
         {"plv", [this](const std::vector<std::string> &input) {this->playerManager.plv(input);}},
         {"pin", [this](const std::vector<std::string> &input) {this->playerManager.pin(input);}},
         {"tna", [this](const std::vector<std::string> &input) {this->playerManager.tna(input);}},
+        {"pdi", [this](const std::vector<std::string> &input) {this->playerManager.pdi(input);}},
         {"msz", [this](const std::vector<std::string> &input) {this->mapManager.msz(input);}},
         {"bct", [this](const std::vector<std::string> &input) {this->mapManager.bct(input);}},
     };

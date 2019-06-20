@@ -107,3 +107,10 @@ const std::vector<std::string> &PlayerManager::getTeams() const
 {
     return teams;
 }
+
+void PlayerManager::pdi(const std::vector<std::string> &input)
+{
+    players.erase(std::remove_if(players.begin(), players.end(), [&input](const Player &player) {
+        return player.getId() == std::stoi(input[0]);
+    }), players.end());
+}

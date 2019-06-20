@@ -24,6 +24,7 @@ class PlayerManager {
         void pic(const std::vector<std::string> &input);
         void pie(const std::vector<std::string> &input);
         void tna(const std::vector<std::string> &input);
+        void pdi(const std::vector<std::string> &input);
 
         void draw();
         const std::vector<std::string> &getTeams() const;
