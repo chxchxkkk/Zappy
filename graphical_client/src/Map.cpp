@@ -11,11 +11,9 @@
 
 Map::Map(int width, int height) : width(width), height(height)
 {
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
+    for (int i = 0; i < height; i++)
+        for (int j = 0; j < width; j++)
             this->tiles.emplace_back(new Tile(j, i, Responsive::calcTileSize(width, height)));
-        }
-    }
 }
 
 void Map::draw()
