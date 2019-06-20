@@ -1,13 +1,13 @@
 from .Pendings import Actions
 from .Receiver import Receiver
 from .Resource import Resource
-from .protocol.protocol import send_team_name
+from .protocol.protocol import *
 from .behaviour.Behaviour import FoodBehaviour
 
 
 class Player:
     def __init__(self, receiver: Receiver, team_name: str):
-        print('Je construit le Joueur')
+        print('Je construis le Joueur')
         self.team_name = team_name
         self.remaining_connections = None
         self.map_size = None
@@ -17,6 +17,9 @@ class Player:
         self.is_connected = False
         self.behaviour = None
         self.tile_info = None
+        self.action_function_map = {Actions.FORWARD: self.forward_action,
+                                    Actions.LOOK: self.parse_look,
+                                    Actions.INVENTORY: self.parse_inventory}
         self.inventory = {Resource.FOOD: 10,
                           Resource.DERAUMERE: 0,
                           Resource.LINEMATE: 0,
@@ -34,14 +37,19 @@ class Player:
         self.behaviour = FoodBehaviour(self)
 
     def update(self):
+        should_check_inv = 0
         while self.is_running:
             if self.pending_action == Actions.NONE:
+                if should_check_inv == 5:
+                    self.check_inventory()
                 self.behaviour.execute_strategy()
             data = self.receiver.pop()
             if data == "dead":
+                print("dead")
                 self.is_running = False
-            if data != "" and data != "dead":
-                print(data)
+                return
+            if data != "":
+                # print(data)
                 self.update_player_data(data)
 
     def wait_for_data(self):
@@ -54,14 +62,19 @@ class Player:
         self.pending_action = Actions.NONE
 
     def update_player_data(self, data):
-        if self.pending_action == Actions.FORWARD:
+        self.action_function_map[self.pending_action](data)
+        if self.pending_action != self.pending_action.NONE:
             self.reset()
-            self.tile_info = None
-        if self.pending_action == Actions.LOOK and data[0] == '[':
-            self.parse_look(data)
-            self.reset()
-        if self.pending_action == Actions.TAKE:
-            self.reset()
+        # if self.pending_action == Actions.LOOK and data[0] == '[':
+        #     self.parse_look(data)
+        #     self.reset()
+
+    def parse_inventory(self, data):
+        data = data.replace('[ ', '').replace(' ]', '').replace(', ', ',')
+        items = data.split(',')
+        for item in items:
+            item = item.split(' ')
+            self.inventory[Resource(item[0])] = int(item[1])
 
     def parse_look(self, data):
         data = data.replace('[', '').replace(']', '')
@@ -99,3 +112,10 @@ class Player:
         print(self.map_size)
         self.is_connected = True
         return True
+
+    def forward_action(self, data):
+        self.tile_info = None
+
+    def check_inventory(self):
+        get_inventory(self.receiver.sock)
+        self.pending_action = Actions.INVENTORY

@@ -9,8 +9,6 @@ class FoodBehaviour:
         self.player = player
 
     def execute_strategy(self):
-        print('bite')
-        print(self.player.tile_info)
         if self.player.tile_info is None:
             look(self.player.receiver.sock)
             self.player.pending_action = Actions.LOOK
