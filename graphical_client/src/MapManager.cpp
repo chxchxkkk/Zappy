@@ -9,7 +9,7 @@
 #include <iostream>
 #include "MapManager.hpp"
 
-void MapManager::msz(std::vector<std::string> args)
+void MapManager::msz(const std::vector<std::string> &args)
 {
     if (args.size() == 2)
         this->map = std::make_unique<Map>(std::stoi(args[0]), std::stoi(args[1]));
@@ -20,9 +20,8 @@ std::unique_ptr<Map> &MapManager::getMap()
     return this->map;
 }
 
-void MapManager::bct(std::vector<std::string> args)
+void MapManager::bct(const std::vector<std::string> &args)
 {
-    std::cout << args[2] << std::endl;
     if (args.size() == 9) {
         auto position = parsePosition(std::vector<std::string>(args.begin(), args.begin() + 2));
         std::shared_ptr<Tile> &tile = this->map->getTileAtCoord(position.x, position.y);
@@ -33,7 +32,7 @@ void MapManager::bct(std::vector<std::string> args)
     }
 }
 
-Position MapManager::parsePosition(std::vector<std::string> pos)
+Position MapManager::parsePosition(const std::vector<std::string> &pos)
 {
     return {std::stoi(pos[0]), std::stoi(pos[1])};
 }

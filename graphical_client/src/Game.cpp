@@ -13,12 +13,13 @@
 #include "Responsive.hpp"
 
 Game::Game(int, char *argv[]) :
-    communicator(std::strtol(argv[1], &argv[1], 10), argv[2]),
+    communicator(static_cast<uint16_t>(std::strtol(argv[1], &argv[1], 10)), argv[2]),
     receiver(&Communicator::receiveData, &communicator),
-    dispatcher(playerManager, mapManager)
+    dispatcher(SingleTon<PlayerManager>::getInstance(),
+        SingleTon<MapManager>::getInstance())
 {
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
-    window.create(sf::VideoMode(1920, 1080), "Zappy Graphique");
+    window.create(sf::VideoMode(1920, 1080), "Zappy Graphic");
     communicator.sendData("GRAPHIC");
 }
 
@@ -38,7 +39,7 @@ void Game::run()
 
 void Game::processEvents()
 {
-    sf::Event event;
+    sf::Event event{};
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
 
     while (window.pollEvent(event)) {
@@ -67,12 +68,12 @@ void Game::processCommands()
 
 void Game::draw()
 {
-    if (this->mapManager.getMap() != nullptr) {
-        this->mapManager.getMap()->draw();
+    if (SingleTon<MapManager>::getInstance().getMap() != nullptr) {
+        SingleTon<MapManager>::getInstance().getMap()->draw();
     }
     if (this->selectedTile)
         this->tileInfo->draw();
-    this->playerManager.draw();
+    SingleTon<PlayerManager>::getInstance().draw();
 }
 
 Game::~Game()
@@ -83,7 +84,7 @@ Game::~Game()
 
 void Game::selectTile(sf::Event &event)
 {
-    for (const auto &tile : mapManager.getMap()->getTiles())
+    for (const auto &tile : SingleTon<MapManager>::getInstance().getMap()->getTiles())
         if (tile->getSprites()[0].getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
             selectedTile = tile;
             this->tileInfo = std::make_unique<TileInfo>(*this->selectedTile);

@@ -18,7 +18,7 @@
 class Dispatcher {
     public:
         Dispatcher(PlayerManager &playerManager, MapManager &mapManager);
-        void dispatchCommand(std::vector<std::string> arg);
+        void dispatchCommand(const std::vector<std::string> &arg);
     private:
         PlayerManager &playerManager;
         MapManager &mapManager;
