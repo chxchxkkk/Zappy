@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include <functional>
 #include "Dispatcher.hpp"
 
 Dispatcher::Dispatcher(PlayerManager &playerManager, MapManager &mapManager) :
