@@ -11,7 +11,7 @@
 
 bool cmd_msz(zappy_server_t *server, player_t *player, UNUSED char *const *args)
 {
-    dprintf(player->client.fd, "msz %ld %ld\n", server->map->width,
+    client_reply(player->client.fd, "msz %ld %ld\n", server->map->width,
         server->map->height);
     return (true);
 }

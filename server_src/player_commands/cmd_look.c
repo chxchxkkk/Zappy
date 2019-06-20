@@ -35,9 +35,9 @@ bool cmd_look(zappy_server_t *server, player_t *player,
             cells[i + 1] != NULL ? strdup(",") : strdup("")));
     }
     if (buff == NULL) {
-        dprintf(player->client.fd, "[]\n");
+        client_reply(player->client.fd, "[]\n");
         return (false);
     }
-    dprintf(player->client.fd, "[%s ]\n", buff);
+    client_reply(player->client.fd, "[%s ]\n", buff);
     return (true);
 }

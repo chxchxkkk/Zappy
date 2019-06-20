@@ -14,6 +14,6 @@ bool cmd_forward(zappy_server_t *server, player_t *player,
 {
     player_move(server, player, DIRECTIONS[player->direction].x,
         DIRECTIONS[player->direction].y);
-    dprintf(player->client.fd, "ok\n");
+    client_reply(player->client.fd, "ok\n");
     return (true);
 }

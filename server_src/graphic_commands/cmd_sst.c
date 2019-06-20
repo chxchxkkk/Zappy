@@ -14,10 +14,10 @@ bool cmd_sst(zappy_server_t *server, player_t *player, char *const *args)
     unsigned int t = (unsigned int)strtoul(args[1], NULL, 10);
 
     if (t == UINT32_MAX || t == 0) {
-        dprintf(player->client.fd, "sbp\n");
+        client_reply(player->client.fd, "sbp\n");
         return (false);
     }
     server->settings.freq = t;
-    dprintf(player->client.fd, "sgt %d\n", server->settings.freq);
+    client_reply(player->client.fd, "sgt %d\n", server->settings.freq);
     return (true);
 }

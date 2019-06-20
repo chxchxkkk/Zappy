@@ -73,16 +73,16 @@ bool cmd_broadcast(zappy_server_t *server, player_t *player, char *const *args)
     CLEAN(clean_ptr) char *msg = str_join(" ", &args[1]);
 
     if (msg == NULL || strarr_len(args) <= 1) {
-        dprintf(player->client.fd, "ko\n");
+        client_reply(player->client.fd, "ko\n");
         return (false);
     }
     LIST_FOREACH(p, server->player_list, {
         if (p->state == PLAYER_DEFAULT && p->id != player->id)
-            dprintf(p->client.fd, "message %d, %s\n",
+            client_reply(p->client.fd, "message %d, %s\n",
                 get_sound_direction(server->map, &player->position,
                     &p->position, p->direction), msg);
     });
-    dprintf(player->client.fd, "ok\n");
+    client_reply(player->client.fd, "ok\n");
     notify_graphic(server, "pbc %d %s\n", player->id, msg);
     return (true);
 }

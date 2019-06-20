@@ -11,6 +11,6 @@
 
 bool cmd_sgt(zappy_server_t *server, player_t *player, UNUSED char *const *args)
 {
-    dprintf(player->client.fd, "sgt %d\n", server->settings.freq);
+    client_reply(player->client.fd, "sgt %d\n", server->settings.freq);
     return (true);
 }

@@ -23,7 +23,7 @@ void on_connect(UNUSED zappy_server_t *server, va_list *ap)
 {
     player_t *player = va_arg(*ap, player_t *);
 
-    dprintf(player->client.fd, "WELCOME\n");
+    client_reply(player->client.fd, "WELCOME\n");
 }
 
 void on_player_spawn(zappy_server_t *server, va_list *ap)
@@ -32,9 +32,9 @@ void on_player_spawn(zappy_server_t *server, va_list *ap)
     egg_t *egg = va_arg(*ap, egg_t *);
 
     server->clients_limits[player->team_id]--;
-    dprintf(player->client.fd, "%ld\n",
+    client_reply(player->client.fd, "%ld\n",
         server->clients_limits[player->team_id]);
-    dprintf(player->client.fd, "%ld %ld\n", server->map->width,
+    client_reply(player->client.fd, "%ld %ld\n", server->map->width,
         server->map->height);
     if (egg != NULL) {
         notify_graphic(server, "ebo %d\n", egg->id);
@@ -66,7 +66,7 @@ void on_graphic_connect(zappy_server_t *server, va_list *ap)
     cmd_tna(server, player, NULL);
     LIST_FOREACH(p, server->player_list, {
         if (p->state == PLAYER_DEFAULT)
-            dprintf(player->client.fd, "pnw %d %d %d %d %d %s\n", p->id,
+            client_reply(player->client.fd, "pnw %d %d %d %d %d %s\n", p->id,
                 p->position.x, p->position.y, p->direction,
                 p->level, server->settings.team_names[p->team_id]);
     });

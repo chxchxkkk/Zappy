@@ -14,7 +14,7 @@ static void eject_player(zappy_server_t *server, player_t *ejecter,
 {
     player_move(server, ejected, DIRECTIONS[ejecter->direction].x,
         DIRECTIONS[ejecter->direction].y);
-    dprintf(ejected->client.fd, "ejected: %d\n",
+    client_reply(ejected->client.fd, "ejected: %d\n",
         get_sound_direction(server->map, &ejecter->position, &ejected->position,
             ejected->direction));
 }
@@ -34,6 +34,6 @@ bool cmd_eject(zappy_server_t *server, player_t *player,
     });
     if (ok)
         notify_graphic(server, "pex %d\n", player->id);
-    dprintf(player->client.fd, ok ? "ok\n" : "ko\n");
+    client_reply(player->client.fd, ok ? "ok\n" : "ko\n");
     return (true);
 }

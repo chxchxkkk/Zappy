@@ -46,7 +46,7 @@ static void register_command(zappy_server_t *server, player_t *player)
             if (!strcmp(server->settings.team_names[i], player->commands[0]))
                 init_player(server, player, (int)i);
     if (player->state == PLAYER_UNINITIALIZED)
-        dprintf(player->client.fd, "ko\n");
+        client_reply(player->client.fd, "ko\n");
     free(player->commands[0]);
     memmove(player->commands, &player->commands[1],
         sizeof(*player->commands) * (COMMANDS_BUF - 1));

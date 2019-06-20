@@ -12,7 +12,7 @@
 bool cmd_connect_nbr(zappy_server_t *server, player_t *player,
     UNUSED char *const *args)
 {
-    dprintf(player->client.fd, "%ld\n",
+    client_reply(player->client.fd, "%ld\n",
         server->clients_limits[player->team_id]);
     return (true);
 }

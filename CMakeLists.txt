@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.8)
 project(zappy)
 
-set(CMAKE_C_COMPILER clang)
-set(CMAKE_C_FLAGS "-fms-extensions -fblocks")
+set(CMAKE_C_COMPILER gcc)
+set(CMAKE_C_FLAGS "-fms-extensions")
 
 file(
         GLOB_RECURSE

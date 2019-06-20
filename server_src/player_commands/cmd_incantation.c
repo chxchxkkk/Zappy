@@ -48,7 +48,7 @@ bool do_incantation(zappy_server_t *server, player_t *player,
         if (p->state == PLAYER_DEFAULT && p->position.x == player->position.x &&
             p->position.y == player->position.y) {
             p->level = level;
-            dprintf(p->client.fd, "Current level: %d\n", level);
+            client_reply(p->client.fd, "Current level: %d\n", level);
             notify_graphic(server, "plv %d %d\n", p->id, player->level);
         }
     });
@@ -69,7 +69,7 @@ static void begin_incantation(const zappy_server_t *server, player_t *player)
     player->action.cooldown = 300.0f / server->settings.freq;
     player->action.args = NULL;
     player->action.fptr = wait_incantation;
-    dprintf(player->client.fd, "Elevation underway\n");
+    client_reply(player->client.fd, "Elevation underway\n");
 }
 
 bool cmd_incantation(zappy_server_t *server, player_t *player,
@@ -82,7 +82,7 @@ bool cmd_incantation(zappy_server_t *server, player_t *player,
 
     if (player->level >= MAX_LEVEL || !check_requirements(server,
         get_cell(server->map, player->position.x, player->position.y), player))
-        return (dprintf(player->client.fd, "ko\n"), false);
+        return (client_reply(player->client.fd, "ko\n"), false);
     LIST_FOREACH(p, server->player_list, {
         if (p->state == PLAYER_DEFAULT && p->position.x == player->position.x &&
             p->position.y == player->position.y) {
