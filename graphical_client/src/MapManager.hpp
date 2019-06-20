@@ -12,13 +12,13 @@
 class MapManager {
     public:
         MapManager() = default;
-        void msz(std::vector<std::string>);
-        void bct(std::vector<std::string>);
+        void msz(const std::vector<std::string> &);
+        void bct(const std::vector<std::string> &args);
         std::unique_ptr<Map> &getMap();
 
     private:
         std::unique_ptr<Map> map = nullptr;
-        static std::pair<int, int> parsePosition(std::vector<std::string> pos);
+        static std::pair<int, int> parsePosition(const std::vector<std::string> &pos);
 
 };
 

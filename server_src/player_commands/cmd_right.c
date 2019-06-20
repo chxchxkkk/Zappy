@@ -10,10 +10,12 @@
 #include "utils.h"
 #include "commands.h"
 
-bool cmd_right(UNUSED zappy_server_t *server, player_t *player,
+bool cmd_right(zappy_server_t *server, player_t *player,
     UNUSED char *const *args)
 {
     player->direction = player->direction % 4 + 1;
     dprintf(player->client.fd, "ok\n");
+    notify_graphic(server, "ppo %d %d %d %d\n", player->id, player->position.x,
+        player->position.y, player->direction);
     return (true);
 }

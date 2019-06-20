@@ -33,8 +33,6 @@ class Game {
         Communicator communicator;
         std::shared_ptr<Tile> selectedTile = nullptr;
         std::thread receiver;
-        PlayerManager playerManager;
-        MapManager mapManager;
         Dispatcher dispatcher;
         sf::View mapView;
         sf::View menuView;

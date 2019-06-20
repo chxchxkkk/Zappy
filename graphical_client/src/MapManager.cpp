@@ -10,7 +10,7 @@
 
 #include "MapManager.hpp"
 
-void MapManager::msz(std::vector<std::string> args)
+void MapManager::msz(const std::vector<std::string> &args)
 {
     if (args.size() == 2)
         this->map = std::make_unique<Map>(std::stoi(args[0]), std::stoi(args[1]));
@@ -21,7 +21,7 @@ std::unique_ptr<Map> &MapManager::getMap()
     return this->map;
 }
 
-void MapManager::bct(std::vector<std::string> args)
+void MapManager::bct(const std::vector<std::string> &args)
 {
     std::cout << args[2] << std::endl;
     if (args.size() == 9) {
@@ -34,7 +34,7 @@ void MapManager::bct(std::vector<std::string> args)
     }
 }
 
-std::pair<int, int> MapManager::parsePosition(std::vector<std::string> pos)
+std::pair<int, int> MapManager::parsePosition(const std::vector<std::string> &pos)
 {
     return {std::stoi(pos[0]), std::stoi(pos[1])};
 }

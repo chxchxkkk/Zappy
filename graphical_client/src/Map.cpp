@@ -58,6 +58,11 @@ void Map::setHeight(int height)
     this->height = height;
 }
 
+const std::vector<std::shared_ptr<Tile>> &Map::getTiles() const
+{
+    return tiles;
+}
+
 /*std::shared_ptr<Tile> Map::getTileAtPosition(int x, int y)
 {
     int relative_x = x / TILE_SIZE;
