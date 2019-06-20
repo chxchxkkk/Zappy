@@ -10,18 +10,19 @@
 #include <SFML/Graphics.hpp>
 #include <map>
 #include "Resource.hpp"
+#include "Position.hpp"
 
 #define TILE_SIZE 104
 
 class Tile {
     public:
-        Tile(int x, int y);
+        Tile(int x, int y, sf::Vector2f size);
         ~Tile() = default;
         std::vector<sf::Sprite> &getSprites();
         void addResource(Resource type, int quantity);
         void setResource(Resource type, int quantity);
         void removeResource(Resource type, int quantity);
-        const std::pair<int, int> getPosition() const;
+        Position getPosition() const;
 
     private:
         void addSprites();
@@ -31,6 +32,7 @@ class Tile {
     private:
         int x;
         int y;
+        sf::Vector2f size;
         std::vector<sf::Sprite> sprites;
         std::map<Resource, int> content = {
             {FOOD, 0},

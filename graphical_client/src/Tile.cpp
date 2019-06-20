@@ -9,10 +9,10 @@
 #include "Tile.hpp"
 #include "Singleton.hpp"
 #include "TextureLoader.hpp"
+#include "Position.hpp"
 
-Tile::Tile(int x, int y) : x(x), y(y)
+Tile::Tile(int x, int y, sf::Vector2f size) : x(x), y(y), size(size)
 {
-
 }
 
 std::vector<sf::Sprite> &Tile::getSprites()
@@ -34,9 +34,9 @@ void Tile::removeResource(Resource type, int quantity)
         this->content[type] = 0;
 }
 
-const std::pair<int, int> Tile::getPosition() const
+Position Tile::getPosition() const
 {
-    return std::pair<int, int>(this->x, this->y);
+    return {x, y};
 }
 
 void Tile::addSprites()
@@ -58,20 +58,22 @@ void Tile::addGround()
 
     sf::Texture &texture = SingleTon<TextureLoader>::getInstance().getInstance("assets/Grass.png");
     sprite.setTexture(texture);
-    sprite.setPosition(x * TILE_SIZE, y * TILE_SIZE);
+    sprite.setScale(0.5f, 1);
+    sprite.setPosition(x * size.x / 2, y * size.y);
     this->sprites.push_back(sprite);
 }
 
 void Tile::addResourceSprite(Resource type, int offset)
 {
+    auto windowSize = SingleTon<sf::RenderWindow>::getInstance().getSize();
     sf::Sprite sprite;
     int x_offset = offset % 3;
     int y_offset = offset / 3;
 
     sf::Texture &texture = SingleTon<TextureLoader>::getInstance().getInstance(textureMap[type]);
     sprite.setTexture(texture);
-    sprite.setScale(sf::Vector2f(0.2f, 0.2f));
-    sprite.setPosition((x * TILE_SIZE) + 4 + (x_offset * 30), y * TILE_SIZE + 4 + (y_offset * 30));
+    sprite.setScale(size.x / windowSize.x, size.y / windowSize.y * 2);
+    sprite.setPosition((x * size.x / 2) + 4 + (x_offset * 15), y * size.y + 4 + (y_offset * 20));
     this->sprites.push_back(sprite);
 }
 
