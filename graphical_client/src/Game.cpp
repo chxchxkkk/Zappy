@@ -106,6 +106,11 @@ void Game::draw()
         window.setView(*view);
         drawFocus(selectedTile);
     }
+    if (playerInfo) {
+        window.setView(window.getDefaultView());
+        playerInfo->draw();
+        window.setView(*view);
+    }
 }
 
 void Game::drawFocus(std::shared_ptr<Tile> &tile)
@@ -124,15 +129,24 @@ void Game::drawFocus(std::shared_ptr<Tile> &tile)
 
 void Game::selectTile()
 {
+    auto &playerManager = SingleTon<PlayerManager>::getInstance();
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
     auto pixelPos = sf::Mouse::getPosition(window);
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
 
-    for (const auto &tile : SingleTon<MapManager>::getInstance().getMap()->getTiles())
+    for (const auto &tile : SingleTon<MapManager>::getInstance().getMap()->getTiles()) {
         if (tile->getSprites()[0].getGlobalBounds().contains(worldPos.x, worldPos.y)) {
             selectedTile = tile;
             tileInfo = std::make_unique<TileInfo>(*selectedTile);
+            for (auto &player : playerManager.getPlayers()) {
+                if (player.getPosition() == selectedTile->getPosition()) {
+                    playerInfo = std::make_unique<PlayerInfo>(player);
+                    break;
+                }
+            }
+            break;
         }
+    }
 }
 
 void Game::displayTileInfo()

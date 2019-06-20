@@ -114,3 +114,8 @@ void PlayerManager::pdi(const std::vector<std::string> &input)
         return player.getId() == std::stoi(input[0]);
     }), players.end());
 }
+
+std::vector<Player>& PlayerManager::getPlayers()
+{
+    return players;
+}

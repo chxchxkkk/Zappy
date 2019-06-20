@@ -29,6 +29,7 @@ class PlayerManager {
         void draw();
         const std::vector<std::string> &getTeams() const;
         int parseId(const std::string &s) const;
+        std::vector<Player>& getPlayers();
 
     private:
         std::vector<std::string> teams;

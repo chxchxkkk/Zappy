@@ -9,12 +9,14 @@
 
 #include <SFML/Graphics.hpp>
 #include "Tile.hpp"
+#include "Player.hpp"
 
 class TileInfo {
 public:
     explicit TileInfo(Tile &tile);
     ~TileInfo() = default;
     void draw();
+    void drawPlayerInventory(const Player &player);
 
 private:
     std::vector<sf::Sprite> sprites;
@@ -39,5 +41,4 @@ private:
         {PHIRAS,    "Phiras"},
         {THYSTAME,  "Thystame"},
     };
-    void initPlayerTexts();
 };
