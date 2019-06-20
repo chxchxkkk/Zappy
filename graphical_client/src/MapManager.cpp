@@ -22,7 +22,6 @@ std::unique_ptr<Map> &MapManager::getMap()
 
 void MapManager::bct(std::vector<std::string> args)
 {
-    std::cout << args[2] << std::endl;
     if (args.size() == 9) {
         auto position = parsePosition(std::vector<std::string>(args.begin(), args.begin() + 2));
         std::shared_ptr<Tile> &tile = this->map->getTileAtCoord(position.x, position.y);

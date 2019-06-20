@@ -10,28 +10,29 @@
 #include "Singleton.hpp"
 #include "TextureLoader.hpp"
 #include "Position.hpp"
+#include "Responsive.hpp"
 
-Tile::Tile(int x, int y, sf::Vector2f size) : x(x), y(y), size(size)
+Tile::Tile(int x, int y, float size) : x(x), y(y), size(size)
 {
 }
 
 std::vector<sf::Sprite> &Tile::getSprites()
 {
-    this->sprites.clear();
-    this->addSprites();
-    return this->sprites;
+    sprites.clear();
+    addSprites();
+    return sprites;
 }
 
 void Tile::addResource(Resource type, int quantity)
 {
-    this->content[type] += quantity;
+    content[type] += quantity;
 }
 
 void Tile::removeResource(Resource type, int quantity)
 {
-    this->content[type] -= quantity;
-    if (this->content[type] < 0)
-        this->content[type] = 0;
+    content[type] -= quantity;
+    if (content[type] < 0)
+        content[type] = 0;
 }
 
 Position Tile::getPosition() const
@@ -43,10 +44,10 @@ void Tile::addSprites()
 {
     int offset = 0;
 
-    this->addGround();
-    for (const auto &it : this->content) {
+    addGround();
+    for (const auto &it : content) {
         if (it.second > 0) {
-            this->addResourceSprite(it.first, offset);
+            addResourceSprite(it.first, offset);
             offset++;
         }
     }
@@ -58,28 +59,27 @@ void Tile::addGround()
 
     sf::Texture &texture = SingleTon<TextureLoader>::getInstance().getInstance("assets/Grass.png");
     sprite.setTexture(texture);
-    sprite.setScale(0.5f, 1);
-    sprite.setPosition(x * size.x / 2, y * size.y);
-    this->sprites.push_back(sprite);
+    sprite.setScale(Responsive::getScale(size, texture.getSize()));
+    sprite.setPosition(x * size, y * size);
+    sprites.push_back(sprite);
 }
 
 void Tile::addResourceSprite(Resource type, int offset)
 {
-    auto windowSize = SingleTon<sf::RenderWindow>::getInstance().getSize();
     sf::Sprite sprite;
     int x_offset = offset % 3;
     int y_offset = offset / 3;
 
     sf::Texture &texture = SingleTon<TextureLoader>::getInstance().getInstance(textureMap[type]);
     sprite.setTexture(texture);
-    sprite.setScale(size.x / windowSize.x, size.y / windowSize.y * 2);
-    sprite.setPosition((x * size.x / 2) + 4 + (x_offset * 15), y * size.y + 4 + (y_offset * 20));
-    this->sprites.push_back(sprite);
+    sprite.setScale(Responsive::getScale(size / 5, texture.getSize()));
+    sprite.setPosition((x * size) + 4 + (x_offset * size / 3), y * size + 4 + (y_offset * size / 3));
+    sprites.push_back(sprite);
 }
 
 void Tile::setResource(Resource type, int quantity)
 {
-    this->content[type] = quantity;
+    content[type] = quantity;
 }
 
 const std::map<Resource, int> &Tile::getContent() const

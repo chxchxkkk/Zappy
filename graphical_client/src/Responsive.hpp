@@ -10,7 +10,13 @@
 
 class Responsive {
 public:
-    static sf::Vector2f calcTileSize(int mapWidth, int mapHeight);
+    static float calcTileSize(int mapWidth, int mapHeight);
+
+    template <typename T>
+    static sf::Vector2f getScale(float size, const sf::Vector2<T> &textureSize)
+    {
+        return {size / textureSize.x, size / textureSize.y};
+    }
 };
 
 #endif
