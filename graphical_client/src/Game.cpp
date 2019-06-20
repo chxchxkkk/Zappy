@@ -10,6 +10,7 @@
 #include "Game.hpp"
 #include "String.hpp"
 #include "Singleton.hpp"
+#include "Responsive.hpp"
 
 Game::Game(int, char *argv[]) :
     communicator(static_cast<uint16_t>(std::strtol(argv[1], &argv[1], 10)), argv[2]),
@@ -44,8 +45,7 @@ void Game::processEvents()
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed)
             window.close();
-        if (event.type == sf::Event::MouseButtonPressed)
-        {
+        if (event.type == sf::Event::MouseButtonPressed) {
             if (event.mouseButton.button == sf::Mouse::Left) {
                 this->selectTile(event);
             }
@@ -84,15 +84,6 @@ Game::~Game()
 
 void Game::selectTile(sf::Event &event)
 {
-    int x = event.mouseButton.x / TILE_SIZE;
-    int y = event.mouseButton.y / TILE_SIZE;
-
-    if (x < 0 || x >= SingleTon<MapManager>::getInstance().getMap()->getWidth())
-        return;
-    if (y < 0 || y >= SingleTon<MapManager>::getInstance().getMap()->getHeight())
-        return;
-    this->selectedTile = SingleTon<MapManager>::getInstance().getMap()->getTileAtCoord(x, y);
-    this->tileInfo = std::make_unique<TileInfo>(*this->selectedTile);
     for (const auto &tile : SingleTon<MapManager>::getInstance().getMap()->getTiles())
         if (tile->getSprites()[0].getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y)) {
             selectedTile = tile;
@@ -102,8 +93,7 @@ void Game::selectTile(sf::Event &event)
 
 void Game::displayTileInfo()
 {
-    std::pair<int, int> position;
+    Position position = selectedTile->getPosition();
 
-    position = this->selectedTile->getPosition();
-    std::cout << "selected at pos : x " << position.first << " y " << position.second << std::endl;
+    std::cout << "selected at pos : x " << position.x << " y " << position.y << std::endl;
 }

@@ -32,3 +32,5 @@ add_executable(
         zappy_graphic
         ${graphic_sources}
 )
+
+target_link_libraries(zappy_ai -lm)

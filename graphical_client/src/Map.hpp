@@ -18,7 +18,7 @@ class Map {
         void draw();
         std::shared_ptr<Tile> &getTileAtCoord(int x, int y);
         const std::vector<std::shared_ptr<Tile>> &getTiles() const;
-        //        std::shared_ptr<Tile> getTileAtPosition(int x, int y);
+//        std::shared_ptr<Tile> getTileAtPosition(int x, int y);
 
     private:
         std::vector<std::shared_ptr<Tile>> tiles;
