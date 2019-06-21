@@ -16,6 +16,8 @@ public:
     void draw();
 private:
     void initStrings();
+    void updateRow(std::pair<sf::Sprite, sf::Text> &row, const std::pair<Resource, int> &resourceText);
+    void update();
 
     Player &player;
     int x_pos;
