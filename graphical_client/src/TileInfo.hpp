@@ -18,8 +18,6 @@ public:
     void draw();
 
 private:
-    std::vector<sf::Sprite> sprites;
-    std::vector<sf::Text> textInfo;
     std::vector<std::pair<sf::Sprite, sf::Text>> rows;
     sf::Sprite background;
     sf::Font font;
