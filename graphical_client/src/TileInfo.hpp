@@ -18,8 +18,12 @@ public:
     void draw();
 
 private:
-    std::vector<sf::Sprite> sprites;
-    std::vector<sf::Text> textInfo;
+    void updateRow(std::pair<sf::Sprite, sf::Text> &row, const std::pair<Resource, int> &resourceText);
+    void update();
+
+    Tile &tile;
+    std::vector<std::pair<sf::Sprite, sf::Text>> rows;
+    sf::Sprite background;
     sf::Font font;
     std::map<Resource, std::string> textureMap = {
         {FOOD,      "assets/Food.png"},
