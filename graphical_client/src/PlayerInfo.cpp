@@ -21,11 +21,16 @@ PlayerInfo::PlayerInfo(Player &player) :
     background.setPosition(x_pos, y_pos);
     background.setColor(sf::Color(255, 255, 255, 150));
     background.setScale(0.3f, 0.4f);
+
     header.setFont(font);
     header.setFillColor(sf::Color::Black);
     header.setString("player inventory :");
     header.setPosition(x_pos + 5, y_pos + 5);
 
+    playerLevel.setFont(font);
+    playerLevel.setFillColor(sf::Color::Black);
+    playerLevel.setString("player Level : " + std::to_string(player.getLevel()));
+    playerLevel.setPosition(x_pos + 45, y_pos + 45);
     initRows();
 }
 
@@ -37,10 +42,10 @@ void PlayerInfo::initRows()
         sf::Sprite resource;
         sf::Text text;
 
-        resource.setPosition(x_pos + 30, (i * 40) + 70 + y_pos);
-        text.setPosition(x_pos + 110, (i * 40) + 70 + y_pos);
-        rows.emplace_back(resource, text);
-        updateRow(rows.back(), it);
+        resource.setPosition(x_pos + 30, (i * 40) + 100 + y_pos);
+        text.setPosition(x_pos + 110, (i * 40) + 100 + y_pos);
+        inventoryRows.emplace_back(resource, text);
+        updateRow(inventoryRows.back(), it);
         i++;
     }
 }
@@ -63,7 +68,7 @@ void PlayerInfo::update()
     int i = 0;
 
     for (auto &it : inventory) {
-        updateRow(rows.at(i), it);
+        updateRow(inventoryRows.at(i), it);
         ++i;
     }
 }
@@ -75,7 +80,8 @@ void PlayerInfo::draw()
     update();
     window.draw(background);
     window.draw(header);
-    for (auto &it : rows) {
+    window.draw(playerLevel);
+    for (auto &it : inventoryRows) {
         window.draw(it.first);
         window.draw(it.second);
     }
