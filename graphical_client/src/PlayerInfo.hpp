@@ -15,7 +15,7 @@ public:
     explicit PlayerInfo(Player &player);
     void draw();
 private:
-    void initStrings();
+    void initRows();
     void updateRow(std::pair<sf::Sprite, sf::Text> &row, const std::pair<Resource, int> &resourceText);
     void update();
 
@@ -23,6 +23,7 @@ private:
     int x_pos;
     int y_pos;
     sf::Sprite background;
+    sf::Text header;
     std::vector<std::pair<sf::Sprite, sf::Text>> rows;
     sf::Font font;
     std::map<Resource, std::string> textureMap = {

@@ -21,11 +21,15 @@ PlayerInfo::PlayerInfo(Player &player) :
     background.setPosition(x_pos, y_pos);
     background.setColor(sf::Color(255, 255, 255, 150));
     background.setScale(0.3f, 0.4f);
+    header.setFont(font);
+    header.setFillColor(sf::Color::Black);
+    header.setString("player inventory :");
+    header.setPosition(x_pos + 5, y_pos + 5);
 
-    initStrings();
+    initRows();
 }
 
-void PlayerInfo::initStrings()
+void PlayerInfo::initRows()
 {
     auto inventory = player.getInventory();
     int i = 0;
@@ -70,6 +74,7 @@ void PlayerInfo::draw()
 
     update();
     window.draw(background);
+    window.draw(header);
     for (auto &it : rows) {
         window.draw(it.first);
         window.draw(it.second);
