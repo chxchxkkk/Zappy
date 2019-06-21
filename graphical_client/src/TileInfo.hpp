@@ -18,6 +18,10 @@ public:
     void draw();
 
 private:
+    void updateRow(std::pair<sf::Sprite, sf::Text> &row, const std::pair<Resource, int> &resourceText);
+    void update();
+
+    Tile &tile;
     std::vector<std::pair<sf::Sprite, sf::Text>> rows;
     sf::Sprite background;
     sf::Font font;
