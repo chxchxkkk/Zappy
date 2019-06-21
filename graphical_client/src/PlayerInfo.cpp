@@ -25,12 +25,12 @@ PlayerInfo::PlayerInfo(Player &player) :
     header.setFont(font);
     header.setFillColor(sf::Color::Black);
     header.setString("player inventory :");
-    header.setPosition(x_pos + 5, y_pos + 5);
+    header.setPosition(x_pos + 20, y_pos + 15);
 
     playerLevel.setFont(font);
     playerLevel.setFillColor(sf::Color::Black);
     playerLevel.setString("player Level : " + std::to_string(player.getLevel()));
-    playerLevel.setPosition(x_pos + 45, y_pos + 45);
+    playerLevel.setPosition(x_pos + 110, y_pos + 55);
     initRows();
 }
 
