@@ -15,6 +15,11 @@ public:
         y(y)
     {}
 
+    bool operator==(const Position &pos) const
+    {
+        return pos.x == x && pos.y == y;
+    }
+
     int x;
     int y;
 };

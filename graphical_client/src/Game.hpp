@@ -15,28 +15,30 @@
 #include "MapManager.hpp"
 #include "Dispatcher.hpp"
 #include "TileInfo.hpp"
+#include "PlayerInfo.hpp"
 
 class Game {
-    public:
-        Game(int argc, char *argv[]);
-        ~Game();
-        void run();
-        void draw();
-        void processEvents();
-        void processCommands();
-        void selectTile();
-        void displayTileInfo();
+public:
+    Game(int argc, char *argv[]);
+    ~Game();
+    void run();
+    void draw();
+    void processEvents();
+    void processCommands();
+    void selectTile();
+    void displayTileInfo();
 
-    private:
-        unsigned int width = 1920;
-        unsigned int height = 1080;
-        Communicator communicator;
-        std::unique_ptr<sf::View> view;
-        std::shared_ptr<Tile> selectedTile = nullptr;
-        std::thread receiver;
-        Dispatcher dispatcher;
-        sf::View mapView;
-        sf::View menuView;
-        std::unique_ptr<TileInfo> tileInfo = nullptr;
+private:
+    unsigned int width = 1920;
+    unsigned int height = 1080;
+    Communicator communicator;
+    std::unique_ptr<sf::View> view;
+    std::shared_ptr<Tile> selectedTile = nullptr;
+    std::thread receiver;
+    Dispatcher dispatcher;
+    sf::View mapView;
+    sf::View menuView;
+    std::unique_ptr<TileInfo> tileInfo = nullptr;
+    std::unique_ptr<PlayerInfo> playerInfo = nullptr;
     void drawFocus(std::shared_ptr<Tile> &tile);
 };
