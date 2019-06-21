@@ -1,3 +1,5 @@
+#include <memory>
+
 /*
 ** EPITECH PROJECT, 2019
 ** OOP_arcade_2018
@@ -140,6 +142,7 @@ void Game::selectTile()
             tileInfo = std::make_unique<TileInfo>(*selectedTile);
             for (auto &player : playerManager.getPlayers()) {
                 if (player.getPosition() == selectedTile->getPosition()) {
+                    playerInfo = nullptr;
                     playerInfo = std::make_unique<PlayerInfo>(player);
                     break;
                 }

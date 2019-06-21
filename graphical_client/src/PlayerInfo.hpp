@@ -16,6 +16,27 @@ public:
     void draw();
 private:
     Player &player;
+    std::vector<sf::Sprite> sprites;
+    std::vector<sf::Text> textInfo;
+    sf::Font font;
+    std::map<Resource, std::string> textureMap = {
+        {FOOD,      "assets/Food.png"},
+        {LINEMATE,  "assets/Linemate.png"},
+        {DERAUMERE, "assets/Deraumere.png"},
+        {SIBUR,     "assets/Sibur.png"},
+        {MENDIANE,  "assets/Mendiane.png"},
+        {PHIRAS,    "assets/Phiras.png"},
+        {THYSTAME,  "assets/Thystame.png"},
+    };
+    std::map<Resource, std::string> nameMap = {
+        {FOOD,      "Food"},
+        {LINEMATE,  "Linemate"},
+        {DERAUMERE, "Deraumere"},
+        {SIBUR,     "Sibur"},
+        {MENDIANE,  "Mendiane"},
+        {PHIRAS,    "Phiras"},
+        {THYSTAME,  "Thystame"},
+    };
 };
 
 #endif
