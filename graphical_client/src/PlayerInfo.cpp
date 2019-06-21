@@ -16,13 +16,11 @@ PlayerInfo::PlayerInfo(Player &player) :
 {
     if (!font.loadFromFile("assets/arial.ttf"))
         throw std::runtime_error("unable to load file assets/arial.ttf");
-    sf::Sprite background;
 
     background.setTexture(SingleTon<TextureLoader>::getInstance().getInstance("assets/menu_ba.jpg"));
     background.setPosition(x_pos, y_pos);
     background.setColor(sf::Color(255, 255, 255, 150));
     background.setScale(0.3f, 0.4f);
-    sprites.push_back(background);
 
     initStrings();
 }
@@ -33,19 +31,18 @@ void PlayerInfo::initStrings()
     int i = 0;
     for (auto &it : inventory) {
         sf::Sprite resource;
-        sf::Text quantity;
-        std::string text = nameMap[it.first];
-        quantity.setFont(font);
+        sf::Text text;
+        std::string str = nameMap[it.first];
+        text.setFont(font);
 
-        text += " : " + std::to_string(it.second);
+        str += " : " + std::to_string(it.second);
         resource.setTexture(SingleTon<TextureLoader>::getInstance().getInstance(textureMap[it.first]));
         resource.setPosition(x_pos + 30, (i * 40) + 70 + y_pos);
         resource.setScale(0.15f, 0.15f);
-        quantity.setString(text);
-        quantity.setPosition(x_pos + 110, (i * 40) + 70 + y_pos);
-        quantity.setFillColor(sf::Color::Black);
-        textInfo.push_back(quantity);
-        sprites.push_back(resource);
+        text.setString(str);
+        text.setPosition(x_pos + 110, (i * 40) + 70 + y_pos);
+        text.setFillColor(sf::Color::Black);
+        rows.emplace_back(resource, text);
         i++;
     }
 }
@@ -54,8 +51,9 @@ void PlayerInfo::draw()
 {
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
 
-    for (auto &it : sprites)
-        window.draw(it);
-    for (auto &it : textInfo)
-        window.draw(it);
+    window.draw(background);
+    for (auto &it : rows) {
+        window.draw(it.first);
+        window.draw(it.second);
+    }
 }

@@ -20,8 +20,8 @@ private:
     Player &player;
     int x_pos;
     int y_pos;
-    std::vector<sf::Sprite> sprites;
-    std::vector<sf::Text> textInfo;
+    sf::Sprite background;
+    std::vector<std::pair<sf::Sprite, sf::Text>> rows;
     sf::Font font;
     std::map<Resource, std::string> textureMap = {
         {FOOD,      "assets/Food.png"},
