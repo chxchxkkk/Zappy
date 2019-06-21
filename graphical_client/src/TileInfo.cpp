@@ -52,10 +52,3 @@ void TileInfo::draw()
     for (auto &it : this->textInfo)
         window.draw(it);
 }
-
-void TileInfo::drawPlayerInventory(const Player &player)
-{
-    const auto &inventory = player.getInventory();
-
-
-}

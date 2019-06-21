@@ -16,12 +16,10 @@ public:
     explicit TileInfo(Tile &tile);
     ~TileInfo() = default;
     void draw();
-    void drawPlayerInventory(const Player &player);
 
 private:
     std::vector<sf::Sprite> sprites;
     std::vector<sf::Text> textInfo;
-    std::vector<sf::Text> textPlayer;
     sf::Font font;
     std::map<Resource, std::string> textureMap = {
         {FOOD,      "assets/Food.png"},
