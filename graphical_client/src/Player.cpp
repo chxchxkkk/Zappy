@@ -116,3 +116,8 @@ const std::map<Resource, int> Player::getInventory() const
 {
     return inventory;
 }
+
+int Player::getLevel() const
+{
+    return level;
+}

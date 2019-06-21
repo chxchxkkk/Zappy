@@ -30,6 +30,7 @@ public:
     void setIncanting(bool);
     const Position &getPosition() const;
     void draw();
+    int getLevel() const;
     const std::map<Resource, int> getInventory() const;
 
 private:

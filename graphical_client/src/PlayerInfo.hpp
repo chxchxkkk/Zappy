@@ -24,7 +24,8 @@ private:
     int y_pos;
     sf::Sprite background;
     sf::Text header;
-    std::vector<std::pair<sf::Sprite, sf::Text>> rows;
+    std::vector<std::pair<sf::Sprite, sf::Text>> inventoryRows;
+    sf::Text playerLevel;
     sf::Font font;
     std::map<Resource, std::string> textureMap = {
         {FOOD,      "assets/Food.png"},
