@@ -66,7 +66,7 @@ def take_resource(sock: socket.socket, resource: Resource):
 
 
 def set_resource(sock: socket.socket, resource: Resource):
-    msg = str.encode("Set " + str(resource) + "\n")
+    msg = str.encode("Set " + resource.value + "\n")
     sock.send(msg)
     return Action.SET
 

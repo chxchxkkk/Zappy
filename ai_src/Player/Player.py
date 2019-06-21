@@ -92,8 +92,9 @@ class Player:
         while self.is_running:
             if self.pending_action == Action.NONE:
                 self.start_action()
-                print("pending action :", self.pending_action)
             data = self.receiver.pop()
+            if data == "ko":
+                print("ko")
             if data == "dead":
                 print("dead")
                 self.is_running = False
@@ -156,5 +157,6 @@ class Player:
     def right_action(self, _):
         self.tile_info = None
 
-    def incantation_action(self, _):
+    def incantation_action(self, data):
+        # TODO: set player level according to server answer
         self.level += 1
