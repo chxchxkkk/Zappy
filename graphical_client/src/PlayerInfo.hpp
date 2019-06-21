@@ -15,7 +15,11 @@ public:
     explicit PlayerInfo(Player &player);
     void draw();
 private:
+    void initStrings();
+
     Player &player;
+    int x_pos;
+    int y_pos;
     std::vector<sf::Sprite> sprites;
     std::vector<sf::Text> textInfo;
     sf::Font font;
