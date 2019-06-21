@@ -1,7 +1,9 @@
-from .Receiver import Receiver
+from .behaviour.FoodBehaviour import FoodBehaviour
+from .behaviour.LevelUpBehaviour import LevelUpBehaviour
 from .protocol.protocol import *
-from .behaviour.Behaviour import FoodBehaviour
-from .behaviour.Behaviour import LevelUpBehaviour
+from .Pendings import *
+from .Receiver import *
+from .Resource import *
 
 
 class Player:
@@ -14,6 +16,7 @@ class Player:
         self.is_running = True
         self.pending_action = Action.NONE
         self.is_connected = False
+        self.level = 1
         self.behaviour = None
         self.tile_info = None
         self.tick_count = 0
@@ -34,7 +37,9 @@ class Player:
                                     Action.LEFT: self.left_action,
                                     Action.LOOK: self.parse_look,
                                     Action.INVENTORY: self.parse_inventory,
-                                    Action.TAKE: (lambda _: 0)}
+                                    Action.TAKE: (lambda _: 0),
+                                    Action.SET: (lambda _: 0),
+                                    Action.INCANTATION: self.incantation_action}
         self.inventory = {Resource.FOOD: 10,
                           Resource.DERAUMERE: 0,
                           Resource.LINEMATE: 0,
@@ -66,6 +71,12 @@ class Player:
         self.is_connected = True
         return True
 
+    def wait_for_data(self):
+        data = self.receiver.pop()
+        while data == "":
+            data = self.receiver.pop()
+        return data
+
     @staticmethod
     def init_tile():
         return {Resource.FOOD: 0,
@@ -76,6 +87,7 @@ class Player:
                 Resource.SIBUR: 0,
                 Resource.THYSTAME: 0}
 
+# TODO: Handling "ko" answers
     def update(self):
         while self.is_running:
             if self.pending_action == Action.NONE:
@@ -90,30 +102,27 @@ class Player:
 
     def start_action(self):
         if self.tick_count > 126:  # 126 tick -> -1 food
-            self.check_inventory()
-            if self.inventory[Resource.FOOD] > 15:
-                self.behaviour = FoodBehaviour(self)
-            elif self.inventory[Resource.FOOD] < 5:
-                self.behaviour = FoodBehaviour(self)
-            self.tick_count = 0
+            self.check_behaviour()
         elif self.actionQueue:
             self.pending_action = self.actionQueue.pop(0)(self.receiver.sock)
         else:
-            self.behaviour.execute_strategy()
+            self.pending_action = self.behaviour.execute_strategy()
 
-    def wait_for_data(self):
-        data = self.receiver.pop()
-        while data == "":
-            data = self.receiver.pop()
-        return data
+    def check_behaviour(self):
+        self.pending_action = get_inventory(self.receiver.sock)
+        if self.inventory[Resource.FOOD] > 15:
+            self.behaviour = LevelUpBehaviour(self)
+        elif self.inventory[Resource.FOOD] < 5:
+            self.behaviour = FoodBehaviour(self)
+        self.tick_count = 0
 
     def reset(self):
         self.pending_action = Action.NONE
 
     def update_player_data(self, data):
         # TODO SI ON T'AS EJECT OU BROADCAST
-        self.action_function_map[self.pending_action](data)
         if self.pending_action != self.pending_action.NONE:
+            self.action_function_map[self.pending_action](data)
             self.tick_count += self.tick_value[self.pending_action]
             self.reset()
 
@@ -138,15 +147,14 @@ class Player:
                     pass
             i += 1
 
-    def forward_action(self, data):
+    def forward_action(self, _):
         self.tile_info = None
 
-    def left_action(self, data):
+    def left_action(self, _):
         self.tile_info = None
 
-    def right_action(self, data):
+    def right_action(self, _):
         self.tile_info = None
 
-    def check_inventory(self):
-        get_inventory(self.receiver.sock)
-        self.pending_action = Action.INVENTORY
+    def incantation_action(self, _):
+        self.level += 1
