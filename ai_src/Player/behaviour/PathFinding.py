@@ -1,10 +1,13 @@
 import random
 from builtins import staticmethod
+
+from Player import Elevation
 from ..protocol.protocol import *
 
 
 class PathFinding:
     turn_nb = 0
+    max_player_range = len(Elevation.Elevation.players_per_level)
 
     @staticmethod
     def find_tile_with_resource(tile_info, resource):
@@ -13,7 +16,7 @@ class PathFinding:
     @staticmethod
     def find_vector_to_tile(tile_id):
         i = 0
-        for y in range(0, 8):
+        for y in range(0, PathFinding.max_player_range):
             for x in range(-y, y + 1):
                 if i == tile_id:
                     return y, x
@@ -35,9 +38,13 @@ class PathFinding:
 
     @staticmethod
     def find_actions_to_resource(tile_info, resource):
-        print("finding actions")
         a = PathFinding.find_instructions(
             PathFinding.find_vector_to_tile(PathFinding.find_tile_with_resource(tile_info, resource)))
+        return a
+
+    @staticmethod
+    def find_actions_to_tile(tile_idx):
+        a = PathFinding.find_instructions(PathFinding.find_vector_to_tile(tile_idx))
         return a
 
     @classmethod

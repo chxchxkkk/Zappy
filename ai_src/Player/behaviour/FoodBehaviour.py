@@ -1,9 +1,9 @@
-from ..Player import *
+from ..protocol.protocol import *
 from .PathFinding import PathFinding
 
 
 class FoodBehaviour:
-    def __init__(self, player: Player):
+    def __init__(self, player):
         self.player = player
 
     def execute_strategy(self):

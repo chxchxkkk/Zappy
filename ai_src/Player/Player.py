@@ -87,6 +87,7 @@ class Player:
                 Resource.SIBUR: 0,
                 Resource.THYSTAME: 0}
 
+# TODO: Handling "ko" answers
     def update(self):
         while self.is_running:
             if self.pending_action == Action.NONE:
