@@ -111,3 +111,13 @@ void Player::draw()
     characterSprite.setColor(TEAM_COLORS[teamIndex % TEAM_COLORS.size()]);
     window.draw(this->characterSprite);
 }
+
+const std::map<Resource, int> Player::getInventory() const
+{
+    return inventory;
+}
+
+int Player::getLevel() const
+{
+    return level;
+}

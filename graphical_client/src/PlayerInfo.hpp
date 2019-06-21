@@ -1,25 +1,31 @@
 /*
-** EPITECH PROJECT, 2019
-** OOP_arcade_2018
+** EPITECH PROJECT, 2018
+** zappy
 ** File description:
-** Created by abel,
+** PlayerInfo.hpp
 */
 
-#pragma once
+#ifndef ZAPPY_PLAYERINFO_HPP
+#define ZAPPY_PLAYERINFO_HPP
 
-#include <SFML/Graphics.hpp>
-#include "Tile.hpp"
 #include "Player.hpp"
 
-class TileInfo {
+class PlayerInfo {
 public:
-    explicit TileInfo(Tile &tile);
-    ~TileInfo() = default;
+    explicit PlayerInfo(Player &player);
     void draw();
-
 private:
-    std::vector<sf::Sprite> sprites;
-    std::vector<sf::Text> textInfo;
+    void initRows();
+    void updateRow(std::pair<sf::Sprite, sf::Text> &row, const std::pair<Resource, int> &resourceText);
+    void update();
+
+    Player &player;
+    int x_pos;
+    int y_pos;
+    sf::Sprite background;
+    sf::Text header;
+    std::vector<std::pair<sf::Sprite, sf::Text>> inventoryRows;
+    sf::Text playerLevel;
     sf::Font font;
     std::map<Resource, std::string> textureMap = {
         {FOOD,      "assets/Food.png"},
@@ -40,3 +46,5 @@ private:
         {THYSTAME,  "Thystame"},
     };
 };
+
+#endif
