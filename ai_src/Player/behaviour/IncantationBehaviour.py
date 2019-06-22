@@ -5,6 +5,7 @@ from copy import deepcopy
 
 resources = [Resource.LINEMATE, Resource.THYSTAME, Resource.SIBUR, Resource.PHIRAS, Resource.MENDIANE, Resource.DERAUMERE]
 
+
 class Incantation:
     def __init__(self, parent):
         self.parent = parent

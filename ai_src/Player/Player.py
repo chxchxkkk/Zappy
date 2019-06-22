@@ -44,7 +44,7 @@ class Player:
                                     Action.INVENTORY: self.parse_inventory,
                                     Action.TAKE: (lambda _: 0),
                                     Action.SET: (lambda _: 0),
-                                    Action.BROADCAST: (lambda  _: 0),
+                                    Action.BROADCAST: (lambda _: 0),
                                     Action.INCANTATION: self.incantation_action,
                                     Action.FORK: self.connect_new_player}
         self.inventory = {Resource.FOOD: 10,
@@ -195,13 +195,11 @@ class Player:
             self.level += 1
             if self.level == 3:
                 print('WOW LE NIVEAU 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-            print('new level : ' +str(self.level))
+            print('new level : ', self.level)
             new_queue = []
             new_queue += [fork]
             self.actionQueue = new_queue
             self.must_come = False
 
     def connect_new_player(self, _):
-        pid = os.fork()
-        if pid == 0:
-            os.system("./zappy_ai -p 4242 -n Team1")
+        print("CONNECT NEW PLAYER")
