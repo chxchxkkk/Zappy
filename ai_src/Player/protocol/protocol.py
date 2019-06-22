@@ -42,7 +42,7 @@ def get_inventory(sock: socket.socket):
 
 
 def send_broadcast(sock: socket.socket, message: str):
-    msg = str.encode(message + "\n")
+    msg = str.encode("Broadcast " + message + "\n")
     sock.send(msg)
     return Action.BROADCAST
 

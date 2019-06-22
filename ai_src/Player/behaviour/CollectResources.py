@@ -1,10 +1,12 @@
 from .PathFinding import *
 
+resources = [Resource.DERAUMERE, Resource.MENDIANE, Resource.PHIRAS, Resource.SIBUR, Resource.THYSTAME, Resource.LINEMATE]
+
 
 class CollectResources:
     def __init__(self, parent):
         self.parent = parent
-        self.resources_to_find = parent.required_resources
+        self.resources_to_find = parent.required_resources_for_level_up
 
     def execute(self):
         if self.parent.player.tile_info is None:
@@ -22,7 +24,8 @@ class CollectResources:
 
     def find_tile_with_resource(self, tile_info):
         for tile_idx in range(0, len(tile_info)):
-            for rsc in self.resources_to_find:
-                if tile_info[tile_idx][rsc]:
-                    return rsc, tile_idx
+            for resource in resources:
+                if self.resources_to_find[resource] > 0:
+                    if tile_info[tile_idx][resource]:
+                        return resource, tile_idx
         raise

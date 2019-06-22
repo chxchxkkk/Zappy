@@ -4,6 +4,15 @@ from builtins import staticmethod
 from Player import Elevation
 from ..protocol.protocol import *
 
+queue_list = {1: [forward],
+              2: [forward, turn_left, forward],
+              3: [turn_left, forward],
+              4: [turn_left, forward, turn_left, forward],
+              5: [turn_left, turn_left, forward],
+              6: [turn_right, forward, turn_right, forward],
+              7: [turn_right, forward],
+              8: [forward, turn_right, forward]}
+
 
 class PathFinding:
     turn_nb = 0
@@ -35,6 +44,10 @@ class PathFinding:
         for x in range(0, abs(vector_to_tile[1])):
             instructions += [forward]
         return instructions
+
+    @staticmethod
+    def find_instructions_to_direction(direction):
+        return queue_list[direction]
 
     @staticmethod
     def find_actions_to_resource(tile_info, resource):

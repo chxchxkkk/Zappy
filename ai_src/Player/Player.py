@@ -4,19 +4,24 @@ from .protocol.protocol import *
 from .Pendings import *
 from .Receiver import *
 from .Resource import *
+import os
+from .behaviour.FindPlayerBehaviour import FindPlayerBehaviour
 
 
 class Player:
     def __init__(self, receiver: Receiver, team_name: str):
         print('Je construis le Joueur')
+        self.where_to_go = None
         self.team_name = team_name
         self.remaining_connections = None
         self.map_size = None
+        self.player_on_tile = 0
         self.receiver = receiver
         self.is_running = True
         self.pending_action = Action.NONE
         self.is_connected = False
         self.level = 1
+        self.must_come = False
         self.behaviour = None
         self.tile_info = None
         self.tick_count = 0
@@ -39,7 +44,9 @@ class Player:
                                     Action.INVENTORY: self.parse_inventory,
                                     Action.TAKE: (lambda _: 0),
                                     Action.SET: (lambda _: 0),
-                                    Action.INCANTATION: self.incantation_action}
+                                    Action.BROADCAST: (lambda  _: 0),
+                                    Action.INCANTATION: self.incantation_action,
+                                    Action.FORK: self.connect_new_player}
         self.inventory = {Resource.FOOD: 10,
                           Resource.DERAUMERE: 0,
                           Resource.LINEMATE: 0,
@@ -98,8 +105,23 @@ class Player:
             if data == "dead":
                 print("dead")
                 self.is_running = False
+            elif "Elevation underway" in data:
+                print('lol j\'incante')
+            elif "message" in data:
+                data = data.split()
+                self.interpret_broadcast(data[2], data[1].replace(',', ''))
             elif data != "":
                 self.update_player_data(data)
+
+    def interpret_broadcast(self, msg, direction):
+        data = msg.split('_')
+        print('Jai recu : ' + msg)
+        if len(data) == 3:
+            if data[0] == self.team_name and data[1] == str(self.level):
+                if data[2] == "come":
+                    self.where_to_go = direction
+                    self.must_come = True
+                pass
 
     def start_action(self):
         if self.tick_count > 126:  # 126 tick -> -1 food
@@ -111,8 +133,10 @@ class Player:
 
     def check_behaviour(self):
         self.pending_action = get_inventory(self.receiver.sock)
-        if self.inventory[Resource.FOOD] > 15:
+        if self.inventory[Resource.FOOD] > 15 and self.must_come is False:
             self.behaviour = LevelUpBehaviour(self)
+        elif self.inventory[Resource.FOOD] > 15:
+            self.behaviour = FindPlayerBehaviour(self)
         elif self.inventory[Resource.FOOD] < 5:
             self.behaviour = FoodBehaviour(self)
         self.tick_count = 0
@@ -131,7 +155,7 @@ class Player:
         data = data.replace('[ ', '').replace(' ]', '').replace(', ', ',')
         items = data.split(',')
         for item in items:
-            item = item.split(' ')
+            item = item.split()
             self.inventory[Resource(item[0])] = int(item[1])
 
     def parse_look(self, data):
@@ -139,6 +163,7 @@ class Player:
         tiles = data.split(',')
         self.tile_info = []
         i = 0
+        self.player_on_tile = 0
         for tile in tiles:
             self.tile_info.append(self.init_tile())
             resources = tile.split(' ')
@@ -146,17 +171,37 @@ class Player:
                 if resource != "" and resource != "player":
                     self.tile_info[i][Resource(resource)] += 1
                     pass
+                if resource == "player" and i == 0:
+                    self.player_on_tile += 1
             i += 1
 
     def forward_action(self, _):
         self.tile_info = None
+        self.player_on_tile = 0
+        self.where_to_go = None
 
     def left_action(self, _):
         self.tile_info = None
+        self.player_on_tile = 0
+        self.where_to_go = None
 
     def right_action(self, _):
         self.tile_info = None
+        self.player_on_tile = 0
+        self.where_to_go = None
 
     def incantation_action(self, data):
-        # TODO: set player level according to server answer
-        self.level += 1
+        if "Current level: " in data:
+            self.level += 1
+            if self.level == 3:
+                print('WOW LE NIVEAU 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            print('new level : ' +str(self.level))
+            new_queue = []
+            new_queue += [fork]
+            self.actionQueue = new_queue
+            self.must_come = False
+
+    def connect_new_player(self, _):
+        pid = os.fork()
+        if pid == 0:
+            os.system("./zappy_ai -p 4242 -n Team1")
