@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include <chrono>
 #include "PlayerInfo.hpp"
 #include "TextureLoader.hpp"
 #include "Singleton.hpp"

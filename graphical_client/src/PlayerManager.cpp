@@ -136,3 +136,15 @@ void PlayerManager::updatePlayerInfo(const Position &selectedTilePosition)
         }
     }
 }
+
+bool PlayerManager::isInfo() const
+{
+    return playerInfo != nullptr;
+}
+
+int PlayerManager::getPlayerInfoId() const
+{
+    if (playerInfo)
+        return playerInfo->getPlayerId();
+    return -1;
+}

@@ -37,4 +37,5 @@ private:
     Dispatcher dispatcher;
     std::unique_ptr<TileInfo> tileInfo = nullptr;
     void drawFocus(std::shared_ptr<Tile> &tile);
+    void sendInventoryEachSeconds();
 };

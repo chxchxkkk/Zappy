@@ -53,12 +53,13 @@ void Game::processEvents()
     int movePower = 15;
     float zoomAmount = 1.1f;
 
+    sendInventoryEachSeconds();
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::MouseWheelScrolled) {
             if (event.mouseWheelScroll.delta > 0)
-                zoomViewAt({ event.mouseWheelScroll.x, event.mouseWheelScroll.y }, window, (1.f / zoomAmount));
+                zoomViewAt({event.mouseWheelScroll.x, event.mouseWheelScroll.y}, window, (1.f / zoomAmount));
             else if (event.mouseWheelScroll.delta < 0)
-                zoomViewAt({ event.mouseWheelScroll.x, event.mouseWheelScroll.y }, window, zoomAmount);
+                zoomViewAt({event.mouseWheelScroll.x, event.mouseWheelScroll.y}, window, zoomAmount);
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -154,4 +155,20 @@ void Game::zoomViewAt(sf::Vector2i pixel, sf::RenderWindow &window, float zoom)
     const sf::Vector2f offsetCoords{beforeCoord - afterCoord};
     view->move(offsetCoords);
     window.setView(*view);
+}
+
+void Game::sendInventoryEachSeconds()
+{
+    static auto prevTime = std::chrono::system_clock::now();
+    auto time = std::chrono::system_clock::now();
+    auto &playerManager = SingleTon<PlayerManager>::getInstance();
+    std::chrono::duration<float> duration = time - prevTime;
+
+    if (duration.count() > 1) {
+        prevTime = time;
+        if (playerManager.isInfo()) {
+            std::cout << "send to player : " + std::to_string(playerManager.getPlayerInfoId()) << std::endl;
+            communicator.sendData("pin " + std::to_string(playerManager.getPlayerInfoId()));
+        }
+    }
 }
