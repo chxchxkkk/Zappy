@@ -105,6 +105,7 @@ void Player::draw()
         sf::IntRect((this->orientation - 1) * textureSize, 0, textureSize,
                     textureSize));
     characterSprite.setColor(TEAM_COLORS[teamIndex % TEAM_COLORS.size()]);
+    characterSprite.setScale(0.8f, 0.8f);
     window.draw(this->characterSprite);
 }
 
