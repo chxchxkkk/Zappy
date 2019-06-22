@@ -34,6 +34,7 @@ public:
     const std::map<Resource, int> &getInventory() const;
 
 private:
+    float size;
     int id;
     Position pos;
     Orientation orientation;
