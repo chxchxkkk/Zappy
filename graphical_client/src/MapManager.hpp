@@ -10,15 +10,15 @@
 #include "Map.hpp"
 
 class MapManager {
-    public:
-        MapManager() = default;
-        void msz(const std::vector<std::string> &);
-        void bct(const std::vector<std::string> &args);
-        std::unique_ptr<Map> &getMap();
+public:
+    MapManager() = default;
+    void msz(const std::vector<std::string> &);
+    void bct(const std::vector<std::string> &args);
+    void pic(const std::vector<std::string> &args);
+    std::unique_ptr<Map> &getMap();
 
-    private:
-        std::unique_ptr<Map> map = nullptr;
-        Position parsePosition(const std::vector<std::string> &pos);
-
+private:
+    std::unique_ptr<Map> map = nullptr;
+    Position parsePosition(const std::vector<std::string> &pos);
 };
 

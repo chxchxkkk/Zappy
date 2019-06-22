@@ -5,11 +5,13 @@
 ** Created by abel,
 */
 
+#include <iostream>
 #include "Map.hpp"
 #include "Singleton.hpp"
 #include "Responsive.hpp"
+#include "TextureLoader.hpp"
 
-Map::Map(int width, int height) : width(width), height(height)
+Map::Map(int width, int height) : width(width), height(height), tileSize(Responsive::calcTileSize(width, height))
 {
     for (int i = 0; i < height; i++)
         for (int j = 0; j < width; j++)
@@ -23,6 +25,7 @@ void Map::draw()
             SingleTon<sf::RenderWindow>::getInstance().draw(it2);
         }
     }
+    drawIncantations();
 }
 
 std::shared_ptr<Tile> &Map::getTileAtCoord(int x, int y)
@@ -42,24 +45,32 @@ int Map::getWidth() const
     return width;
 }
 
-void Map::setWidth(int width)
-{
-    this->width = width;
-}
-
 int Map::getHeight() const
 {
     return height;
 }
 
-void Map::setHeight(int height)
-{
-    this->height = height;
-}
-
 const std::vector<std::shared_ptr<Tile>> &Map::getTiles() const
 {
     return tiles;
+}
+
+void Map::addIncantationSprite(const Position &pos)
+{
+    sf::Sprite sprite;
+
+    sprite.setTexture(SingleTon<TextureLoader>::getInstance().getInstance("assets/incantation.png"));
+    sprite.setPosition(pos.x * tileSize, pos.y * tileSize);
+    sprite.setScale(tileSize / sprite.getTexture()->getSize().x, tileSize / sprite.getTexture()->getSize().y);
+    incantations.push_back(std::move(sprite));
+}
+
+void Map::drawIncantations()
+{
+    auto &window = SingleTon<sf::RenderWindow>::getInstance();
+
+    for (auto &incantation : incantations)
+        window.draw(incantation);
 }
 
 /*std::shared_ptr<Tile> Map::getTileAtPosition(int x, int y)

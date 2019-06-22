@@ -18,20 +18,16 @@ public:
     void draw();
     std::shared_ptr<Tile> &getTileAtCoord(int x, int y);
     const std::vector<std::shared_ptr<Tile>> &getTiles() const;
+    int getWidth() const;
+    int getHeight() const;
+    void addIncantationSprite(const Position &pos);
+    void drawIncantations();
 
 private:
     std::vector<std::shared_ptr<Tile>> tiles;
+    std::vector<sf::Sprite> incantations;
     int width;
-public:
-    int getWidth() const;
-
-    void setWidth(int width);
-
-    int getHeight() const;
-
-    void setHeight(int height);
-
-private:
     int height;
+    float tileSize;
 };
 
