@@ -1,5 +1,3 @@
-#include <memory>
-
 /*
 ** EPITECH PROJECT, 2019
 ** OOP_arcade_2018
@@ -138,7 +136,7 @@ void Game::selectTile()
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
 
     for (const auto &tile : SingleTon<MapManager>::getInstance().getMap()->getTiles()) {
-        if (tile->getSprites()[0].getGlobalBounds().contains(worldPos.x, worldPos.y)) {
+        if (tile->getSprites().at(0).getGlobalBounds().contains(worldPos.x, worldPos.y)) {
             selectedTile = tile;
             tileInfo = std::make_unique<TileInfo>(*selectedTile);
             playerManager.updatePlayerInfo(selectedTile->getPosition());

@@ -5,6 +5,7 @@
 ** PlayerInfo.cpp
 */
 
+#include <iostream>
 #include "PlayerInfo.hpp"
 #include "TextureLoader.hpp"
 #include "Singleton.hpp"
@@ -67,10 +68,11 @@ void PlayerInfo::update()
     auto &inventory = player.getInventory();
     int i = 0;
 
-    for (auto &it : inventory) {
-        updateRow(inventoryRows.at(i), it);
-        ++i;
-    }
+    if (inventory.size() == inventoryRows.size())
+        for (auto &it : inventory) {
+            updateRow(inventoryRows.at(i), it);
+            ++i;
+        }
 }
 
 void PlayerInfo::draw()

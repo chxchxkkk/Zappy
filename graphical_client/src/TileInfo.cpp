@@ -5,6 +5,7 @@
 ** Created by abel,
 */
 
+#include <iostream>
 #include "TileInfo.hpp"
 #include "TextureLoader.hpp"
 #include "Singleton.hpp"
@@ -52,10 +53,11 @@ void TileInfo::update()
     auto &inventory = tile.getContent();
     int i = 0;
 
-    for (auto &it : inventory) {
-        updateRow(rows.at(i), it);
-        ++i;
-    }
+    if (inventory.size() == rows.size())
+        for (auto &it : inventory) {
+            updateRow(rows.at(i), it);
+            ++i;
+        }
 }
 void TileInfo::draw()
 {
