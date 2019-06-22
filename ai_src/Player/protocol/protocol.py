@@ -1,4 +1,5 @@
 import socket
+import sys
 
 from Player.Pendings import Action
 from ..Resource import Resource
@@ -8,7 +9,11 @@ RECV_SIZE = 4096
 
 def get_socket(port: int, host_name: str):
     sock = socket.socket()
-    sock.connect((host_name, port))
+    try:
+        sock.connect((host_name, port))
+    except ConnectionRefusedError:
+        print("Connection to port", port, "on host", host_name, "failed.", file=sys.stderr)
+        exit(84)
     return sock
 
 
