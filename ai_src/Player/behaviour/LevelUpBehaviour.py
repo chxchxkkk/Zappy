@@ -33,8 +33,6 @@ class LevelUpBehaviour:
         return self.current_strategy.execute()
 
     def players_got(self):
-        print('number : ')
-        print(self.player.player_on_tile)
         if self.player.player_on_tile >= self.required_player:
             return True
         return False
