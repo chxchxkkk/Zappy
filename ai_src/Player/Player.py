@@ -64,9 +64,6 @@ class Player:
             data = self.receiver.pop()
         self.behaviour = LevelUpBehaviour(self)
 
-    def __del__(self):
-        self.receiver.set_receiving(False)
-
     def connect_protocol(self):
         print('connected :)')
         send_team_name(self.receiver.sock, self.team_name)
