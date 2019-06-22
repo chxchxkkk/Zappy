@@ -73,7 +73,6 @@ void Tile::addResourceSprite(Resource type, int offset)
     sf::Texture &texture = SingleTon<TextureLoader>::getInstance().getInstance(textureMap[type]);
     sprite.setTexture(texture);
     sprite.setScale(Responsive::getScale(size / 5, texture.getSize()));
-    std::cout << size << std::endl;
     sprite.setPosition((x * size) + size / 25.0f + (x_offset * size / 3), y * size + size / 25.0f + (y_offset * size / 3));
     sprites.push_back(sprite);
 }
