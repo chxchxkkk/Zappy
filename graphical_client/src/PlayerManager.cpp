@@ -126,6 +126,11 @@ void PlayerManager::pdi(const std::vector<std::string> &input)
     }), players.end());
 }
 
+void PlayerManager::pbc(const std::vector<std::string> &input)
+{
+    getPlayerById(parseId(input[0])).addBubble();
+}
+
 void PlayerManager::updatePlayerInfo(const Position &selectedTilePosition)
 {
     for (auto &player : players) {

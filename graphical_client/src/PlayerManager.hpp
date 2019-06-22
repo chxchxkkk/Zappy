@@ -26,6 +26,7 @@ public:
     void pie(const std::vector<std::string> &input);
     void tna(const std::vector<std::string> &input);
     void pdi(const std::vector<std::string> &input);
+    void pbc(const std::vector<std::string> &input);
 
     void draw();
     const std::vector<std::string> &getTeams() const;
@@ -39,8 +40,7 @@ public:
 private:
     std::unique_ptr<PlayerInfo> playerInfo;
     std::vector<std::string> teams;
-    std::vector<std::reference_wrapper<Player>> getPlayersAtPosition(
-        const Position &position);
+    std::vector<std::reference_wrapper<Player>> getPlayersAtPosition(const Position &position);
     std::vector<Player> players;
 };
 

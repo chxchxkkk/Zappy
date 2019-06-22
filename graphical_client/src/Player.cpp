@@ -100,6 +100,7 @@ void Player::draw()
                                    std::find(teams.begin(), teams.end(), this->teamName));
     auto textureSize = characterSprite.getTexture()->getSize().y;
 
+    updateBubble();
     characterSprite.setPosition(size * pos.x + size * (0.25f / 2), size * pos.y + size * (0.25f / 2));
     characterSprite.setTextureRect(
         sf::IntRect((this->orientation - 1) * textureSize, 0, textureSize,
@@ -107,6 +108,8 @@ void Player::draw()
     characterSprite.setColor(TEAM_COLORS[teamIndex % TEAM_COLORS.size()]);
     characterSprite.setScale(0.8f, 0.8f);
     window.draw(this->characterSprite);
+    if (bubble)
+        window.draw(*bubble);
 }
 
 const std::map<Resource, int> &Player::getInventory() const
@@ -117,4 +120,25 @@ const std::map<Resource, int> &Player::getInventory() const
 int Player::getLevel() const
 {
     return level;
+}
+
+void Player::addBubble()
+{
+    bubble = nullptr;
+    bubble = std::make_unique<sf::Sprite>();
+
+    bubble->setPosition(characterSprite.getPosition().x + size / 2, characterSprite.getPosition().y - size / 4);
+    bubble->setTexture(SingleTon<TextureLoader>::getInstance().getInstance("assets/bubble.png"));
+    bubble->setScale(size / 2 / bubble->getTexture()->getSize().x, size / 2 / bubble->getTexture()->getSize().y);
+    prevTime = std::chrono::system_clock::now();
+}
+
+void Player::updateBubble()
+{
+    auto time = std::chrono::system_clock::now();
+    auto &playerManager = SingleTon<PlayerManager>::getInstance();
+    std::chrono::duration<float> duration = time - prevTime;
+
+    if (duration.count() > 0.5)
+        bubble = nullptr;
 }

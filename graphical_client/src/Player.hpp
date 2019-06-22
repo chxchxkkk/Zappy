@@ -11,6 +11,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <chrono>
 #include <SFML/Graphics.hpp>
 #include "Position.hpp"
 #include "Orientation.hpp"
@@ -32,6 +33,8 @@ public:
     void draw();
     int getLevel() const;
     const std::map<Resource, int> &getInventory() const;
+    void addBubble();
+    void updateBubble();
 
 private:
     float size;
@@ -43,6 +46,8 @@ private:
     std::map<Resource, int> inventory;
     bool incanting = false;
     sf::Sprite characterSprite;
+    std::unique_ptr<sf::Sprite> bubble;
+    std::chrono::system_clock::time_point prevTime;
 };
 
 #endif
