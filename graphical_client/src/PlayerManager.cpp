@@ -153,3 +153,8 @@ void PlayerManager::removeInfo()
 {
     playerInfo = nullptr;
 }
+
+const std::vector<Player> &PlayerManager::getPlayers() const
+{
+    return players;
+}

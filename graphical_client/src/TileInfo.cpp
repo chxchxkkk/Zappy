@@ -9,6 +9,7 @@
 #include "TileInfo.hpp"
 #include "TextureLoader.hpp"
 #include "Singleton.hpp"
+#include "PlayerManager.hpp"
 
 TileInfo::TileInfo(Tile &tile) :
     tile(tile)
@@ -22,6 +23,10 @@ TileInfo::TileInfo(Tile &tile) :
     background.setColor(sf::Color(255, 255, 255, 150));
     background.setScale(0.3f, 0.4f);
 
+    nbPlayersText.setFont(font);
+    nbPlayersText.setPosition(x_pos + 10, 10);
+    nbPlayersText.setFillColor(sf::Color::Black);
+
     auto inventory = tile.getContent();
     int i = 0;
     for (auto &it : inventory) {
@@ -34,6 +39,17 @@ TileInfo::TileInfo(Tile &tile) :
         updateRow(rows.back(), it);
         i++;
     }
+}
+
+void TileInfo::updateNbPlayerText()
+{
+    int i = 0;
+    const auto &players = SingleTon<PlayerManager>::getInstance().getPlayers();
+
+    for (const auto &player : players)
+        if (player.getPosition() == tile.getPosition())
+            ++i;
+    nbPlayersText.setString("Nb players : " + std::to_string(i));
 }
 
 void TileInfo::updateRow(std::pair<sf::Sprite, sf::Text> &row, const std::pair<Resource, int> &resourceText)
@@ -53,6 +69,7 @@ void TileInfo::update()
     auto &inventory = tile.getContent();
     int i = 0;
 
+    updateNbPlayerText();
     if (inventory.size() == rows.size())
         for (auto &it : inventory) {
             updateRow(rows.at(i), it);
@@ -65,6 +82,7 @@ void TileInfo::draw()
 
     update();
     window.draw(background);
+    window.draw(nbPlayersText);
     for (auto &it : rows) {
         window.draw(it.first);
         window.draw(it.second);
