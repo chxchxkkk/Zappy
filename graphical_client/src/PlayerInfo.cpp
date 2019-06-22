@@ -30,7 +30,7 @@ PlayerInfo::PlayerInfo(Player &player) :
 
     playerLevel.setFont(font);
     playerLevel.setFillColor(sf::Color::Black);
-    playerLevel.setString("player Level : " + std::to_string(player.getLevel()));
+    playerLevel.setString("player level : " + std::to_string(player.getLevel()));
     playerLevel.setPosition(x_pos + 110, y_pos + 55);
     initRows();
 }
@@ -68,6 +68,7 @@ void PlayerInfo::update()
     auto &inventory = player.getInventory();
     int i = 0;
 
+    playerLevel.setString("player level : " + std::to_string(player.getLevel()));
     if (inventory.size() == inventoryRows.size())
         for (auto &it : inventory) {
             updateRow(inventoryRows.at(i), it);
