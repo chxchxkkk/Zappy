@@ -86,3 +86,8 @@ void PlayerInfo::draw()
         window.draw(it.second);
     }
 }
+
+int PlayerInfo::getPlayerId() const
+{
+    return player.getId();
+}

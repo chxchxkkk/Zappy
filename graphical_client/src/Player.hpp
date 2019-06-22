@@ -19,7 +19,7 @@
 class Player {
 public:
     Player(int id, const Position &pos, Orientation orientation, int level,
-        std::string teamName);
+           std::string teamName);
 
     int getId() const;
     void setPosition(const Position &newPos);
@@ -31,7 +31,7 @@ public:
     const Position &getPosition() const;
     void draw();
     int getLevel() const;
-    const std::map<Resource, int> getInventory() const;
+    const std::map<Resource, int> &getInventory() const;
 
 private:
     int id;
@@ -41,7 +41,6 @@ private:
     std::string teamName;
     std::map<Resource, int> inventory;
     bool incanting = false;
-//    std::vector<sf::Sprite> sprites;
     sf::Sprite characterSprite;
 };
 
