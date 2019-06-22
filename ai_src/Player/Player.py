@@ -62,7 +62,7 @@ class Player:
                 if self.is_running is False:
                     return
             data = self.receiver.pop()
-        self.behaviour = FoodBehaviour(self)
+        self.behaviour = LevelUpBehaviour(self)
 
     def connect_protocol(self):
         print('connected :)')
@@ -118,13 +118,14 @@ class Player:
         print('Jai recu : ' + msg)
         if len(data) == 3:
             if data[0] == self.team_name and data[1] == str(self.level):
-                if data[2] == "come":
+                if data[2] == "come" and not self.must_come and type(self.behaviour) is not FoodBehaviour:
                     self.where_to_go = direction
                     self.must_come = True
+                    self.behaviour = FindPlayerBehaviour(self)
                 pass
 
     def start_action(self):
-        if self.tick_count > 126:  # 126 tick -> -1 food
+        if self.tick_count > 5:  # 126 tick -> -1 food
             self.check_behaviour()
         elif self.actionQueue:
             self.pending_action = self.actionQueue.pop(0)(self.receiver.sock)
@@ -133,10 +134,10 @@ class Player:
 
     def check_behaviour(self):
         self.pending_action = get_inventory(self.receiver.sock)
-        if self.inventory[Resource.FOOD] > 15 and self.must_come is False:
+        if self.inventory[Resource.FOOD] > 15 and not self.must_come:
             self.behaviour = LevelUpBehaviour(self)
-        elif self.inventory[Resource.FOOD] > 15:
-            self.behaviour = FindPlayerBehaviour(self)
+        # elif self.must_come:
+        #     self.behaviour = FindPlayerBehaviour(self)
         elif self.inventory[Resource.FOOD] < 5:
             self.behaviour = FoodBehaviour(self)
         self.tick_count = 0
@@ -196,10 +197,9 @@ class Player:
             if self.level == 3:
                 print('WOW LE NIVEAU 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
             print('new level : ', self.level)
-            new_queue = []
-            new_queue += [fork]
-            self.actionQueue = new_queue
+            self.actionQueue = [fork]
             self.must_come = False
+            self.behaviour.reset_data_for_level_up()
 
     def connect_new_player(self, _):
         print("CONNECT NEW PLAYER")

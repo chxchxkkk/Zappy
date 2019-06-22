@@ -15,9 +15,7 @@ class Incantation:
         if self.parent.player.tile_info is None:
             return look(self.parent.player.receiver.sock)
         elif not self.tile_empty():
-            queue = []
-            queue += [look]
-            self.parent.player.actionQueue = queue
+            self.parent.player.actionQueue = [look]
             return self.take_resource()
         elif not self.empty_resource():
             for resource in resources:
@@ -28,6 +26,7 @@ class Incantation:
         else:
             print("incanting...")
             self.parent.player.actionQueue += [look]
+            self.parent.is_setting_resources = False
             return incantation(self.parent.player.receiver.sock)
 
     def empty_resource(self):
@@ -38,12 +37,16 @@ class Incantation:
 
     def take_resource(self):
         info = self.parent.player.tile_info[0]
+        if info[Resource.FOOD] != 0:
+            return take_resource(self.parent.player.receiver.sock, Resource.FOOD)
         for resource in resources:
             if info[resource] != 0:
                 return take_resource(self.parent.player.receiver.sock, resource)
 
     def tile_empty(self):
         info = self.parent.player.tile_info[0]
+        if info[Resource.FOOD] != 0:
+            return False
         for resource in resources:
             if info[resource] != 0:
                 return False

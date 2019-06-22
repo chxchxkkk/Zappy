@@ -15,5 +15,6 @@ class FindPlayerBehaviour:
         if direction == 0:
             return Action.NONE
         self.player.actionQueue = PathFinding.find_instructions_to_direction(direction)
+        print("FINDIIIIIIIIIIIIIIIIIIING")
         self.player.where_to_go = None
         return Action.NONE
