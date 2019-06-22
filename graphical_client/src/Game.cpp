@@ -53,10 +53,16 @@ void Game::processEvents()
     sf::Event event{};
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
     int movePower = 15;
+    float zoomAmount = 1.1f;
 
     while (window.pollEvent(event)) {
-        if (event.type == sf::Event::MouseWheelScrolled)
-            view->zoom(1 - event.mouseWheelScroll.delta / 10);
+        if (event.type == sf::Event::MouseWheelScrolled) {
+            if (event.mouseWheelScroll.delta > 0)
+                zoomViewAt({ event.mouseWheelScroll.x, event.mouseWheelScroll.y }, window, (1.f / zoomAmount));
+            else if (event.mouseWheelScroll.delta < 0)
+                zoomViewAt({ event.mouseWheelScroll.x, event.mouseWheelScroll.y }, window, zoomAmount);
+        }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             view->move(-movePower, 0);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -154,9 +160,13 @@ void Game::selectTile()
     }
 }
 
-void Game::displayTileInfo()
+void Game::zoomViewAt(sf::Vector2i pixel, sf::RenderWindow &window, float zoom)
 {
-    Position position = selectedTile->getPosition();
-
-    std::cout << "selected at pos : x " << position.x << " y " << position.y << std::endl;
+    const sf::Vector2f beforeCoord{window.mapPixelToCoords(pixel)};
+    view->zoom(zoom);
+    window.setView(*view);
+    const sf::Vector2f afterCoord{window.mapPixelToCoords(pixel)};
+    const sf::Vector2f offsetCoords{beforeCoord - afterCoord};
+    view->move(offsetCoords);
+    window.setView(*view);
 }
