@@ -148,3 +148,8 @@ int PlayerManager::getPlayerInfoId() const
         return playerInfo->getPlayerId();
     return -1;
 }
+
+void PlayerManager::removeInfo()
+{
+    playerInfo = nullptr;
+}

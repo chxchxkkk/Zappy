@@ -81,8 +81,10 @@ void Game::processEvents()
                 selectTile();
             }
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             selectedTile = nullptr;
+            SingleTon<PlayerManager>::getInstance().removeInfo();
+        }
     }
 }
 

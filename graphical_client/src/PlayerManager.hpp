@@ -33,6 +33,7 @@ public:
     void updatePlayerInfo(const Position &selectedTilePosition);
     bool isInfo() const;
     int getPlayerInfoId() const;
+    void removeInfo();
 
 private:
     std::unique_ptr<PlayerInfo> playerInfo;
