@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iostream>
 #include "PlayerManager.hpp"
+#include "Singleton.hpp"
 
 void PlayerManager::pnw(const std::vector<std::string> &input)
 {
@@ -93,8 +94,16 @@ void PlayerManager::pie(const std::vector<std::string> &input)
 
 void PlayerManager::draw()
 {
+    sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
+    auto view = window.getView();
+
     for (auto &it : players)
         it.draw();
+    if (playerInfo) {
+        window.setView(window.getDefaultView());
+        playerInfo->draw();
+        window.setView(view);
+    }
 }
 
 void PlayerManager::tna(const std::vector<std::string> &input)
@@ -110,12 +119,20 @@ const std::vector<std::string> &PlayerManager::getTeams() const
 
 void PlayerManager::pdi(const std::vector<std::string> &input)
 {
-    players.erase(std::remove_if(players.begin(), players.end(), [&input](const Player &player) {
+    players.erase(std::remove_if(players.begin(), players.end(), [&](const Player &player) {
+        if (player.getId() == playerInfo->getPlayerId())
+            playerInfo = nullptr;
         return player.getId() == std::stoi(input[0]);
     }), players.end());
 }
 
-std::vector<Player>& PlayerManager::getPlayers()
+void PlayerManager::updatePlayerInfo(const Position &selectedTilePosition)
 {
-    return players;
+    for (auto &player : players) {
+        if (player.getPosition() == selectedTilePosition) {
+            playerInfo = nullptr;
+            playerInfo = std::make_unique<PlayerInfo>(player);
+            break;
+        }
+    }
 }

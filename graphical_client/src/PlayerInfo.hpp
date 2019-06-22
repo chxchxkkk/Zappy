@@ -14,6 +14,7 @@ class PlayerInfo {
 public:
     explicit PlayerInfo(Player &player);
     void draw();
+    int getPlayerId() const;
 private:
     void initRows();
     void updateRow(std::pair<sf::Sprite, sf::Text> &row, const std::pair<Resource, int> &resourceText);

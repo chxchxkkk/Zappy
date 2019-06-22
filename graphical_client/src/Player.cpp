@@ -112,7 +112,7 @@ void Player::draw()
     window.draw(this->characterSprite);
 }
 
-const std::map<Resource, int> Player::getInventory() const
+const std::map<Resource, int> &Player::getInventory() const
 {
     return inventory;
 }

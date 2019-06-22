@@ -12,18 +12,17 @@
 #include "Tile.hpp"
 
 class Map {
-    public:
-        Map(int width, int height);
-        ~Map() = default;
-        void draw();
-        std::shared_ptr<Tile> &getTileAtCoord(int x, int y);
-        const std::vector<std::shared_ptr<Tile>> &getTiles() const;
-//        std::shared_ptr<Tile> getTileAtPosition(int x, int y);
+public:
+    Map(int width, int height);
+    ~Map() = default;
+    void draw();
+    std::shared_ptr<Tile> &getTileAtCoord(int x, int y);
+    const std::vector<std::shared_ptr<Tile>> &getTiles() const;
 
-    private:
-        std::vector<std::shared_ptr<Tile>> tiles;
-        int width;
-    public:
+private:
+    std::vector<std::shared_ptr<Tile>> tiles;
+    int width;
+public:
     int getWidth() const;
 
     void setWidth(int width);
@@ -32,7 +31,7 @@ class Map {
 
     void setHeight(int height);
 
-    private:
+private:
     int height;
 };
 

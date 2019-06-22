@@ -30,16 +30,11 @@ public:
 private:
     void zoomViewAt(sf::Vector2i pixel, sf::RenderWindow &window, float zoom);
 
-    unsigned int width = 1920;
-    unsigned int height = 1080;
     Communicator communicator;
     std::unique_ptr<sf::View> view;
     std::shared_ptr<Tile> selectedTile = nullptr;
     std::thread receiver;
     Dispatcher dispatcher;
-    sf::View mapView;
-    sf::View menuView;
     std::unique_ptr<TileInfo> tileInfo = nullptr;
-    std::unique_ptr<PlayerInfo> playerInfo = nullptr;
     void drawFocus(std::shared_ptr<Tile> &tile);
 };
