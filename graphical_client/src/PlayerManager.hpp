@@ -34,6 +34,7 @@ public:
     bool isInfo() const;
     int getPlayerInfoId() const;
     void removeInfo();
+    const std::vector<Player> &getPlayers() const;
 
 private:
     std::unique_ptr<PlayerInfo> playerInfo;

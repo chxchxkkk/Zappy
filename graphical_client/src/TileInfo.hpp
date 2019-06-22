@@ -20,9 +20,11 @@ public:
 private:
     void updateRow(std::pair<sf::Sprite, sf::Text> &row, const std::pair<Resource, int> &resourceText);
     void update();
+    void updateNbPlayerText();
 
     Tile &tile;
     std::vector<std::pair<sf::Sprite, sf::Text>> rows;
+    sf::Text nbPlayersText;
     sf::Sprite background;
     sf::Font font;
     std::map<Resource, std::string> textureMap = {
