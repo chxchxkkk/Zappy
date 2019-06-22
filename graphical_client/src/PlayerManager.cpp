@@ -120,7 +120,7 @@ const std::vector<std::string> &PlayerManager::getTeams() const
 void PlayerManager::pdi(const std::vector<std::string> &input)
 {
     players.erase(std::remove_if(players.begin(), players.end(), [&](const Player &player) {
-        if (player.getId() == playerInfo->getPlayerId())
+        if (playerInfo && player.getId() == playerInfo->getPlayerId())
             playerInfo = nullptr;
         return player.getId() == std::stoi(input[0]);
     }), players.end());
