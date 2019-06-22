@@ -16,10 +16,10 @@ EndScreen::EndScreen(const std::vector<std::string> &input)
     if (!font.loadFromFile("assets/arial.ttf"))
         throw std::runtime_error("unable to load file assets/arial.ttf");
 
-    text.setPosition(window.getSize().x / 2.0f - 100, window.getSize().y / 2.0f - 10);
+    text.setPosition(window.getSize().x / 2.0f - 60, window.getSize().y / 2.0f);
     text.setFont(font);
-    text.setFillColor(sf::Color::White);
-    text.setString(input[0] + " team won");
+    text.setFillColor(sf::Color::Black);
+    text.setString(input[0] + " won");
 
     background.setTexture(SingleTon<TextureLoader>::getInstance().getInstance("assets/end_screen.jpg"));
     background.setPosition(0, 0);
