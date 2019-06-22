@@ -21,6 +21,7 @@ public:
     int getWidth() const;
     int getHeight() const;
     void addIncantationSprite(const Position &pos);
+    void removeIncantationSprite(const Position &pos);
     void drawIncantations();
 
 private:

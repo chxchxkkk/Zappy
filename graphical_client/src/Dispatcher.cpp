@@ -24,6 +24,7 @@ Dispatcher::Dispatcher(PlayerManager &playerManager, MapManager &mapManager) :
         {"msz", [this](const std::vector<std::string> &input) { this->mapManager.msz(input); }},
         {"bct", [this](const std::vector<std::string> &input) { this->mapManager.bct(input); }},
         {"pic", [this](const std::vector<std::string> &input) { this->mapManager.pic(input); }},
+        {"pie", [this](const std::vector<std::string> &input) { this->mapManager.pie(input); }},
         {"seg", [this](const std::vector<std::string> &input) { this->seg(input); }},
     };
 }

@@ -65,6 +65,13 @@ void Map::addIncantationSprite(const Position &pos)
     incantations.push_back(std::move(sprite));
 }
 
+void Map::removeIncantationSprite(const Position &pos)
+{
+    incantations.erase(std::remove_if(incantations.begin(), incantations.end(), [&] (const sf::Sprite &sprite) {
+        return sprite.getPosition() == sf::Vector2f(pos.x * tileSize, pos.y * tileSize);
+    }), incantations.end());
+}
+
 void Map::drawIncantations()
 {
     auto &window = SingleTon<sf::RenderWindow>::getInstance();

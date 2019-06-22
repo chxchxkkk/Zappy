@@ -36,6 +36,11 @@ void MapManager::pic(const std::vector<std::string> &args)
     map->addIncantationSprite(parsePosition(args));
 }
 
+void MapManager::pie(const std::vector<std::string> &args)
+{
+    map->removeIncantationSprite(parsePosition(args));
+}
+
 Position MapManager::parsePosition(const std::vector<std::string> &pos)
 {
     return {std::stoi(pos[0]), std::stoi(pos[1])};
