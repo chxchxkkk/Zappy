@@ -26,9 +26,10 @@ public:
     void processEvents();
     void processCommands();
     void selectTile();
-    void displayTileInfo();
 
 private:
+    void zoomViewAt(sf::Vector2i pixel, sf::RenderWindow &window, float zoom);
+
     unsigned int width = 1920;
     unsigned int height = 1080;
     Communicator communicator;
