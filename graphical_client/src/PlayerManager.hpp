@@ -31,6 +31,9 @@ public:
     const std::vector<std::string> &getTeams() const;
     int parseId(const std::string &s) const;
     void updatePlayerInfo(const Position &selectedTilePosition);
+    bool isInfo() const;
+    int getPlayerInfoId() const;
+    void removeInfo();
 
 private:
     std::unique_ptr<PlayerInfo> playerInfo;
