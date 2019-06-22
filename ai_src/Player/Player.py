@@ -64,6 +64,9 @@ class Player:
             data = self.receiver.pop()
         self.behaviour = LevelUpBehaviour(self)
 
+    def __del__(self):
+        self.receiver.set_receiving(False)
+
     def connect_protocol(self):
         print('connected :)')
         send_team_name(self.receiver.sock, self.team_name)
@@ -94,7 +97,7 @@ class Player:
                 Resource.SIBUR: 0,
                 Resource.THYSTAME: 0}
 
-# TODO: Handling "ko" answers
+    # TODO: Handling "ko" answers
     def update(self):
         while self.is_running:
             if self.pending_action == Action.NONE:
@@ -202,4 +205,4 @@ class Player:
             self.behaviour.reset_data_for_level_up()
 
     def connect_new_player(self, _):
-        print("CONNECT NEW PLAYER")
+        print("CONNECT")
