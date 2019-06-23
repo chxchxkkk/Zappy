@@ -158,3 +158,8 @@ void Player::drawPlayerLevel()
     text.setScale(characterSprite.getScale());
     window.draw(text);
 }
+
+const std::string &Player::getTeamName() const
+{
+    return teamName;
+}

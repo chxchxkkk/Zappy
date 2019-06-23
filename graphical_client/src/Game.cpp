@@ -12,12 +12,12 @@
 #include "String.hpp"
 #include "Singleton.hpp"
 #include "Responsive.hpp"
+#include "EggManager.hpp"
 
 Game::Game(int, char *argv[]) :
     communicator(static_cast<uint16_t>(std::strtol(argv[1], &argv[1], 10)), argv[2]),
     receiver(&Communicator::receiveData, &communicator),
-    dispatcher(SingleTon<PlayerManager>::getInstance(),
-               SingleTon<MapManager>::getInstance())
+    dispatcher()
 {
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
     window.create(sf::VideoMode(1920, 1080), "Zappy Graphic");
@@ -108,6 +108,7 @@ void Game::draw()
     window.setView(*view);
     if (SingleTon<MapManager>::getInstance().getMap() != nullptr)
         SingleTon<MapManager>::getInstance().getMap()->draw();
+    SingleTon<EggManager>::getInstance().draw();
     SingleTon<PlayerManager>::getInstance().draw();
     if (selectedTile) {
         window.setView(window.getDefaultView());

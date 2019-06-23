@@ -17,12 +17,10 @@
 
 class Dispatcher {
 public:
-    Dispatcher(PlayerManager &playerManager, MapManager &mapManager);
+    Dispatcher();
     void dispatchCommand(const std::vector<std::string> &arg);
 private:
     void seg(const std::vector<std::string> &input);
-    PlayerManager &playerManager;
-    MapManager &mapManager;
     std::map<std::string, std::function<void(const std::vector<std::string> &)>> actions;
 };
 

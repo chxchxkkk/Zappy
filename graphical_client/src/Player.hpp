@@ -36,6 +36,7 @@ public:
     void addBubble();
     void updateBubble();
     void drawPlayerLevel();
+    const std::string &getTeamName() const;
 
 private:
     float size;
