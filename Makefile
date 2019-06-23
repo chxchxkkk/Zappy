@@ -36,10 +36,12 @@ zappy_graphic:
 
 clean:
 	make clean -C $(SRV_DIR)/lib/list
+	make clean -C ${GRAPHIC_DIR}
 	rm -rf ${SRV_OBJ}
 
 fclean: clean
 	make fclean -C $(SRV_DIR)/lib/list
+	make fclean -C ${GRAPHIC_DIR}
 	rm -rf ${SRV_NAME}
 	rm -rf ${AI_NAME}
 
