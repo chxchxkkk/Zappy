@@ -92,7 +92,7 @@ class Player:
                 self.update_player_data(data)
 
     def start_action(self):
-        if self.tick_count > 20 or self.behaviour is None:  # 126 tick -> -1 food
+        if self.tick_count > 20:  # 126 tick -> -1 food
             print("checking behaviour")
             self.check_behaviour()
         elif self.actionQueue:
