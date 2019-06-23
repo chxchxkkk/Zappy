@@ -103,12 +103,13 @@ void Player::draw()
     auto textureSize = characterSprite.getTexture()->getSize().y;
 
     updateBubble();
-    characterSprite.setPosition(size * pos.x + size * (0.25f / 2), size * pos.y + size * (0.25f / 2));
+    characterSprite.setPosition(size * pos.x + size / 8.0f, size * pos.y + size / 8.0f);
     characterSprite.setTextureRect(
         sf::IntRect((this->orientation - 1) * textureSize, 0, textureSize,
                     textureSize));
     characterSprite.setColor(TEAM_COLORS[teamIndex % TEAM_COLORS.size()]);
-    characterSprite.setScale(0.8f, 0.8f);
+    characterSprite.setScale(size / characterSprite.getTexture()->getSize().x * 4 * 0.7,
+                             size / characterSprite.getTexture()->getSize().y * 0.7);
     window.draw(this->characterSprite);
     if (bubble)
         window.draw(*bubble);
@@ -154,5 +155,6 @@ void Player::drawPlayerLevel()
     text.setPosition(characterSprite.getPosition().x + size / 2.99, characterSprite.getPosition().y + size / 4);
     text.setFillColor(sf::Color::Black);
     text.setString(std::to_string(level));
+    text.setScale(characterSprite.getScale());
     window.draw(text);
 }
