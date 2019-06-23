@@ -22,16 +22,17 @@ class LevelUpBehaviour:
         self.is_setting_resources = False
 
     def execute_strategy(self):
-        print(self.enough_players())
-        if self.is_setting_resources:
+        if self.player.must_come:
+            print("MUST COME")
+        if self.is_setting_resources and not self.player.must_come:
             pass
-        elif not self.enough_resources():
+        elif not self.enough_resources() and not self.player.must_come:
             print("mode collect")
             if type(self.current_strategy) is not CollectResources:
                 self.current_strategy = CollectResources(self)
-        elif not self.enough_players():
+        elif not self.enough_players() and not self.player.must_come:
             print("mode caller")
-            if type(self.current_strategy) is not Caller:
+            if type(self.current_strategy) is not Caller and not self.player.must_come:
                 self.current_strategy = Caller(self)
             self.player.actionQueue += [look]
         else:
@@ -58,3 +59,6 @@ class LevelUpBehaviour:
         for resource in resources:
             self.required_resources_for_level_up[resource] -= self.player.inventory[resource]
         self.required_player = deepcopy(Elevation.find_required_players(self.player_level))
+
+    def get_strat(self):
+        return self.current_strategy
