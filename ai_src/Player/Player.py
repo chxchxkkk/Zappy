@@ -13,12 +13,15 @@ class Player:
         self.team_name = team_name
         self.remaining_connections = None
         self.map_size = None
-        self.player_on_tile = 1
+        self.player_on_tile = 0
         self.receiver = receiver
         self.is_running = True
         self.pending_action = Action.NONE
+        self.save_action = self.pending_action
         self.is_connected = False
         self.level = 1
+        self.must_come = False
+        self.behaviour = None
         self.tile_info = None
         self.tick_count = 0
         self.tick_value = {Action.FORWARD: 7,
@@ -85,6 +88,8 @@ class Player:
             if self.pending_action == Action.NONE:
                 self.start_action()
             data = self.receiver.pop()
+            if data:
+                print("data: ", data)
             if data == "dead":
                 print("dead")
                 self.is_running = False
@@ -92,11 +97,10 @@ class Player:
                 self.update_player_data(data)
 
     def start_action(self):
-        if self.tick_count > 20:  # 126 tick -> -1 food
-            print("checking behaviour")
+        if self.tick_count > 5:  # 126 tick -> -1 food
             self.check_behaviour()
         elif self.actionQueue:
-            self.pending_action = self.actionQueue.pop()(self.receiver.sock)
+            self.pending_action = self.actionQueue.pop(0)(self.receiver.sock)
         else:
             self.pending_action = self.behaviour.execute_strategy()
 
@@ -104,20 +108,20 @@ class Player:
         self.pending_action = get_inventory(self.receiver.sock)
         if self.inventory[Resource.FOOD] < 5:
             self.behaviour = FoodBehaviour(self)
-        elif self.inventory[Resource.FOOD] > 15 and type(self.behaviour) is FoodBehaviour:
+        elif self.inventory[Resource.FOOD] > 15 and not self.must_come and not type(self.behaviour) is LevelUpBehaviour:
             self.behaviour = LevelUpBehaviour(self)
         self.tick_count = 0
 
     def update_player_data(self, data):
+        # TODO SI ON T'AS EJECT
         if "Current level: " in data:
             self.level_up()
-        if self.pending_action != self.pending_action.NONE:
+        if "message" in data and type(self.behaviour) is not FoodBehaviour:
+            data = data.split()
+            self.interpret_message(data[2], data[1].replace(',', ''))
+        elif self.pending_action != self.pending_action.NONE:
             self.tick_count += self.tick_value[self.pending_action]
             self.action_function_map[self.pending_action](data)
-        msg = self.receiver.pop_msg()
-        if msg and type(self.behaviour) is not FoodBehaviour:
-            msg = msg.split()
-            self.interpret_message(msg[2], msg[1].replace(',', ''))
 
     def level_up(self):
         self.level += 1
@@ -125,8 +129,9 @@ class Player:
             print('WOW LE NIVEAU 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         print('new level : ', self.level)
         self.actionQueue = [fork]
-        self.behaviour = LevelUpBehaviour(self)
-        self.tick_count += self.tick_value[Action.INCANTATION]
+        self.must_come = False
+        if type(self.behaviour) is LevelUpBehaviour:
+            self.behaviour.reset_data_for_level_up()
         self.reset()
 
     def interpret_message(self, msg, direction):
@@ -136,11 +141,13 @@ class Player:
                 if data[2] == "come":
                     self.where_to_go = direction
                     print("finding mode: dir = ", direction)
-                    if type(self.behaviour) is not FindPlayerBehaviour:
+                    if not self.must_come:
                         self.behaviour = FindPlayerBehaviour(self)
+                        self.must_come = True
                 elif data[2] == "stop":
                     print("stop coming")
                     self.where_to_go = None
+                    self.must_come = False
 
     def parse_inventory(self, data):
         data = data.replace('[ ', '').replace(' ]', '').replace(', ', ',')
@@ -192,7 +199,6 @@ class Player:
 
     def incantation_action(self, data):
         if data == "ko":
-            print("reset incant")
             self.behaviour.reset_data_for_level_up()
             self.reset()
         if "Elevation underway" in data:

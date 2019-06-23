@@ -12,13 +12,10 @@ class FindPlayerBehaviour:
         print("FIND DESTRUCTOR")
 
     def execute_strategy(self):
-        print("find exec strat")
         if len(self.player.actionQueue) != 0:
             return Action.NONE
-        print("step2")
         if self.player.where_to_go is None:
             return Action.NONE
-        print("step3")
         direction = int(self.player.where_to_go)
         if direction == 0:
             return Action.NONE

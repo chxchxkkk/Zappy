@@ -47,9 +47,6 @@ class PathFinding:
 
     @staticmethod
     def find_instructions_to_direction(direction):
-        print(direction, "queue list dir:", queue_list[direction])
-        if direction < 8:
-            print(direction, "queue list dir next:", queue_list[direction + 1])
         return queue_list[direction]
 
     @staticmethod
