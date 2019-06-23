@@ -20,6 +20,6 @@ bool cmd_inventory(UNUSED zappy_server_t *server, player_t *player,
         idx += snprintf(&buff[idx], (size_t)(BUFSIZ - idx),
             i != NB_GAME_OBJECTS - 1 ? "%s %d, " : "%s %d",
             OBJ_NAMES[i], player->inventory[i]);
-    dprintf(player->client.fd, "[ %s ]\n", buff);
+    client_reply(player->client.fd, "[ %s ]\n", buff);
     return (true);
 }

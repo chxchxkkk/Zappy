@@ -13,9 +13,9 @@ bool cmd_fork(zappy_server_t *server, player_t *player,
     UNUSED char *const *args)
 {
     if (lay_egg(server, player) == NULL) {
-        dprintf(player->client.fd, "ko\n");
+        client_reply(player->client.fd, "ko\n");
         return (false);
     }
-    dprintf(player->client.fd, "ok\n");
+    client_reply(player->client.fd, "ok\n");
     return (true);
 }

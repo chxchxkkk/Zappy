@@ -11,7 +11,7 @@
 
 void print_cell_content(const cell_t *cell, int fd, int x, int y)
 {
-    dprintf(fd, "bct %d %d %d %d %d %d %d %d %d\n", x, y,
+    client_reply(fd, "bct %d %d %d %d %d %d %d %d %d\n", x, y,
         cell->objects[FOOD],
         cell->objects[LINEMATE],
         cell->objects[DERAUMERE],
@@ -28,7 +28,7 @@ bool cmd_bct(zappy_server_t *server, player_t *player, char *const *args)
     cell_t *cell;
 
     if (x > server->map->width || y > server->map->height) {
-        dprintf(player->client.fd, "sbp\n");
+        client_reply(player->client.fd, "sbp\n");
         return (false);
     }
     cell = get_cell(server->map, x, y);

@@ -17,7 +17,7 @@ void notify_graphic(const zappy_server_t *server, const char *fmt, ...)
     LIST_FOREACH(player, server->player_list, {
         va_copy(cpy, ap);
         if (player->state == PLAYER_GRAPHIC)
-            vdprintf(player->client.fd, fmt, cpy);
+            va_client_reply(player->client.fd, fmt, &cpy);
         va_end(cpy);
     });
     va_end(ap);

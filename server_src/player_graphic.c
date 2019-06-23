@@ -46,5 +46,5 @@ static bool parse_command(zappy_server_t *server, player_t *player)
 void update_player_graphic(zappy_server_t *server, player_t *player)
 {
     if (player->commands[0] != NULL && !parse_command(server, player))
-        dprintf(player->client.fd, "suc\n");
+        client_reply(player->client.fd, "suc\n");
 }

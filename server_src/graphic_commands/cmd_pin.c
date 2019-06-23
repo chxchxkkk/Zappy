@@ -16,10 +16,10 @@ bool cmd_pin(zappy_server_t *server, player_t *player, char *const *args)
         it->state == PLAYER_DEFAULT && (unsigned int)it->id == id);
 
     if (actual == NULL) {
-        dprintf(player->client.fd, "sbp\n");
+        client_reply(player->client.fd, "sbp\n");
         return (false);
     }
-    dprintf(player->client.fd, "pin %d %d %d %d %d %d %d %d %d %d\n",
+    client_reply(player->client.fd, "pin %d %d %d %d %d %d %d %d %d %d\n",
         actual->id, actual->position.x, actual->position.y,
         actual->inventory[FOOD],
         actual->inventory[LINEMATE],

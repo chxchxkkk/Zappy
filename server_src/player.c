@@ -59,7 +59,7 @@ void update_player(zappy_server_t *server, player_t *player)
 
 void kill_player(zappy_server_t *server, player_t *player)
 {
-    dprintf(player->client.fd, "dead\n");
+    client_reply(player->client.fd, "dead\n");
     player->state = PLAYER_DEAD;
     get_cell(server->map, player->position.x,
         player->position.y)->objects[PLAYER]--;

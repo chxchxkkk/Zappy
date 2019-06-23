@@ -12,7 +12,7 @@
 
 static bool on_error(const player_t *player)
 {
-    dprintf(player->client.fd, "ko\n");
+    client_reply(player->client.fd, "ko\n");
     return (false);
 }
 
@@ -49,7 +49,7 @@ bool cmd_set(zappy_server_t *server, player_t *player, char *const *args)
     (*objects)--;
     get_cell(server->map, player->position.x,
         player->position.y)->objects[obj_type]++;
-    dprintf(player->client.fd, "ok\n");
+    client_reply(player->client.fd, "ok\n");
     notify_graphic_take(server, player, obj_type);
     return (true);
 }

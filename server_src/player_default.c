@@ -60,7 +60,7 @@ static bool parse_command(zappy_server_t *server, player_t *player)
 
 static void bad_command(const player_t *player)
 {
-    dprintf(player->client.fd, "ko\n");
+    client_reply(player->client.fd, "ko\n");
 }
 
 void update_player_default(zappy_server_t *server, player_t *player)
