@@ -38,11 +38,15 @@ void Game::run()
 {
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
     while (window.isOpen()) {
-        processEvents();
-        processCommands();
-        window.clear(sf::Color::Black);
-        draw();
-        window.display();
+        try {
+            processEvents();
+            processCommands();
+            window.clear(sf::Color::Black);
+            draw();
+            window.display();
+        } catch (const std::exception &e) {
+            std::cout << e.what() << std::endl;
+        }
     }
 }
 
