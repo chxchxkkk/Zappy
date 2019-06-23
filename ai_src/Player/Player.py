@@ -13,7 +13,7 @@ class Player:
         self.team_name = team_name
         self.remaining_connections = None
         self.map_size = None
-        self.player_on_tile = 0
+        self.player_on_tile = 1
         self.receiver = receiver
         self.is_running = True
         self.pending_action = Action.NONE
@@ -83,7 +83,6 @@ class Player:
     def update(self):
         while self.is_running:
             if self.pending_action == Action.NONE:
-                print("azezaeaezza")
                 self.start_action()
             data = self.receiver.pop()
             if data == "dead":
@@ -126,7 +125,8 @@ class Player:
             print('WOW LE NIVEAU 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         print('new level : ', self.level)
         self.actionQueue = [fork]
-        self.behaviour = None
+        self.behaviour = LevelUpBehaviour(self)
+        self.tick_count += self.tick_value[Action.INCANTATION]
         self.reset()
 
     def interpret_message(self, msg, direction):
