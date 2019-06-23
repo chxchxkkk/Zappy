@@ -2,7 +2,7 @@ SRC =   $(wildcard src/*.cpp)
 
 OBJ =   $(SRC:.cpp=.o)
 
-NAME    =   graphical_client
+NAME    =   zappy_graphic
 
 CXX  =   g++
 
@@ -14,6 +14,7 @@ all:    $(NAME)
 
 $(NAME): $(OBJ)
 	$(CXX) -o $(NAME) $(LDFLAGS) $(OBJ)
+	cp $(NAME) ..
 
 clean:
 	rm -rf $(OBJ)

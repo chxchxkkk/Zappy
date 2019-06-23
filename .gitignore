@@ -13,6 +13,7 @@ cmake*
 CMakeLists.txt
 zappy_ai
 zappy_server
+zappy_graphic
 __pycache__/
 reference_server
 graphical_client/graphical_client
