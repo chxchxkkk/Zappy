@@ -8,6 +8,7 @@
 #include <iostream>
 #include <functional>
 #include "Dispatcher.hpp"
+#include "EndScreen.hpp"
 
 Dispatcher::Dispatcher(PlayerManager &playerManager, MapManager &mapManager) :
     playerManager(playerManager),
@@ -22,6 +23,7 @@ Dispatcher::Dispatcher(PlayerManager &playerManager, MapManager &mapManager) :
         {"pdi", [this](const std::vector<std::string> &input) {this->playerManager.pdi(input);}},
         {"msz", [this](const std::vector<std::string> &input) {this->mapManager.msz(input);}},
         {"bct", [this](const std::vector<std::string> &input) {this->mapManager.bct(input);}},
+        {"seg", [this](const std::vector<std::string> &input) {this->seg(input);}},
     };
 }
 
@@ -34,4 +36,11 @@ void Dispatcher::dispatchCommand(const std::vector<std::string> &arg)
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
+}
+
+void Dispatcher::seg(const std::vector<std::string> &input)
+{
+    EndScreen endScreen(input);
+
+    endScreen.start();
 }

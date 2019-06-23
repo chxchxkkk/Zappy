@@ -51,10 +51,17 @@ void Game::processEvents()
     sf::Event event{};
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
     int movePower = 15;
+    float zoomAmount = 1.1f;
 
+    sendInventoryEachSeconds();
     while (window.pollEvent(event)) {
-        if (event.type == sf::Event::MouseWheelScrolled)
-            view->zoom(1 - event.mouseWheelScroll.delta / 10);
+        if (event.type == sf::Event::MouseWheelScrolled) {
+            if (event.mouseWheelScroll.delta > 0)
+                zoomViewAt({event.mouseWheelScroll.x, event.mouseWheelScroll.y}, window, (1.f / zoomAmount));
+            else if (event.mouseWheelScroll.delta < 0)
+                zoomViewAt({event.mouseWheelScroll.x, event.mouseWheelScroll.y}, window, zoomAmount);
+        }
+
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             view->move(-movePower, 0);
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -74,8 +81,10 @@ void Game::processEvents()
                 selectTile();
             }
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
             selectedTile = nullptr;
+            SingleTon<PlayerManager>::getInstance().removeInfo();
+        }
     }
 }
 
@@ -124,20 +133,44 @@ void Game::drawFocus(std::shared_ptr<Tile> &tile)
 
 void Game::selectTile()
 {
+    auto &playerManager = SingleTon<PlayerManager>::getInstance();
     sf::RenderWindow &window = SingleTon<sf::RenderWindow>::getInstance();
     auto pixelPos = sf::Mouse::getPosition(window);
     sf::Vector2f worldPos = window.mapPixelToCoords(pixelPos);
 
-    for (const auto &tile : SingleTon<MapManager>::getInstance().getMap()->getTiles())
-        if (tile->getSprites()[0].getGlobalBounds().contains(worldPos.x, worldPos.y)) {
+    for (const auto &tile : SingleTon<MapManager>::getInstance().getMap()->getTiles()) {
+        if (tile->getSprites().at(0).getGlobalBounds().contains(worldPos.x, worldPos.y)) {
             selectedTile = tile;
             tileInfo = std::make_unique<TileInfo>(*selectedTile);
+            playerManager.updatePlayerInfo(selectedTile->getPosition());
+            break;
         }
+    }
 }
 
-void Game::displayTileInfo()
+void Game::zoomViewAt(sf::Vector2i pixel, sf::RenderWindow &window, float zoom)
 {
-    Position position = selectedTile->getPosition();
+    const sf::Vector2f beforeCoord{window.mapPixelToCoords(pixel)};
+    view->zoom(zoom);
+    window.setView(*view);
+    const sf::Vector2f afterCoord{window.mapPixelToCoords(pixel)};
+    const sf::Vector2f offsetCoords{beforeCoord - afterCoord};
+    view->move(offsetCoords);
+    window.setView(*view);
+}
 
-    std::cout << "selected at pos : x " << position.x << " y " << position.y << std::endl;
+void Game::sendInventoryEachSeconds()
+{
+    static auto prevTime = std::chrono::system_clock::now();
+    auto time = std::chrono::system_clock::now();
+    auto &playerManager = SingleTon<PlayerManager>::getInstance();
+    std::chrono::duration<float> duration = time - prevTime;
+
+    if (duration.count() > 1) {
+        prevTime = time;
+        if (playerManager.isInfo()) {
+            std::cout << "send to player : " + std::to_string(playerManager.getPlayerInfoId()) << std::endl;
+            communicator.sendData("pin " + std::to_string(playerManager.getPlayerInfoId()));
+        }
+    }
 }

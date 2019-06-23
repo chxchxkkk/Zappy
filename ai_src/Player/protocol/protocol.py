@@ -1,4 +1,5 @@
 import socket
+import sys
 
 from Player.Pendings import Action
 from ..Resource import Resource
@@ -8,7 +9,11 @@ RECV_SIZE = 4096
 
 def get_socket(port: int, host_name: str):
     sock = socket.socket()
-    sock.connect((host_name, port))
+    try:
+        sock.connect((host_name, port))
+    except ConnectionRefusedError:
+        print("Connection to port", port, "on host", host_name, "failed.", file=sys.stderr)
+        exit(84)
     return sock
 
 
@@ -42,7 +47,7 @@ def get_inventory(sock: socket.socket):
 
 
 def send_broadcast(sock: socket.socket, message: str):
-    msg = str.encode(message + "\n")
+    msg = str.encode("Broadcast " + message + "\n")
     sock.send(msg)
     return Action.BROADCAST
 
@@ -66,7 +71,7 @@ def take_resource(sock: socket.socket, resource: Resource):
 
 
 def set_resource(sock: socket.socket, resource: Resource):
-    msg = str.encode("Set " + str(resource) + "\n")
+    msg = str.encode("Set " + resource.value + "\n")
     sock.send(msg)
     return Action.SET
 
