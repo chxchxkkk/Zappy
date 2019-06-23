@@ -36,6 +36,8 @@ Player::Player(int id, const Position &pos, Orientation orientation, int level, 
         "assets/Character.png");
     size = Responsive::calcTileSize(map->getWidth(), map->getHeight());
 
+    if (!font.loadFromFile("assets/arial.ttf"))
+        throw std::runtime_error("unable to load file assets/arial.ttf");
     inventory[FOOD] = 0;
     inventory[LINEMATE] = 0;
     inventory[DERAUMERE] = 0;
@@ -110,6 +112,7 @@ void Player::draw()
     window.draw(this->characterSprite);
     if (bubble)
         window.draw(*bubble);
+    drawPlayerLevel();
 }
 
 const std::map<Resource, int> &Player::getInventory() const
@@ -136,9 +139,20 @@ void Player::addBubble()
 void Player::updateBubble()
 {
     auto time = std::chrono::system_clock::now();
-    auto &playerManager = SingleTon<PlayerManager>::getInstance();
     std::chrono::duration<float> duration = time - prevTime;
 
     if (duration.count() > 0.5)
         bubble = nullptr;
+}
+
+void Player::drawPlayerLevel()
+{
+    auto &window = SingleTon<sf::RenderWindow>::getInstance();
+    sf::Text text;
+
+    text.setFont(font);
+    text.setPosition(characterSprite.getPosition().x + size / 2.99, characterSprite.getPosition().y + size / 4);
+    text.setFillColor(sf::Color::Black);
+    text.setString(std::to_string(level));
+    window.draw(text);
 }

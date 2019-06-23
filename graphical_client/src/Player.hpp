@@ -35,6 +35,7 @@ public:
     const std::map<Resource, int> &getInventory() const;
     void addBubble();
     void updateBubble();
+    void drawPlayerLevel();
 
 private:
     float size;
@@ -48,6 +49,7 @@ private:
     sf::Sprite characterSprite;
     std::unique_ptr<sf::Sprite> bubble;
     std::chrono::system_clock::time_point prevTime;
+    sf::Font font;
 };
 
 #endif
