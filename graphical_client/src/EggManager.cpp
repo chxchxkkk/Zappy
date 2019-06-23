@@ -21,6 +21,17 @@ void EggManager::enw(const std::vector<std::string> &input)
     eggs.emplace_back(eggId, pos, player.getTeamName());
 }
 
+void EggManager::eht(const std::vector<std::string> &input)
+{
+    int id = std::stoi(input[0]);
+    auto it = std::find_if(eggs.begin(), eggs.end(), [&id](const Egg &egg) {
+        return id == egg.getId();
+    });
+
+    flags.emplace_back(id, it->getPosition(), it->getTeamName());
+    eggs.erase(it);
+}
+
 Position EggManager::parsePosition(const std::vector<std::string> &pos)
 {
     return {std::stoi(pos[0]), std::stoi(pos[1])};
@@ -30,4 +41,6 @@ void EggManager::draw()
 {
     for (const auto &egg : eggs)
         egg.draw();
+    for (const auto &flag : flags)
+        flag.draw();
 }

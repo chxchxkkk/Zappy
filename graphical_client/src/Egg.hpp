@@ -18,9 +18,13 @@ public:
     Egg(int id, const Position &pos, const std::string &teamName);
 
     void draw() const;
+    int getId() const;
+    const std::string &getTeamName() const;
+    const Position &getPosition() const;
 private:
     int id;
     Position pos;
+    std::string teamName;
     sf::Sprite sprite;
     static const std::vector<sf::Color> TEAM_COLORS;
 };

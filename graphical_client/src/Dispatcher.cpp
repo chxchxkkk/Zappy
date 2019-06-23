@@ -31,6 +31,7 @@ Dispatcher::Dispatcher()
         {"pic", [&](const std::vector<std::string> &input) { mapManager.pic(input); }},
         {"pie", [&](const std::vector<std::string> &input) { mapManager.pie(input); }},
         {"enw", [&](const std::vector<std::string> &input) { eggManager.enw(input); }},
+        {"eht", [&](const std::vector<std::string> &input) { eggManager.eht(input); }},
         {"seg", [&](const std::vector<std::string> &input) { seg(input); }},
     };
 }
