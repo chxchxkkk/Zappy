@@ -28,6 +28,8 @@ void EggManager::eht(const std::vector<std::string> &input)
         return id == egg.getId();
     });
 
+    if (it == eggs.end())
+        return;
     flags.emplace_back(id, it->getPosition(), it->getTeamName());
     eggs.erase(it);
 }
