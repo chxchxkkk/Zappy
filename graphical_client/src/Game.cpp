@@ -169,9 +169,7 @@ void Game::sendInventoryEachSeconds()
 
     if (duration.count() > 1) {
         prevTime = time;
-        if (playerManager.isInfo()) {
-            std::cout << "send to player : " + std::to_string(playerManager.getPlayerInfoId()) << std::endl;
+        if (playerManager.isInfo())
             communicator.sendData("pin " + std::to_string(playerManager.getPlayerInfoId()));
-        }
     }
 }

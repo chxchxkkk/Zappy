@@ -42,3 +42,8 @@ void Flag::draw() const
 
     window.draw(sprite);
 }
+
+int Flag::getId() const
+{
+    return id;
+}

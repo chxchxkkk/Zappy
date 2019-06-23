@@ -18,6 +18,7 @@ public:
     Flag(int id, const Position &pos, const std::string &teamName);
 
     void draw() const;
+    int getId() const;
 private:
     int id;
     Position pos;

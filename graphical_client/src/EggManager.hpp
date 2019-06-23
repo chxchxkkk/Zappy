@@ -18,6 +18,7 @@ class EggManager {
 public:
     void enw(const std::vector<std::string> &input);
     void eht(const std::vector<std::string> &input);
+    void ebo(const std::vector<std::string> &input);
 
     void draw();
 private:

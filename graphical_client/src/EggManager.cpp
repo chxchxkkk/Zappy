@@ -32,6 +32,15 @@ void EggManager::eht(const std::vector<std::string> &input)
     eggs.erase(it);
 }
 
+void EggManager::ebo(const std::vector<std::string> &input)
+{
+    int id = std::stoi(input[0]);
+
+    flags.erase(std::remove_if(flags.begin(), flags.end(), [&id](const Flag &flag) {
+        return flag.getId() == id;
+    }), flags.end());
+}
+
 Position EggManager::parsePosition(const std::vector<std::string> &pos)
 {
     return {std::stoi(pos[0]), std::stoi(pos[1])};
