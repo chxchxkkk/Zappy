@@ -24,5 +24,4 @@ if __name__ == '__main__':
     receiver = Receiver(sock)
     player = Player(receiver, args.name)
     player.update()
-    print('set receeiving false')
     receiver.set_receiving(False)
